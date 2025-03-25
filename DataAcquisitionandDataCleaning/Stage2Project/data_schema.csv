@@ -1,0 +1,22 @@
+Column,Data Type,Non-Null Count,Unique Values,Description
+customerID,object,7043,7043,Unique customer identifier
+gender,object,7043,2,Gender of the customer
+SeniorCitizen,int64,7043,2,"1 = Senior, 0 = Non-senior"
+Partner,object,7043,2,Whether the customer has a partner (Yes/No)
+Dependents,object,7043,2,Whether the customer has dependents (Yes/No)
+tenure,int64,7043,73,Number of months the customer has stayed
+PhoneService,object,7043,2,Whether the customer has phone service
+MultipleLines,object,7043,3,Whether the customer has multiple phone lines
+InternetService,object,7043,3,Type of internet service (DSL/Fiber/No)
+OnlineSecurity,object,7043,3,Whether the customer has online security service
+OnlineBackup,object,7043,3,Whether the customer has online backup service
+DeviceProtection,object,7043,3,Whether the customer has device protection
+TechSupport,object,7043,3,Whether the customer has tech support service
+StreamingTV,object,7043,3,Whether the customer has streaming TV service
+StreamingMovies,object,7043,3,Whether the customer has streaming movies service
+Contract,object,7043,3,"Contract term (Month-to-month, One year, Two year)"
+PaperlessBilling,object,7043,2,Whether the customer uses paperless billing
+PaymentMethod,object,7043,4,Customer's payment method
+MonthlyCharges,float64,7043,1585,Monthly amount charged to the customer
+TotalCharges,float64,7032,6530,Total amount charged to the customer
+Churn,object,7043,2,Whether the customer has churned (Yes/No)
