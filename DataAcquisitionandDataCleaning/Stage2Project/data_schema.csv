@@ -1,4 +1,5 @@
 Column,Data Type,Non-Null Count,Unique Values,Description
+customerID,object,7043,7043,Unique customer identifier
 gender,object,7043,2,Gender of the customer
 SeniorCitizen,category,7043,2,"1 = Senior, 0 = Non-senior"
 Partner,object,7043,2,Whether the customer has a partner (Yes/No)
