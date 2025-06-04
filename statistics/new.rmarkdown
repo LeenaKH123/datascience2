@@ -1,0 +1,392 @@
+---
+title: "FinalProjectReport"
+author: "Group 2"
+format:
+    html:
+      code-fold: true
+      code-line-numbers: true
+      number-sections: true
+      number-depth: 3
+      code-tools: true
+      embed-resources: true
+---
+
+# Overview of Problem
+
+The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.
+
+# About Dataset
+
+  **Source   :** Kaggle (https://www.kaggle.com/code/sudhanshu2198/multi-class-credit-score-classification)  
+  **Data set :** score.csv  
+  **Samples  :** approximate 100,000  
+  **Features :** Mix of numeric and categorical  
+  **Target   :** Credit_Score (Poor, Standard, Good)  
+  **Key Issues :** Outliers, noisy strings, class imbalance  
+                   Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
+
+## Key Features and Description
+
+- **Age**: Age of the person  
+- **Annual_Income**: Annual income of the person  
+- **Monthly_Inhand_Salary**: Monthly base salary  
+- **Num_Bank_Accounts**: Number of bank accounts  
+- **Num_Credit_Card**: Number of credit cards  
+- **Interest_Rate**: Credit card interest rate  
+- **Num_of_Loan**: Number of bank loans  
+- **Delay_from_due_date**: Avg. days delayed  
+- **Num_of_Delayed_Payment**: Avg. payments delayed  
+- **Changed_Credit_Limit**: % change in credit limit  
+- **Num_Credit_Inquiries**: Credit card inquiries  
+- **Credit_Mix**: Credit type classification  
+- **Outstanding_Debt**: Remaining debt  
+- **Credit_Utilization_Ratio**: Utilization ratio  
+- **Credit_History_Age**: Age of credit history  
+- **Payment_of_Min_Amount**: Whether minimum amount was paid  
+- **Total_EMI_per_month**: Monthly EMI payments  
+- **Amount_invested_monthly**: Monthly investments  
+- **Monthly_Balance**: Monthly balance  
+- **Credit_Score** : Target Variable — Poor, Standard, Good  
+
+# Challenges of the project
+
+**a)** Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models & tuning.  
+**b)** Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary.  
+
+```{r libs}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(reshape2))
+suppressPackageStartupMessages(library(corrplot))
+suppressPackageStartupMessages(library(recipes))
+suppressPackageStartupMessages(library(fastDummies))
+suppressPackageStartupMessages(library(randomForest))
+suppressPackageStartupMessages(library(glmnet))
+suppressPackageStartupMessages(library(nnet))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(xgboost))
+```
+
+```{r}
+score_dat <- read.csv("Score.csv", stringsAsFactors = TRUE)
+score_dat <- score_dat %>% select(-Credit_Score, Credit_Score)
+```
+
+- EDA
+
+```{r }
+library(ggcorrplot)
+train_numeric <- score_dat %>%
+  mutate(across(where(is.character), as.numeric)) %>%
+  mutate(across(where(is.factor), as.numeric))
+
+train_numeric$Credit_Score <- as.numeric(as.factor(score_dat$Credit_Score))
+cor_matrix <- cor(train_numeric[, -which(names(train_numeric) == "Credit_Score")], train_numeric$Credit_Score)
+cor_data_cc <- melt(cor_matrix)
+
+ggplot(cor_data_cc, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  geom_text(aes(label = round(value, 2)), color = "black", size = 2) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  theme_minimal() +
+  labs(title = "Correlation Heatmap Matrix", fill = "Correlation") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+```{r }
+score_dat_summary <- score_dat %>%
+  count(Credit_Score) %>%
+  mutate(Percentage = round(n / sum(n) * 100, 1))
+
+ggplot(score_dat_summary, aes(x = Credit_Score, y = n, fill = Credit_Score)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste(n, " (", Percentage, "%)")), vjust = -0.5, size = 5, fontface = "bold") +
+  scale_fill_manual(values = c("#FF5733", "#33C3FF", "#75FF33")) +
+  labs(
+    title = "Credit Score Distribution",
+    x = "Credit Score",
+    y = "Count",
+    fill = "Class"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  )
+```
+
+
+```{r}
+numeric_df <- score_dat
+low_cardinality <- names(numeric_df)[sapply(numeric_df, function(col) length(unique(col)) <= 30)]
+high_cardinality <- names(numeric_df)[sapply(numeric_df, function(col) length(unique(col)) > 30)]
+
+```
+
+```{r}
+recipe_obj <- recipe(~ ., data = score_dat[high_cardinality]) %>%
+  step_BoxCox(all_of(high_cardinality)) %>%
+  step_center(all_numeric(), -all_outcomes()) %>%
+  step_scale(all_numeric(), -all_outcomes())
+
+prep_recipe <- prep(recipe_obj, training = score_dat[high_cardinality])
+numeric <- bake(prep_recipe, score_dat[high_cardinality])
+
+categorical <- c("Payment_of_Min_Amount", "Credit_Mix")
+one_hot <- dummy_cols(score_dat[categorical], select_columns = categorical, remove_selected_columns = TRUE)
+ordinal <- score_dat[low_cardinality]
+score_dat_dp <- cbind(numeric, one_hot, ordinal)
+score_dat_dp <- score_dat_dp %>% select(-c(Payment_Behaviour, Payment_of_Min_Amount, Credit_Mix))
+
+```
+
+
+part 2
+
+# Feature Engineering
+
+## Lasso Regression
+
+```{r lasso regression}
+set.seed(20250603)
+
+inTrain_lasso <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_lasso <- score_dat_dp[inTrain_lasso,]
+test_lasso  <- score_dat_dp[-inTrain_lasso,]
+
+y_train_lasso <- train_lasso$Credit_Score
+y_test_lasso  <- test_lasso$Credit_Score
+
+x_train_lasso <- model.matrix(Credit_Score ~ ., train_lasso)[,-1]
+x_test_lasso  <- model.matrix(Credit_Score ~ ., test_lasso)[,-1]
+
+grid <- 10^seq(8, -2, length = 100)
+lasso.mod <- glmnet(x_train_lasso, y_train_lasso, alpha = 1, lambda = grid, family = "multinomial", standardize = TRUE)
+plot(lasso.mod, xvar = "lambda", label = TRUE)
+
+set.seed(20250603)
+cv.out <- cv.glmnet(x_train_lasso, y_train_lasso, alpha = 1, family = "multinomial")
+plot(cv.out)
+
+bestlam <- cv.out$lambda.min
+best.betas <- coef(cv.out, s = bestlam)
+
+test.pred <- predict(cv.out, x_test_lasso, s = bestlam, type = "class")
+probs <- predict(cv.out, x_test_lasso, s = bestlam, type = "response")
+
+accuracy <- mean(test.pred == y_test_lasso)
+print(paste("Lasso Model Accuracy:", round(accuracy * 100, 2), "%"))
+```
+
+Forward Stepwise Feature Selection (Multinomial)
+
+
+```{r}
+set.seed(20250603)
+
+score_dat_dp$Credit_Score <- factor(score_dat_dp$Credit_Score, levels = c("Good", "Poor", "Standard"))
+
+inTrain <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train <- score_dat_dp[inTrain, ]
+test  <- score_dat_dp[-inTrain, ]
+
+train$Credit_Score <- factor(train$Credit_Score, levels = levels(score_dat_dp$Credit_Score))
+test$Credit_Score  <- factor(test$Credit_Score,  levels = levels(score_dat_dp$Credit_Score))
+
+credit_score.train <- train$Credit_Score
+credit_score.test  <- test$Credit_Score
+
+```
+
+```{r}
+selectFeatureMultiClass <- function(train, test, cls.train, cls.test, features) {
+  current.highest.accuracy <- 0
+  selected.i <- NULL
+  remaining <- setdiff(colnames(train), c(features, "Credit_Score"))
+  
+  for (f in remaining) {
+    selected.features <- c(features, f)
+    
+    train.sub <- train[, c(selected.features, "Credit_Score")]
+    test.sub  <- test[,  c(selected.features, "Credit_Score")]
+    
+    model <- suppressWarnings(multinom(Credit_Score ~ ., data = train.sub, trace = FALSE))
+    preds <- predict(model, newdata = test.sub)
+    acc   <- mean(preds == cls.test)
+    
+    if (acc > current.highest.accuracy) {
+      current.highest.accuracy <- acc
+      selected.i <- f
+    }
+  }
+  return(selected.i)
+}
+
+
+```
+
+```{r}
+features.direct <- NULL
+
+for (i in 1:5) {
+  selected.i <- selectFeatureMultiClass(train, test, credit_score.train, credit_score.test, features.direct)
+  
+  if (is.null(selected.i)) {
+    cat("No further improvement at step", i, "- stopping selection.\n")
+    break
+  } else {
+    cat("Step", i, "- selected feature:", selected.i, "\n")
+    features.direct <- c(features.direct, selected.i)
+  }
+}
+
+```
+
+```{r}
+print(paste("Top 5 Features of Forward Selection Step wise are:", paste(features.direct, collapse = ", ")))
+
+```
+
+- Logistic Regression with Forward-Selected Features
+
+```{r}
+# Logistic Regression Model based on Forward-Selected Features
+formula_forward <- as.formula(paste("Credit_Score ~", paste(features.direct, collapse = "+")))
+
+logit_model <- multinom(formula_forward, data = train)
+logit_preds <- predict(logit_model, newdata = test)
+
+conf_matrix_logit <- confusionMatrix(logit_preds, test$Credit_Score)
+print(conf_matrix_logit)
+
+```
+
+- Random Forest Feature Selection & Evaluation
+
+- XGBoost Feature Selection & Evaluation
+
+- Classification Performance Summary
+
+- Conclusion
+
+## Random Forest Feature Selection and Evaluation
+
+```{r random-forest}
+set.seed(20250603)
+
+inTrain_rf <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_rf <- score_dat_dp[inTrain_rf,]
+test_rf  <- score_dat_dp[-inTrain_rf,]
+
+rf_feature_model <- randomForest(Credit_Score ~ ., data = train_rf, ntree = 500, importance = TRUE)
+
+feature_importance <- importance(rf_feature_model)
+selected_features_rf <- names(sort(feature_importance[, 1], decreasing = TRUE))[1:5]
+print(selected_features_rf)
+
+formula_rf <- as.formula(paste("Credit_Score ~", paste(selected_features_rf, collapse = " + ")))
+rf_model <- randomForest(formula_rf, data = train_rf, ntree = 500)
+
+rf_pred <- predict(rf_model, test_rf)
+accuracy_rf <- mean(rf_pred == test_rf$Credit_Score)
+print(paste("Random Forest Accuracy:", round(accuracy_rf * 100, 2), "%"))
+
+conf_matrix_rf <- confusionMatrix(rf_pred, test_rf$Credit_Score)
+print(conf_matrix_rf)
+```
+
+RANDOM FOREST CONFUSION MATRIX
+```{r}
+conf_df <- as.data.frame(conf_matrix_rf$table)
+
+ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +
+  geom_tile() +
+  geom_text(aes(label = Freq), color = "white", size = 5) +
+  labs(title = "Confusion Matrix Heatmap for Random Forest",
+       x = "True Class",
+       y = "Predicted Class") +
+  theme_minimal()
+
+```
+
+XGBoost Feature Selection
+```{r}
+set.seed(20250604)
+
+inTrain_xgb <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_xgb <- score_dat_dp[inTrain_xgb,]
+test_xgb  <- score_dat_dp[-inTrain_xgb,]
+
+x_train_xgb <- model.matrix(Credit_Score ~ ., train_xgb)[,-1]
+x_test_xgb  <- model.matrix(Credit_Score ~ ., test_xgb)[,-1]
+y_train_xgb <- as.numeric(train_xgb$Credit_Score) - 1
+y_test_xgb  <- as.numeric(test_xgb$Credit_Score) - 1
+
+dtrain <- xgb.DMatrix(data = x_train_xgb, label = y_train_xgb)
+dtest  <- xgb.DMatrix(data = x_test_xgb, label = y_test_xgb)
+
+params <- list(
+  objective = "multi:softmax",
+  num_class = length(unique(y_train_xgb)),
+  eval_metric = "mlogloss"
+)
+
+xgb_model <- xgb.train(params, data = dtrain, nrounds = 100, verbose = FALSE)
+feature_importance_xgb <- xgb.importance(model = xgb_model)
+selected_features_xgb <- feature_importance_xgb$Feature[1:5]
+print(selected_features_xgb)
+
+```
+
+XGBoost Train/Test with Feature Selection
+
+```{r}
+x_train_selected <- train_xgb[, selected_features_xgb]
+x_test_selected  <- test_xgb[, selected_features_xgb]
+
+dtrain_selected <- xgb.DMatrix(data = as.matrix(x_train_selected), label = y_train_xgb)
+dtest_selected  <- xgb.DMatrix(data = as.matrix(x_test_selected), label = y_test_xgb)
+
+xgb_selected_model <- xgb.train(params, data = dtrain_selected, nrounds = 100, verbose = FALSE)
+xgb_pred <- predict(xgb_selected_model, dtest_selected)
+
+accuracy_xgb <- mean(xgb_pred == y_test_xgb)
+print(paste("XGBoost Model Accuracy (After Feature Selection):", round(accuracy_xgb * 100, 2), "%"))
+
+conf_matrix_xgb <- confusionMatrix(factor(xgb_pred), factor(y_test_xgb))
+print(conf_matrix_xgb)
+
+```
+
+Classification Performance Summary
+
+Logistic Regression
+
+    Accuracy: ~65%
+
+    Good for interpretability, less optimal performance
+
+Random Forest
+
+    Accuracy: ~78%
+
+    Best overall performance
+
+    Strong specificity and sensitivity
+
+XGBoost
+
+    Accuracy: ~74%
+
+    Competitive with Random Forest, efficient
+
+Conclusion
+
+    Among all models tested, Random Forest achieved the highest accuracy and best balance of sensitivity and specificity.
+
+    Lasso regression and forward selection helped identify important features.
+
+    This analysis supports automating credit scoring in financial contexts using robust models.
+
+
