@@ -362,7 +362,7 @@ selectFeatureMultiClass <- function(train, test, cls.train, cls.test, features) 
 # Run forward selection for top 5 features
 selected_features <- c()
 for (i in 1:5) {
-  next_feature <- selectFeatureMultiClass(train_data, test_data, cls.train, cls.test, selected_features)
+  next_feature <- selectFeatureMultiClass(train, test, credit_score.train, credit_score.test, selected_features)
   if (is.null(next_feature)) break
   selected_features <- c(selected_features, next_feature)
   cat("Selected so far:", paste(selected_features, collapse = ", "), "\n")
