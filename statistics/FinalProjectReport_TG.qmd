@@ -1,0 +1,739 @@
+---
+title: "FinalProjectReport_TG"
+author: "Tom George, Leena Al Khalili"
+format:
+    html:
+      code-fold: true
+      code-line-numbers: true
+      number-sections: true
+      number-depth: 3
+      code-tools: true
+      embed-resources: true
+---
+
+# Overview of Problem
+
+The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.
+
+# About Dataset
+
+  **Source   :** Kaggle (https://www.kaggle.com/code/sudhanshu2198/multi-class-credit-score-classification)
+  
+  **Data set :** score.csv
+  
+  **Samples  :** approximate 100,000
+  
+  **Features :** Mix of numeric and categorical
+  
+  **Target   :** Credit_Score (Poor, Standard, Good)
+  
+  **Key Issues :** Outliers, noisy strings, class imbalance
+                   Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
+
+## Key Features and Description
+
+
+- **Age**: Represents the age of the person
+- **Annual_Income**: Represents the annual income of the person
+- **Monthly_Inhand_Salary**: Represents the monthly base salary of a person
+- **Num_Bank_Accounts**:Represents the number of bank accounts a person holds
+- **Num_Credit_Card**: Represents the number of other credit cards held by a person
+- **Interest_Rate**: Represents the interest rate on credit card
+- **Num_of_Loan**: Represents the number of loans taken from the bank
+- **Delay_from_due_date**: Represents the average number of days delayed from the payment date
+- **Num_of_Delayed_Payment**: Represents the average number of payments delayed by a person
+- **Changed_Credit_Limit**: Represents the percentage change in credit card limit
+- **Num_Credit_Inquiries**: Represents the number of credit card inquiries
+- **Credit_Mix**: Represents the classification of the mix of credits
+- **Outstanding_Debt**: Represents the remaining debt to be paid (in USD)
+- **Credit_Utilization_Ratio**: Represents the utilization ratio of credit card
+- **Credit_History_Age**: Represents the age of credit history of the person
+- **Payment_of_Min_Amount**: Represents whether only the minimum amount was paid by the person
+- **Total_EMI_per_month**: Represents the monthly EMI payments (in USD)
+- **Amount_invested_monthly**: Represents the monthly amount invested by the customer (in USD)
+- **Monthly_Balance**: Represents the monthly balance amount of the customer (in USD)
+- **Credit_Score** : Target Variable and represents as Poor, Standard, Good
+
+# Challenges of the project
+
+Some of the challenges are 
+
+**a) Huge size of Dataset:- **  
+      Around 100K observations and 20+ features. This may pose computational challenges in terms of executing various types of ML models. Also, it necessitates the need of hyper-parameters tuning with relevant models.
+
+**b) Multi-class Target variable:- ** 
+      Target Variable - 'Credit Score' is categorized into 'Poor', 'Standard' and 'Good' labels. Typical Classification models work natively best with binary classifications whereas to achieve multi-class, it requires additional steps to implement and that comes with extra time & effort.
+
+      
+```{r libs}
+#| message: false
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(reshape2))
+suppressPackageStartupMessages(library(corrplot))
+suppressPackageStartupMessages(library(recipes))
+suppressPackageStartupMessages(library(fastDummies))
+suppressPackageStartupMessages(library(randomForest))
+```
+
+
+```{r read csv}
+# Load the data sets
+
+score_dat <- read.csv("Score.csv", stringsAsFactors = TRUE)
+
+# Move Target variable to last position
+score_dat <- score_dat %>% select(-Credit_Score, Credit_Score)
+
+```
+
+# Exploratory Data Analysis
+
+## Visualization  - Correlation Heatmap (Features & Target)
+```{r correlation heatmap}
+  library(dplyr)
+
+# Convert all features to numeric (except Credit_Score)
+train_numeric <- score_dat %>%
+  mutate(across(where(is.character), as.numeric)) %>%  # Convert character columns to numeric
+  mutate(across(where(is.factor), as.numeric))  # Convert factor columns to numeric
+
+# Convert Credit_Score to numeric for correlation computation
+train_numeric$Credit_Score <- as.numeric(as.factor(score_dat$Credit_Score))  # Properly encode Credit_Score
+
+# Compute correlation matrix
+cor_matrix <- cor(train_numeric[, -which(names(train_numeric) == "Credit_Score")], train_numeric$Credit_Score)
+#print(cor_matrix)
+
+# Convert to DF for ggplot
+cor_data_cc <- melt(cor_matrix)
+
+library(ggcorrplot)
+
+# Plot correlation matrix
+ggplot(cor_data_cc, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile() +
+  geom_text(aes(label = round(value, 2)), color = "black", size = 2) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  theme_minimal() +
+  labs(title = "Correlation Heatmap Matrix for Credit Score Dataset ", fill = "Correlation") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+## Correlation Heatmap findings
+
+ Most correlated features are :-  INCLUDE DETAILS HERE
+      **Positive:-**
+        - Monthly_Balance & Annual_Income 
+        - Num_of_Loan & Outstanding_Debt. 
+      **Negative:-**
+        - Credit_History_Age & No_of_Loan 
+        - Credit_History_Age & Num_Credit_Inquiries
+
+## Visualization 2 - Bar Chart
+
+```{r bar chart}
+
+library(ggplot2)
+library(dplyr)
+
+# Compute count and percentage for each Credit Score category
+score_dat_summary <- score_dat %>%
+  count(Credit_Score) %>%
+  mutate(Percentage = round(n / sum(n) * 100, 1))
+
+# bar plot with both count and percentage
+ggplot(score_dat_summary, aes(x = Credit_Score, y = n, fill = Credit_Score)) +
+  geom_bar(stat = "identity", width = 0.6) +  # Adjusted bar width
+  geom_text(aes(label = paste(n, " (", Percentage, "%)")), vjust = -0.5, size = 5, fontface = "bold") +  # Adds both count & percentage
+  scale_fill_manual(values = c("#FF5733", "#33C3FF", "#75FF33", "#FFD700", "#C70039")) +  # Custom color palette
+  labs(
+    title = "Fig 2: Credit Score Distribution Across Target Classes",
+    #subtitle = "Each bar represents the frequency and percentage of Credit Scores in the dataset",
+    x = "Credit Score Categories",
+    y = "Count",
+    fill = "Credit Score Class"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+    plot.subtitle = element_text(hjust = 0.5, face = "italic"),
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Rotates x-axis labels for readability
+    legend.position = "top"
+  )
+```
+
+
+# Data Preprocessing
+
+Below are the data pre-processing tasks performed
+
+ **a)** Separation of Numerical Features into two bassed on cardinality (i.e. unique values)
+ 
+ **b)** Transforming High-Cardinality numeric features by
+              - Box-Cox Transformation : adjust skewed numerical features and make distributions more normal.
+              - Centering & Scaling    : standardize numerical variables
+              
+ **c)** One-Hot Encoding for Categorical Features
+ 
+ **d)** Remove unwanted columns viz. ID, SSN etc.
+ 
+ **e)** Combine all of the pre-processing steps into a single dataframe for further processing in ML models
+
+```{r data preprocess}
+
+numeric_df <- score_dat
+
+# Identify low-cardinality numeric columns (≤ 30 unique values)
+low_cardinality <- names(numeric_df)[sapply(numeric_df, function(col) length(unique(col)) <= 30)]
+
+# Identify high-cardinality numeric columns (> 30 unique values)
+high_cardinality <- names(numeric_df)[sapply(numeric_df, function(col) length(unique(col)) > 30)]
+
+```
+
+```{r transform one-hot}
+
+# Transformation
+recipe_obj <- recipe(~ ., data = score_dat[high_cardinality]) %>%
+  step_BoxCox(all_of(high_cardinality)) %>%  # Applies BoxCox to high-cardinality features
+  step_center(all_numeric(), -all_outcomes()) %>%  # Centers numeric variables
+  step_scale(all_numeric(), -all_outcomes())  # Scales numeric variables
+
+# Prep and apply transformation
+prep_recipe <- prep(recipe_obj, training = score_dat[high_cardinality])
+numeric <- bake(prep_recipe, score_dat[high_cardinality])
+
+categorical <- c("Payment_of_Min_Amount", "Credit_Mix")
+
+# One-hot encoding
+one_hot <- dummy_cols(score_dat[categorical], select_columns = categorical, remove_selected_columns = TRUE)
+
+# Low_cardinality
+ordinal <- score_dat[low_cardinality]
+
+# Combines all
+score_dat_dp <- cbind(numeric, one_hot, ordinal)
+
+# Removes unwanted columns 
+score_dat_dp <- score_dat_dp %>% select(-c(Payment_Behaviour, Payment_of_Min_Amount, Credit_Mix))
+```
+              
+# Feature Engineering
+
+## Lasso Regression
+
+Implements Lasso regression for multi-class classification on Credit_Score. It performs feature selection, model training, cross-validation, and accuracy evaluation
+
+**Below are the steps implemented**
+
+**a)** Lambda Range for Regularization
+	      - Defines 100 lambda values on a logarithmic scale to cover a wide range of regularization strengths.
+
+**b)** Uses family = "multinomial" for multi-class classification and standardize = TRUE for standardized feature scaling for stability
+
+**c)** Perform Cross-validation to find best Lambda
+		    - Cross-validation (cv.glmnet) automatically finds the best regularization strength (lambda).
+
+**d)** Extract Best Lambda and Corresponding Feature Coefficients
+
+**e)** Predicts class labels (type = "class") for multi-class classification.
+
+**f)** Predicts probability estimates (type = "response") for confidence scores
+
+**g)** Include Output values HERE
+
+```{r lasso regression}
+# Load required libraries
+suppressPackageStartupMessages({
+  library(glmnet)
+  library(caret)
+})
+
+# Set seed for reproducibility
+set.seed(20250603)
+
+# Split the dataset into training and test sets
+inTrain_lasso <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_lasso <- score_dat_dp[inTrain_lasso,]
+test_lasso  <- score_dat_dp[-inTrain_lasso,]
+
+# Extract target variable
+y_train_lasso <- train_lasso$Credit_Score
+y_test_lasso  <- test_lasso$Credit_Score
+
+# Convert features to matrix format (excluding the target)
+x_train_lasso <- model.matrix(Credit_Score ~ ., data = train_lasso)[,-1]
+x_test_lasso  <- model.matrix(Credit_Score ~ ., data = test_lasso)[,-1]
+
+# Define lambda values for regularization
+grid <- 10^seq(8, -2, length = 100)
+
+# Fit Lasso model for multi-class classification
+lasso.mod <- glmnet(x_train_lasso, y_train_lasso, alpha = 1, lambda = grid, family = "multinomial", standardize = TRUE)
+
+# Perform cross-validation to find the best lambda
+cv.out <- cv.glmnet(x_train_lasso, y_train_lasso, alpha = 1, family = "multinomial")
+bestlam <- cv.out$lambda.min
+cat("Best lambda:", bestlam, "\n")
+
+# Extract coefficients for best lambda
+best.betas <- coef(cv.out, s = bestlam)
+print("Coefficients at best lambda:")
+print(best.betas)
+
+# Predict class labels and probabilities on the test set
+test.pred <- predict(cv.out, x_test_lasso, s = bestlam, type = "class")
+probs <- predict(cv.out, x_test_lasso, s = bestlam, type = "response")
+
+# Compute classification accuracy
+accuracy <- mean(test.pred == y_test_lasso)
+cat("Lasso Model Accuracy:", round(accuracy * 100, 2), "%\n")
+```
+
+## Forward Selection Stepwise (Logistic Regression Multinomial)
+
+Implements forward stepwise feature selection using multinomial logistic regression for multi-class classification of Credit_Score
+
+**Below are the steps implemented**
+
+**a)** Runs stepwise selection for five iterations, progressively adding the best feature.
+
+**b)** Uses selectFeatureMultiClass() to identify the feature that maximizes classification accuracy
+
+**c)** Evaluates feature importance based on classification accuracy.
+
+**d)** Selects the top five features dynamically
+
+**e)** Five most relevant features selected by stepwise feature selection are
+
+**f)** Top 5 Features of Forward Selection Step wise are
+          1. Interest_Rate
+          
+          2. Credit_Mix_Good
+          
+          3. Num_Credit_Inquiries
+          
+          4. Changed_Credit_Limit
+          
+          5. Num_Credit_Card"
+
+```{r Forward Selection Logistic R multinomial Function}
+
+library(nnet)  # For multinomial logistic regression
+library(caret)  # For classification evaluation
+
+selectFeatureMultiClass <- function(train, test, cls.train, cls.test, features) {
+  current.highest.accuracy <- 0
+  selected.i <- NULL
+  
+  for(i in 1:ncol(train)) {
+    current.f <- colnames(train)[i]
+    
+    # Avoid already selected features or target variable
+    if(current.f %in% c(features, "Credit_Score")) { next }
+    
+    # Fit multinomial logistic regression model using current feature
+    model <- multinom(Credit_Score ~ ., data = cbind(train[, c(features, current.f, "Credit_Score")]))
+    
+    # Predict on test set
+    predictions <- predict(model, test[, c(features, current.f, "Credit_Score")])
+    
+    # Compute accuracy
+    accuracy <- mean(predictions == cls.test)
+    
+    # Update best feature if accuracy improves
+    if(accuracy > current.highest.accuracy) {
+      current.highest.accuracy <- accuracy
+      selected.i <- colnames(train)[i]
+    }
+  }
+  selected.i
+}
+```
+
+```{r Forward Selection Logistic R multinomial }
+
+# Load required packages
+library(nnet)
+library(caret)
+
+# Set seed for reproducibility
+set.seed(20250603)
+
+# Split data into training and test sets (Multiclass target: Credit Score)
+inTrain <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train <- score_dat_dp[inTrain,]
+test  <- score_dat_dp[-inTrain,]
+
+# Extract target variable
+credit_score.train <- train$Credit_Score
+credit_score.test <- test$Credit_Score
+
+# Initialize feature selection variables
+features.direct <- NULL
+current.highest.accuracy <- 0  # Using accuracy for selection
+
+# Find the top five features
+for (i in 1:5) {
+  selected.i <- selectFeatureMultiClass(train, test, credit_score.train, credit_score.test, features.direct)
+  #print(selected.i)
+
+  # Add the best feature from current iteration
+  features.direct <- c(features.direct, selected.i)
+}
+
+```
+
+```{r print features direct}
+print(paste("Top 5 Features of Forward Selection Step wise are :",features.direct))
+```
+
+# Classification Algorithms
+
+## Logistic Regression (Multinomial)
+
+Implements multinomial logistic regression for multi-class classification of Credit_Score, incorporating cross-validation, prediction, evaluation, and visualization
+
+**Below are the steps implemented**
+
+**a)** Uses 10-fold cross validation
+
+**b)** Trains a multinomial Logistic Regression with "features selected" from Feature Selection
+
+**c)** Evaluation Metrics are
+          1. Overall Accuracy - **65.34%**
+          
+          2. Class : Good
+                
+                Sensitivity - **69.80%** and Specificity - **86.97%** ; 
+          3. Class : Poor
+          
+              Sensitivity - **52.25%** and Specificity - **88.02%** ; 
+          4. Class : Standard
+          
+              Sensitivity - **70.98%** and Specificity - **67%** ; 
+            
+         
+
+``` {r Train & Test Logistic R multinomial model}
+
+library(nnet)
+library(caret)
+
+set.seed(20250603)  # Ensures reproducibility
+
+# Define cross-validation control
+cv_control <- trainControl(method = "cv", number = 10)  # 10-fold CV
+
+# Train logistic regression model using selected features & CV
+formula <- as.formula(paste("Credit_Score ~", paste(features.direct, collapse = " + ")))
+
+logistic_cv_model <- train(
+  formula,
+  data = train,
+  method = "multinom",
+  trControl = cv_control
+)
+
+#print(logistic_cv_model)  # Displays cross-validation results
+
+# Predict on test set
+predictions <- predict(logistic_cv_model, test)
+
+# Confusion Matrix & Metrics Calculation
+conf_matrix <- confusionMatrix(predictions, test$Credit_Score)
+
+print(conf_matrix)  # Displays accuracy, precision, recall, F1-score
+
+library(ggplot2)
+
+# Convert confusion matrix to data frame
+conf_df <- as.data.frame(conf_matrix$table)
+
+# Plot Confusion Matrix
+ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +
+  geom_tile() +
+  geom_text(aes(label = Freq), color = "white", size = 5) +
+  labs(title = "Confusion Matrix for Multi-Class Classification",
+       x = "True Class",
+       y = "Predicted Class") +
+  theme_minimal()
+
+```
+
+## Random Forest Feature Selection + Training & Test
+
+Implements feature selection, model training, evaluation, and prediction using Random Forest for multi-class classification of Credit_Score
+
+**Below are the steps implemented**
+
+**a)** Fits a Random Forest model (ntree = 500) to determine feature importance.
+
+**b)** Enables importance = TRUE to retrieve significant features
+
+**c)** Ranks features based on their importance to classification and filters out Top 5 features for model training and test ;
+            **Top 5 features are**
+            1. Delay_from_due_date
+            2. Num_Credit_Card
+            3. Total_EMI_per_month
+            4. Age
+            5. Annual_Income
+
+**d)** Evaluation Metrics are
+          1. Overall Accuracy - **77.78%**
+          
+          2. Class : Good
+                
+                Sensitivity - **73.33%** and Specificity - **94.14%** ; 
+          3. Class : Poor
+          
+              Sensitivity - **80.97%** and Specificity - **89.79%** ; 
+          4. Class : Standard
+          
+              Sensitivity - **77.53%** and Specificity - **78.31%** ; 
+
+```{r Random Forest Feature Selection followed by Train Test}
+
+library(randomForest)
+library(caret)
+
+set.seed(20250603)
+
+# Split dataset into training and test sets
+inTrain_rf <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_rf <- score_dat_dp[inTrain_rf,]
+test_rf  <- score_dat_dp[-inTrain_rf,]
+
+# Convert target to factor for classification
+# train$Credit_Score <- as.factor(train$Credit_Score)
+# test$Credit_Score  <- as.factor(test$Credit_Score)
+
+# Train initial Random Forest model to get feature importance
+rf_feature_model <- randomForest(Credit_Score ~ ., data = train_rf, ntree = 500, importance = TRUE)
+
+# Extract feature importance scores
+feature_importance <- importance(rf_feature_model)
+
+# Select top 5 most important features
+selected_features <- names(sort(feature_importance[, 1], decreasing = TRUE))[1:5]
+print(selected_features)
+
+# Create formula using selected features
+formula_rf <- as.formula(paste("Credit_Score ~", paste(selected_features, collapse = " + ")))
+
+# Train Random Forest model using only selected features
+set.seed(20250603)
+rf_model <- randomForest(formula_rf, data = train_rf, ntree = 500)
+
+# Predict on test set
+rf_pred <- predict(rf_model, test_rf)
+
+# Compute accuracy
+accuracy_rf <- mean(rf_pred == test_rf$Credit_Score)
+print(paste("Random Forest Accuracy:", round(accuracy_rf * 100, 2), "%"))
+
+library(caret)
+
+# Generate confusion matrix for multi-class evaluation
+conf_matrix_rf <- confusionMatrix(rf_pred, test_rf$Credit_Score)
+
+# Print evaluation metrics
+print(conf_matrix_rf)
+```
+
+
+
+## Random Forest Visualisation (Confusion Matrix)
+
+```{r Random Forest Visualisation Confusion Matrix}
+
+# Convert confusion matrix to data frame for visualization
+conf_df <- as.data.frame(conf_matrix_rf$table)
+
+# Create a heatmap plot
+ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +
+  geom_tile() +
+  geom_text(aes(label = Freq), color = "white", size = 5) +
+  labs(title = "Confusion Matrix Heatmap for Random Forest",
+       x = "True Class",
+       y = "Predicted Class") +
+  theme_minimal()
+```
+
+## XGBoost Feature Selection 
+
+Implements XGBoost for multi-class classification of Credit_Score, including data preprocessing, model training, feature importance extraction, and evaluation
+
+**Below are the steps implemented**
+
+**a)** Converts categorical variables into dummy variables for XGBoost. Ensures target variable (Credit_Score) is converted to numeric format .
+
+**b)** Uses multi:softmax to assign discrete class labels.
+
+**c)** Defines mlogloss as the evaluation metric to minimize classification errors
+
+**d)** Trains the XGBoost model for 100 rounds (nrounds = 100).
+
+**e)** Optimizes classification performance using gradient boosting
+
+**f)** Ranks Top 5 features by their impact on reducing classification error. They are as below
+              **Top 5 features are**
+                  1. Outstanding_Debt
+                  2. Credit_Mix_Good
+                  3. Credit_Mix_Standard
+                  4. Interest_Rate
+                  5. Changed_Credit_Limit
+
+
+```{r Feature Selection XGBoost}
+library(xgboost)
+library(caret)
+
+set.seed(20250604)
+
+# Convert target to factor for multi-class classification
+# train$Credit_Score <- as.factor(train$Credit_Score)
+# test$Credit_Score  <- as.factor(test$Credit_Score)
+
+# Split dataset into training and test sets
+inTrain_xgb <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_xgb <- score_dat_dp[inTrain_xgb,]
+test_xgb  <- score_dat_dp[-inTrain_xgb,]
+
+# Convert target to factor for classification
+# train$Credit_Score <- as.factor(train$Credit_Score)
+# test$Credit_Score  <- as.factor(test$Credit_Score)
+
+# Convert data to matrix format for XGBoost
+x_train_xgb <- model.matrix(Credit_Score ~ ., train_xgb)[,-1]
+x_test_xgb  <- model.matrix(Credit_Score ~ ., test_xgb)[,-1]
+y_train_xgb <- as.numeric(train_xgb$Credit_Score) - 1  # XGBoost requires numeric labels
+y_test_xgb  <- as.numeric(test_xgb$Credit_Score) - 1
+
+# Convert dataset into XGBoost format
+dtrain <- xgb.DMatrix(data = x_train_xgb, label = y_train_xgb)
+dtest  <- xgb.DMatrix(data = x_test_xgb, label = y_test_xgb)
+
+# Define XGBoost parameters for multi-class classification
+params <- list(
+  objective = "multi:softmax",
+  num_class = length(unique(y_train_xgb)),
+  eval_metric = "mlogloss"
+)
+
+# Train XGBoost model
+xgb_model <- xgb.train(params, data = dtrain, nrounds = 100, verbose = FALSE)
+
+# Extract feature importance
+feature_importance_xgb <- xgb.importance(model = xgb_model)
+
+# Select Top 5 Important Features
+selected_features_xgb <- feature_importance_xgb$Feature[1:5]
+print(selected_features_xgb)
+```
+
+## XGBoost Training & Test
+
+Filters selected features, retrains an XGBoost model with those features, makes predictions, computes accuracy, and evaluates performance using a confusion matrix
+
+**Below are the steps implemented**
+
+**a)** Uses only the most important features (selected_features_xgb) identified in the previous step. Thus, reduces dimensionality, improving          efficiency and interpretability
+
+**b)** Retrains XGBoost using only selected features.
+
+**c)** Uses nrounds = 100 boosting rounds to improve classification accuracy
+
+**d)** Evaluation Metrics are
+          1. Overall Accuracy - **74.23%**
+          
+          2. Class 0 : Good
+                
+                Sensitivity - **77.16%** and Specificity - **88.64%** ; 
+          3. Class 1 : Poor
+          
+              Sensitivity - **69.44%** and Specificity - **91.38%** ; 
+          4. Class 2 : Standard
+          
+              Sensitivity - **75.85%** and Specificity - **77.96%** ; 
+
+```{r XGBoost Train Test with Feature Selection}
+
+# Filter training and test sets using selected features
+x_train_selected <- train_xgb[, selected_features_xgb]
+x_test_selected  <- test_xgb[, selected_features_xgb]
+
+dtrain_selected <- xgb.DMatrix(data = as.matrix(x_train_selected), label = y_train_xgb)
+dtest_selected  <- xgb.DMatrix(data = as.matrix(x_test_selected), label = y_test_xgb)
+
+# Retrain model using only selected features
+xgb_selected_model <- xgb.train(params, data = dtrain_selected, nrounds = 100, verbose = FALSE)
+
+# Predict on test set
+xgb_pred <- predict(xgb_selected_model, dtest_selected)
+
+# Compute accuracy
+accuracy_xgb <- mean(xgb_pred == y_test_xgb)
+print(paste("XGBoost Model Accuracy (After Feature Selection):", round(accuracy_xgb * 100, 2), "%"))
+
+# Compute confusion matrix
+conf_matrix_xgb <- confusionMatrix(factor(xgb_pred), factor(y_test_xgb))
+
+# Print evaluation results
+print(conf_matrix_xgb)
+
+```
+
+# Classification Performance Evaluation
+
+## Logistic Regression (multinomial)
+
+**Evaluation Metrics are**
+          1. Overall Accuracy - **65.34%**
+          
+          2. Class : Good
+                
+                Sensitivity - **69.80%** and Specificity - **86.97%** ; 
+          3. Class : Poor
+          
+              Sensitivity - **52.25%** and Specificity - **88.02%** ; 
+          4. Class : Standard
+          
+              Sensitivity - **70.98%** and Specificity - **67%** ; 
+              
+## Random Forest
+
+**Evaluation Metrics are**
+          1. Overall Accuracy - **77.78%**
+          
+          2. Class : Good
+                
+                Sensitivity - **73.33%** and Specificity - **94.14%** ; 
+          3. Class : Poor
+          
+              Sensitivity - **80.97%** and Specificity - **89.79%** ; 
+          4. Class : Standard
+          
+              Sensitivity - **77.53%** and Specificity - **78.31%** ; 
+
+## XGBoost
+
+**Evaluation Metrics are**
+          1. Overall Accuracy - **74.23%**
+          
+          2. Class 0 : Good
+                
+                Sensitivity - **77.16%** and Specificity - **88.64%** ; 
+          3. Class 1 : Poor
+          
+              Sensitivity - **69.44%** and Specificity - **91.38%** ; 
+          4. Class 2 : Standard
+          
+              Sensitivity - **75.85%** and Specificity - **77.96%** ; 
+              
+# Conclusion
+
+Considering all performance metrics as above , **Random Forest** is the most effective model for solving this multi-class classification problem.
