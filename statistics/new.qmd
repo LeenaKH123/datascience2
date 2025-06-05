@@ -146,53 +146,53 @@ The target variable:
 5. Column Reordering: <br>
 To facilitate a cleaner modeling pipeline, the Credit_Score column was moved to the last column in the dataset after transformation. <br>
 
-```{r}
-# Load raw dataset
+
+```{r data_cleaning_and_transformation, message=FALSE, warning=FALSE}
+```{r data_cleaning_and_transformation, message=FALSE, warning=FALSE}
+# Load the dataset
 score_dat <- read.csv("Score.csv", stringsAsFactors = FALSE)
 
-# Fields that need numeric conversion due to extra characters
-cols_to_clean <- c("Age", "Annual_Income", "Monthly_Inhand_Salary",
-                   "Num_Bank_Accounts", "Num_Credit_Card", "Interest_Rate",
-                   "Num_of_Loan", "Delay_from_due_date", "Num_of_Delayed_Payment",
-                   "Changed_Credit_Limit", "Num_Credit_Inquiries", "Outstanding_Debt",
-                   "Credit_Utilization_Ratio", "Credit_History_Age",
-                   "Total_EMI_per_month", "Amount_invested_monthly", "Monthly_Balance")
+# Drop irrelevant columns if they exist
+cols_to_drop <- c("ID", "Customer_ID", "SSN", "Name")
+score_dat <- score_dat %>% select(-any_of(cols_to_drop))
 
-# Remove non-numeric characters (e.g., commas, currency symbols)
+# Clean numeric fields that may contain symbols or text
+cols_to_clean <- c(
+  "Age", "Annual_Income", "Monthly_Inhand_Salary", "Num_of_Loan",
+  "Num_of_Delayed_Payment", "Changed_Credit_Limit", "Outstanding_Debt",
+  "Amount_invested_monthly", "Monthly_Balance", "Credit_History_Age",
+  "Num_Credit_Inquiries", "Total_EMI_per_month", "Delay_from_due_date"
+)
+cols_to_clean <- intersect(cols_to_clean, names(score_dat))
+
 score_dat[cols_to_clean] <- lapply(score_dat[cols_to_clean], function(x) {
   as.numeric(gsub("[^0-9.]", "", as.character(x)))
 })
 
-# Median imputation for numeric fields
-median_impute <- function(x) {
-  x[is.na(x)] <- median(x, na.rm = TRUE)
-  return(x)
+# Ensure Credit_Score is a factor
+if ("Credit_Score" %in% names(score_dat)) {
+  score_dat$Credit_Score <- factor(score_dat$Credit_Score, levels = c("Good", "Poor", "Standard"))
 }
-score_dat[cols_to_clean] <- lapply(score_dat[cols_to_clean], median_impute)
 
-# Handle categorical variables
+# Handle categorical variables safely
 cat_vars <- c("Payment_of_Min_Amount", "Credit_Mix")
-score_dat[cat_vars] <- lapply(score_dat[cat_vars], as.factor)
+cat_vars_existing <- intersect(cat_vars, names(score_dat))
 
-# Mode imputation for categorical fields
-mode_impute <- function(x) {
-  mode_val <- names(sort(table(x), decreasing = TRUE))[1]
-  x[is.na(x)] <- mode_val
-  return(x)
+if (length(cat_vars_existing) > 0) {
+  score_dat <- score_dat %>%
+    mutate(across(all_of(cat_vars_existing), as.factor))
+  
+  one_hot <- fastDummies::dummy_cols(score_dat[cat_vars_existing],
+                                     select_columns = cat_vars_existing,
+                                     remove_selected_columns = TRUE)
+  
+  score_dat <- score_dat %>% select(-any_of(cat_vars_existing))
+  score_dat_dp <- cbind(score_dat, one_hot)
+} else {
+  score_dat_dp <- score_dat
 }
-score_dat[cat_vars] <- lapply(score_dat[cat_vars], mode_impute)
-
-# One-hot encoding for categorical variables
-library(fastDummies)
-score_dat <- dummy_cols(score_dat, select_columns = cat_vars, remove_selected_columns = TRUE)
-
-# Convert target to factor
-score_dat$Credit_Score <- factor(score_dat$Credit_Score, levels = c("Good", "Poor", "Standard"))
-
-# Move Credit_Score to last column for readability
-score_dat <- score_dat %>% select(-Credit_Score, Credit_Score)
-
 ```
+
 
 
 ## Exploratory Data Analysis (EDA)
@@ -200,20 +200,20 @@ score_dat <- score_dat %>% select(-Credit_Score, Credit_Score)
 - A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).
 - These visualizations guide which features might be important and which require scaling or imputation.
 ```{r }
-library(ggcorrplot)
-
-# Prepare clean numeric subset for correlation matrix
+# Extract only numeric columns
 numeric_data <- score_dat %>%
-  select(-Credit_Score) %>%
-  mutate(across(everything(), as.numeric))
+  select(where(is.numeric))
 
-# Add Credit_Score as numeric for inclusion in correlation
+# Add Credit_Score as numeric (for correlation purpose only)
 numeric_data$Credit_Score <- as.numeric(score_dat$Credit_Score)
 
-# Compute correlation
+# Compute correlation matrix
 cor_matrix <- cor(numeric_data, use = "pairwise.complete.obs")
 
-# Generate plot
+# Replace NA with 0 (safer for plotting than dropping all rows)
+cor_matrix[is.na(cor_matrix)] <- 0
+
+# Plot heatmap
 p <- ggcorrplot(
   cor_matrix,
   type = "lower",
@@ -231,7 +231,7 @@ p <- ggcorrplot(
     axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)
   )
 
-# Save image
+# Save high-resolution heatmap
 ggsave("correlation_heatmap.png", plot = p, width = 12, height = 10, dpi = 300)
 
 ```
@@ -239,6 +239,35 @@ ggsave("correlation_heatmap.png", plot = p, width = 12, height = 10, dpi = 300)
 ```{r include_correlation_heatmap, echo=FALSE, fig.align='center', out.width='100%'}
 knitr::include_graphics("correlation_heatmap.png")
 ```
+
+```{r}
+# Safely handle categorical variables
+cat_vars <- c("Payment_of_Min_Amount", "Credit_Mix")
+cat_vars_existing <- intersect(cat_vars, names(score_dat))
+
+if (length(cat_vars_existing) > 0) {
+  # Convert to factor
+  score_dat <- score_dat %>%
+    mutate(across(all_of(cat_vars_existing), as.factor))
+  
+  # One-hot encode
+  one_hot <- fastDummies::dummy_cols(score_dat,
+                                     select_columns = cat_vars_existing,
+                                     remove_selected_columns = TRUE)
+  
+  # Drop original categorical columns
+  score_dat <- score_dat %>% select(-any_of(cat_vars_existing))
+  
+  # Combine final dataset
+  score_dat_dp <- cbind(score_dat, one_hot %>% select(-any_of(names(score_dat))))
+} else {
+  score_dat_dp <- score_dat  # No categorical columns found; skip encoding
+}
+
+```
+
+
+
 
 
 # Lasso Regression
