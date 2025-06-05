@@ -62,7 +62,7 @@ This dataset contains around 100,000 records and over 20 features spanning numer
  - Preprocessing Time: Feature engineering steps such as one-hot encoding, scaling, and correlation computation become time-consuming on large data.<br>
  - Model Execution Time: Algorithms with internal loops (e.g., forward selection or cross-validated Lasso) can take considerable time to converge.<br>
 
-How We Addressed It:<br>
+How we Addressed It:<br>
 - Used efficient R packages like glmnet, xgboost, and randomForest, all optimized for handling large data. <br>
 - Splited the data into a 60/40 train-test split instead of k-fold cross-validation in most steps to reduce execution time.<br>
 - For feature selection, used Lasso Regression (automated) and Forward Stepwise Selection (manual loop) to reduce dimensionality early—so only key features are passed into final models.<br>
@@ -78,11 +78,11 @@ Specific Issues:<br>
   - Class imbalance can reduce sensitivity to minority classes.<br>
 
 How it was addressed:<br>
-  - Set family = "multinomial" in glmnet to allow multi-class logistic regression.
-  - Used multinom() from the nnet package, which supports multi-class output.
-  - Ensemble methods like Random Forest and XGBoost naturally support multi-class classification when properly configured (e.g., num_class = 3 for XGBoost).
-  - We converted categorical labels into ordered factors and integer values, ensuring all models could parse them correctly.
-  - Confusion matrices were visualized with heatmaps to make multi-class evaluation easier and more intuitive.
+  - Set family = "multinomial" in glmnet to allow multi-class logistic regression.<br>
+  - Used multinom() from the nnet package, which supports multi-class output.<br>
+  - Ensemble methods like Random Forest and XGBoost naturally support multi-class classification when properly configured (e.g., num_class = 3 for XGBoost).<br>
+  - We converted categorical labels into ordered factors and integer values, ensuring all models could parse them correctly.<br>
+  - Confusion matrices were visualized with heatmaps to make multi-class evaluation easier and more intuitive.<br>
 
 ```{r libs}
 suppressPackageStartupMessages(library(tidyverse))
@@ -105,7 +105,7 @@ options(warn = -1)  # to suppress warnings during rendering
 ## Cleaning & Transformation
 The original dataset contained several quality issues that had to be addressed before modeling. Below are the specific cleaning and transformation steps:
 
-1. String Noise Removal and Numeric Conversion: <br>
+### String Noise Removal and Numeric Conversion: <br>
 The following columns contained characters like commas (,) or string patterns (e.g., "Rs.", "days") that prevented numeric interpretation. These were removed using regular expressions, and the columns were then converted to numeric:<br>
 
 - Age
@@ -127,23 +127,22 @@ The following columns contained characters like commas (,) or string patterns (e
 - Monthly_Balance
 Each of these was cleaned using gsub("[^0-9.]", "", ...) and converted using as.numeric().
 
-2. Missing Value Imputation: <br>
+### Missing Value Imputation: <br>
 After converting the above fields to numeric:<br>
 - Numeric Fields: Missing values were imputed using median to avoid skew from outliers.
 - Categorical Fields: Missing values were filled using mode imputation, where the most frequently occurring value is assigned.
 This was applied across all columns using column-wise checks.<br>
 
-3. Categorical Variable Encoding: <br>
+### Categorical Variable Encoding: <br>
 The following categorical columns were encoded as factors and later transformed into dummy variables:<br>
 - Payment_of_Min_Amount. 
 - Credit_Mix
 These were transformed using one-hot encoding via the fastDummies package, allowing them to be used in machine learning algorithms that don’t handle categorical inputs natively.
 
-4. Target Variable Formatting: <br>
-The target variable:
-- Credit_Score — originally a string ("Good", "Standard", "Poor") — wa converted to a factor. The factor levels were ordered as: "Good", "Poor", "Standard" to ensure consistent interpretation in multi-class classification models.<br>
+### Target Variable Formatting: <br>
+The target variable: Credit_Score — originally a string ("Good", "Standard", "Poor") — wa converted to a factor. The factor levels were ordered as: "Good", "Poor", "Standard" to ensure consistent interpretation in multi-class classification models.<br>
 
-5. Column Reordering: <br>
+### Column Reordering: <br>
 To facilitate a cleaner modeling pipeline, the Credit_Score column was moved to the last column in the dataset after transformation. <br>
 
 
@@ -196,9 +195,26 @@ if (length(cat_vars_existing) > 0) {
 
 
 ## Exploratory Data Analysis (EDA)
-- Correlation matrix was computed and visualised to observe relationships between numeric features.
-- A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).
-- These visualizations guide which features might be important and which require scaling or imputation.
+
+### A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).
+```{r}
+ggplot(score_dat, aes(x = Credit_Score, fill = Credit_Score)) +
+  geom_bar() +
+  labs(
+    title = "Class Distribution of Credit_Score",
+    x = "Credit Score Category",
+    y = "Count"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    legend.position = "none"
+  )
+```
+The bar chart above illustrates the distribution of the target variable Credit_Score across three categories: Good, Poor, and Standard. It clearly shows a class imbalance, with the Standard category being the most frequent, followed by Poor, and then Good.<br>
+This imbalance is important to address during model training, as standard machine learning algorithms may become biased toward the majority class. Failure to handle class imbalance can result in poor predictive performance for underrepresented classes. Therefore, techniques such as resampling, class weighting, or balanced evaluation metrics (e.g., F1-score, confusion matrix) are considered later in the modeling pipeline.
+
+### Correlation matrix was computed and visualised to observe relationships between numeric features.
 ```{r }
 # Extract only numeric columns
 numeric_data <- score_dat %>%
@@ -240,6 +256,18 @@ ggsave("correlation_heatmap.png", plot = p, width = 12, height = 10, dpi = 300)
 knitr::include_graphics("correlation_heatmap.png")
 ```
 
+The heatmap above displays pairwise Pearson correlation coefficients among all numeric variables in the dataset, including the target variable Credit_Score (encoded as an ordinal factor). This visualization helps identify relationships between features, which is crucial for both feature selection and model interpretability.<br>
+Key observations:<br>
+Strong positive correlations are observed among financial variables:<br>
+Annual_Income, Monthly_Balance, and Amount_invested_monthly are highly correlated (r > 0.6), suggesting potential redundancy.<br>
+Num_of_Loan, Outstanding_Debt, and Num_of_Delayed_Payment also show high correlations (r > 0.6), indicating that they capture overlapping financial risk behavior.<br>
+Moderate correlations are seen between Credit_Score and variables like:<br>
+Num_of_Loan (r = 0.20)<br>
+Credit_Utilization_Ratio (r = 0.18)<br>
+Num_of_Delayed_Payment (r = 0.18)<br>
+Interest_Rate and Outstanding_Debt also show mild associations with credit score.<br>
+These patterns suggest that payment behavior and borrowing volume are more predictive of credit score than income-related variables, which may reflect the scoring algorithm’s emphasis on risk exposure and repayment behavior rather than just earnings.<br>
+This correlation matrix guided the initial feature selection process and highlighted potential multicollinearity risks that were further addressed through Lasso regression.<br>
 ```{r}
 # Safely handle categorical variables
 cat_vars <- c("Payment_of_Min_Amount", "Credit_Mix")
@@ -266,10 +294,6 @@ if (length(cat_vars_existing) > 0) {
 
 ```
 
-
-
-
-
 # Lasso Regression
 Lasso regression is to perform feature slection by penalising less relevant variables and shrinking their coefficients to zero.
 Process: <br>
@@ -295,6 +319,10 @@ lasso_preds <- predict(lasso_cv, s = bestlam, newx = x_test, type = "class")
 lasso_acc <- mean(lasso_preds == y_test)
 print(paste("Lasso Accuracy:", round(lasso_acc * 100, 2), "%"))
 ```
+Based on the Lasso Regression results, the model achieved a test accuracy of 64.29%, confirming moderate predictive power while effectively reducing dimensionality. The selected features with non-zero coefficients included: Num_of_Loan, Num_of_Delayed_Payment, Interest_Rate, Credit_Utilization_Ratio, and Amount_invested_monthly. These align closely with insights from the earlier correlation heatmap, which highlighted these variables as having the strongest positive relationships with Credit_Score. Notably, income-related features such as Annual_Income and Monthly_Balance, despite being highly correlated with each other, showed weak correlation with Credit_Score and were excluded by Lasso—reinforcing the conclusion that credit behavior and repayment history are more predictive of creditworthiness than income alone.
+
+
+
 
 # Forward Stepwise Selection (Multinomial Logistic Regression)
 This method iteratively selects the best performing features based on accuracy improvements.<br>
