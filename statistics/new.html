@@ -2171,10 +2171,51 @@ vertical-align: -.125em;
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#about-dataset" id="toc-about-dataset" class="nav-link active" data-scroll-target="#about-dataset"><span class="header-section-number">1</span> About Dataset</a>
+  <ul class="collapse">
+  <li><a href="#key-features-and-description" id="toc-key-features-and-description" class="nav-link" data-scroll-target="#key-features-and-description"><span class="header-section-number">1.1</span> Key Features and Description</a></li>
+  </ul></li>
+  <li><a href="#challenges-of-the-project" id="toc-challenges-of-the-project" class="nav-link" data-scroll-target="#challenges-of-the-project"><span class="header-section-number">2</span> Challenges of the project</a>
+  <ul class="collapse">
+  <li><a href="#huge-dataset-100k-obs-20-features-demanding-computational-resources-for-ml-models-tuning." id="toc-huge-dataset-100k-obs-20-features-demanding-computational-resources-for-ml-models-tuning." class="nav-link" data-scroll-target="#huge-dataset-100k-obs-20-features-demanding-computational-resources-for-ml-models-tuning."><span class="header-section-number">2.1</span> Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models &amp; tuning.</a></li>
+  <li><a href="#multi-class-classification-poor-standard-good-whereas-most-algorithms-natively-support-binary." id="toc-multi-class-classification-poor-standard-good-whereas-most-algorithms-natively-support-binary." class="nav-link" data-scroll-target="#multi-class-classification-poor-standard-good-whereas-most-algorithms-natively-support-binary."><span class="header-section-number">2.2</span> Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary.</a></li>
+  </ul></li>
+  <li><a href="#data-preparation-eda" id="toc-data-preparation-eda" class="nav-link" data-scroll-target="#data-preparation-eda"><span class="header-section-number">3</span> Data Preparation &amp; EDA</a>
+  <ul class="collapse">
+  <li><a href="#cleaning-transformation" id="toc-cleaning-transformation" class="nav-link" data-scroll-target="#cleaning-transformation"><span class="header-section-number">3.1</span> Cleaning &amp; Transformation</a>
+  <ul class="collapse">
+  <li><a href="#string-noise-removal-and-numeric-conversion" id="toc-string-noise-removal-and-numeric-conversion" class="nav-link" data-scroll-target="#string-noise-removal-and-numeric-conversion"><span class="header-section-number">3.1.1</span> String Noise Removal and Numeric Conversion: <br></a></li>
+  <li><a href="#missing-value-imputation" id="toc-missing-value-imputation" class="nav-link" data-scroll-target="#missing-value-imputation"><span class="header-section-number">3.1.2</span> Missing Value Imputation: <br></a></li>
+  <li><a href="#categorical-variable-encoding" id="toc-categorical-variable-encoding" class="nav-link" data-scroll-target="#categorical-variable-encoding"><span class="header-section-number">3.1.3</span> Categorical Variable Encoding: <br></a></li>
+  <li><a href="#target-variable-formatting" id="toc-target-variable-formatting" class="nav-link" data-scroll-target="#target-variable-formatting"><span class="header-section-number">3.1.4</span> Target Variable Formatting: <br></a></li>
+  <li><a href="#column-reordering" id="toc-column-reordering" class="nav-link" data-scroll-target="#column-reordering"><span class="header-section-number">3.1.5</span> Column Reordering: <br></a></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda"><span class="header-section-number">3.2</span> Exploratory Data Analysis (EDA)</a>
+  <ul class="collapse">
+  <li><a href="#a-bar-chart-shows-the-class-distribution-for-credit_score-confirming-class-imbalance-an-issue-relevant-for-model-training." id="toc-a-bar-chart-shows-the-class-distribution-for-credit_score-confirming-class-imbalance-an-issue-relevant-for-model-training." class="nav-link" data-scroll-target="#a-bar-chart-shows-the-class-distribution-for-credit_score-confirming-class-imbalance-an-issue-relevant-for-model-training."><span class="header-section-number">3.2.1</span> A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).</a></li>
+  <li><a href="#correlation-matrix-was-computed-and-visualised-to-observe-relationships-between-numeric-features." id="toc-correlation-matrix-was-computed-and-visualised-to-observe-relationships-between-numeric-features." class="nav-link" data-scroll-target="#correlation-matrix-was-computed-and-visualised-to-observe-relationships-between-numeric-features."><span class="header-section-number">3.2.2</span> Correlation matrix was computed and visualised to observe relationships between numeric features.</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#lasso-regression" id="toc-lasso-regression" class="nav-link" data-scroll-target="#lasso-regression"><span class="header-section-number">4</span> Lasso Regression</a></li>
+  <li><a href="#forward-stepwise-selection-multinomial-logistic-regression" id="toc-forward-stepwise-selection-multinomial-logistic-regression" class="nav-link" data-scroll-target="#forward-stepwise-selection-multinomial-logistic-regression"><span class="header-section-number">5</span> Forward Stepwise Selection (Multinomial Logistic Regression)</a></li>
+  <li><a href="#random-forest-with-feature-importance" id="toc-random-forest-with-feature-importance" class="nav-link" data-scroll-target="#random-forest-with-feature-importance"><span class="header-section-number">6</span> Random Forest (with Feature importance)</a>
+  <ul class="collapse">
+  <li><a href="#heatmap" id="toc-heatmap" class="nav-link" data-scroll-target="#heatmap"><span class="header-section-number">6.1</span> HEATMAP</a></li>
+  </ul></li>
+  <li><a href="#xgboost" id="toc-xgboost" class="nav-link" data-scroll-target="#xgboost"><span class="header-section-number">7</span> XGBoost</a></li>
+  <li><a href="#class-imbalance-considerations" id="toc-class-imbalance-considerations" class="nav-link" data-scroll-target="#class-imbalance-considerations"><span class="header-section-number">8</span> Class imbalance considerations</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">9</span> Conclusion</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -2463,7 +2504,7 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 </div>
 </div>
 </div>
-<p>The bar chart above illustrates the distribution of the target variable Credit_Score across three categories: Good, Poor, and Standard. It clearly shows a class imbalance, with the Standard category being the most frequent, followed by Poor, and then Good.<br> This imbalance is important to address during model training, as standard machine learning algorithms may become biased toward the majority class. Failure to handle class imbalance can result in poor predictive performance for underrepresented classes. Therefore, techniques such as resampling, class weighting, or balanced evaluation metrics (e.g., F1-score, confusion matrix) are considered later in the modeling pipeline.</p>
+<p>The bar chart gives a quick overview of how the Credit_Score values are distributed across the three categories: Good, Poor, and Standard. As shown, the distribution isn’t balanced — most individuals fall into the Standard group, followed by Poor, with Good being the least common.<br> This kind of imbalance is important to keep in mind during model development, as it can affect how well the model performs, especially for the less frequent classes. While we didn’t apply resampling or class-weighting techniques in this project, we addressed the imbalance by using evaluation metrics that give a fairer picture—like balanced accuracy, precision, and recall for each class. These metrics helped us better understand how well our models performed across all categories, not just the majority class.</p>
 </section>
 <section id="correlation-matrix-was-computed-and-visualised-to-observe-relationships-between-numeric-features." class="level3" data-number="3.2.2">
 <h3 data-number="3.2.2" class="anchored" data-anchor-id="correlation-matrix-was-computed-and-visualised-to-observe-relationships-between-numeric-features."><span class="header-section-number">3.2.2</span> Correlation matrix was computed and visualised to observe relationships between numeric features.</h3>
@@ -2514,7 +2555,14 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 </div>
 </div>
 </div>
-<p>The heatmap above displays pairwise Pearson correlation coefficients among all numeric variables in the dataset, including the target variable Credit_Score (encoded as an ordinal factor). This visualization helps identify relationships between features, which is crucial for both feature selection and model interpretability.<br> Key observations:<br> Strong positive correlations are observed among financial variables:<br> Annual_Income, Monthly_Balance, and Amount_invested_monthly are highly correlated (r &gt; 0.6), suggesting potential redundancy.<br> Num_of_Loan, Outstanding_Debt, and Num_of_Delayed_Payment also show high correlations (r &gt; 0.6), indicating that they capture overlapping financial risk behavior.<br> Moderate correlations are seen between Credit_Score and variables like:<br> Num_of_Loan (r = 0.20)<br> Credit_Utilization_Ratio (r = 0.18)<br> Num_of_Delayed_Payment (r = 0.18)<br> Interest_Rate and Outstanding_Debt also show mild associations with credit score.<br> These patterns suggest that payment behavior and borrowing volume are more predictive of credit score than income-related variables, which may reflect the scoring algorithm’s emphasis on risk exposure and repayment behavior rather than just earnings.<br> This correlation matrix guided the initial feature selection process and highlighted potential multicollinearity risks that were further addressed through Lasso regression.<br></p>
+<p>The heatmap above shows how the numeric variables in the dataset relate to each other, based on Pearson correlation. We also included the target variable, Credit_Score (which we treated as ordinal for this purpose), to see how it lines up with the predictors.</p>
+<p>A few patterns stood out. Financial variables like Annual_Income, Monthly_Balance, and Amount_invested_monthly were strongly correlated, which makes sense since these tend to move together — if someone earns more, they often save or invest more too. Similarly, variables that reflect borrowing behavior — Num_of_Loan, Outstanding_Debt, and Num_of_Delayed_Payment — also showed high correlations, suggesting they’re all capturing aspects of financial risk.</p>
+<p>When we looked at how variables relate to Credit_Score, the correlations were weaker, but some signals still came through. For instance:</p>
+<p>Num_of_Loan had a correlation of 0.20 with Credit_Score</p>
+<p>Credit_Utilization_Ratio and Num_of_Delayed_Payment were also mildly correlated (around 0.18)</p>
+<p>Interest_Rate and Outstanding_Debt had small but noticeable associations too</p>
+<p>These results suggest that variables related to debt and repayment behavior may play a bigger role in determining credit score than income-related ones — possibly reflecting how credit scoring models prioritize financial risk over just earnings.</p>
+<p>While we didn’t rely on correlation alone to select features, this heatmap gave us a useful starting point. It also helped us flag some variables with high overlap, which we later addressed using methods like Lasso regression that are designed to handle multicollinearity.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2570,6 +2618,8 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 <pre><code>[1] &quot;Lasso Accuracy: 64.29 %&quot;</code></pre>
 </div>
 </div>
+<p>The Lasso Regression model gave us a test accuracy of about 64.3%, which, while not the highest, still showed that the model was able to pick up on some meaningful patterns in the data. One of the biggest advantages of Lasso is that it simplifies the model by automatically selecting only the most important variables — and that’s exactly what it did here.</p>
+<p>The variables that Lasso kept — Num_of_Loan, Num_of_Delayed_Payment, Interest_Rate, Credit_Utilization_Ratio, and Amount_invested_monthly — all make intuitive sense and line up with what we saw in the earlier correlation heatmap. These features relate more directly to credit behavior and financial responsibility, which seem to play a stronger role in determining credit scores. Interestingly, income-related features like Annual_Income and Monthly_Balance were not selected by Lasso. Even though those variables were strongly correlated with each other, they didn’t have much of a direct relationship with the target variable. This reinforces the idea that how someone manages debt and repayment is more predictive of their credit score than how much they earn. Overall, Lasso helped confirm which variables were most relevant for prediction, and gave us a cleaner, more interpretable model as a result.</p>
 </section>
 <section id="forward-stepwise-selection-multinomial-logistic-regression" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Forward Stepwise Selection (Multinomial Logistic Regression)</h1>
@@ -2671,6 +2721,16 @@ Detection Prevalence     0.10332      0.2179          0.6788
 Balanced Accuracy        0.64617      0.7127          0.6401</code></pre>
 </div>
 </div>
+<p>The Forward Stepwise Selection model reached an accuracy of 64.27%, which is very close to what we saw with the Lasso model. One of the main advantages of this approach is that it clearly highlights the top features contributing to the prediction. In this case, the most impactful variables were Interest_Rate, Num_Credit_Card, Changed_Credit_Limit, Num_Credit_Inquiries, and Delay_from_due_date.<br></p>
+<p>Like with Lasso, the model leaned heavily on features that reflect credit behavior rather than income. This supports what we saw earlier in the correlation heatmap, where income-related variables showed little to no relationship with the target variable. Interestingly, Forward Stepwise picked up on a few new variables — such as Num_Credit_Card and Changed_Credit_Limit — which could offer additional insights into how credit activity affects credit scores.<br></p>
+<p>Looking at how the model performed across different classes, it handled the Standard category fairly well, with a sensitivity of 0.81. That means it was good at catching most of the Standard credit scores. However, performance dropped off when it came to the Good class, where sensitivity was just 0.34 — meaning many individuals with Good scores were misclassified. While specificity was high for both the Good (0.95) and Poor (0.91) classes, the Standard class had low specificity at 0.47, suggesting some confusion between categories.<br></p>
+<p>Balanced accuracy scores told a similar story:</p>
+<ul>
+<li>Poor: 0.7127</li>
+<li>Good: 0.6462</li>
+<li>Standard: 0.6401</li>
+</ul>
+<p>These numbers reflect the model’s uneven performance, especially for underrepresented classes. Overall, the Forward Stepwise model adds another layer of confirmation around the importance of credit behavior features. But like with Lasso, its limitations in predicting the Good class highlight the need to explore other techniques — possibly including methods to address class imbalance — in future work.</p>
 </section>
 <section id="random-forest-with-feature-importance" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Random Forest (with Feature importance)</h1>
@@ -2731,6 +2791,28 @@ Detection Prevalence      0.1701      0.3035          0.5264
 Balanced Accuracy         0.8418      0.8672          0.8001</code></pre>
 </div>
 </div>
+<p>The Random Forest model delivered the best performance out of all the models we tested, achieving an accuracy of 79.9%. The confidence interval was tight, and the very low p-value (p &lt; 2.2e-16) confirms that the model’s predictions weren’t just due to chance. The statistic came in at 0.6661, which shows strong agreement between the predicted and actual credit scores — a good sign for a multi-class classification problem like this one.</p>
+<p>When we broke down the model’s performance by class, the results were impressive across the board. The recall (or sensitivity) was:</p>
+<ul>
+<li>Good: 0.7318</li>
+<li>Poor: 0.8249</li>
+<li>Standard: 0.8075</li>
+</ul>
+<p>This is especially encouraging for the Good class, which was underrepresented in the data and had been a weakness for the other models. Random Forest managed to pick up on these cases much better.</p>
+<p>Precision scores also looked solid:</p>
+<ul>
+<li>Good: 0.7669</li>
+<li>Poor: 0.7883</li>
+<li>Standard: 0.8156</li>
+</ul>
+<p>This means that not only was the model catching most of the correct cases, but it was also avoiding many false positives. To account for the class imbalance in the dataset, we also looked at balanced accuracy:</p>
+<ul>
+<li>Good: 0.8418</li>
+<li>Poor: 0.8672</li>
+<li>Standard: 0.8001</li>
+</ul>
+<p>These balanced accuracy values are significantly higher than what we saw in Lasso and Forward Stepwise models (which both hovered around 64%), especially for the Good class. This suggests that Random Forest handles all classes more consistently, regardless of how many examples there are for each.</p>
+<p>Overall, Random Forest proved to be the most robust and reliable model in this project. It performed well across all classes and handled the class imbalance effectively. Plus, the features it identified as important — like Interest_Rate, Num_of_Loan, and Num_of_Delayed_Payment — were consistent with what we found in earlier models, reinforcing confidence in our overall approach to feature selection.</p>
 <section id="heatmap" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="heatmap"><span class="header-section-number">6.1</span> HEATMAP</h2>
 <div class="cell">
@@ -2754,6 +2836,10 @@ Balanced Accuracy         0.8418      0.8672          0.8001</code></pre>
 </div>
 </div>
 </div>
+<p>The confusion matrix heatmap gives us a clear picture of how well the Random Forest model predicted each credit score category. The diagonal values show the number of correct predictions — where the predicted class matched the actual class — and we see strong results for both the “Standard” and “Poor” categories, with 17,166 and 9,565 correct predictions respectively.</p>
+<p>The model also did a decent job with the “Good” class, correctly identifying 5,217 cases. While that’s still lower than the other two, it’s a noticeable improvement over previous models like Forward Stepwise, which struggled more with this class.</p>
+<p>Looking at the misclassifications (the off-diagonal values), the most common mistake was predicting “Standard” when the actual class was “Good” — a sign that the model still leans slightly toward the dominant class. There were also 1,994 Standard cases incorrectly predicted as Poor, which reflects some overlap in feature patterns between those groups.</p>
+<p>Despite these misclassifications, the overall pattern is strong. Most of the values are concentrated along the diagonal, showing that the Random Forest model does a solid job distinguishing between the classes. This visual reinforces what we saw in the metrics — consistent performance across categories, with room for improvement in recognizing the less common “Good” credit scores.</p>
 </section>
 </section>
 <section id="xgboost" class="level1" data-number="7">
@@ -2824,10 +2910,39 @@ Detection Prevalence   0.1668   0.2767   0.5564
 Balanced Accuracy      0.7952   0.8211   0.7608</code></pre>
 </div>
 </div>
+<p>The XGBoost model performed strongly, reaching an accuracy of 75.45%. Although it didn’t quite match the top score achieved by Random Forest (79.9%), it still showed solid overall performance, especially when we looked at how it handled each class.</p>
+<p>Sensitivity scores were fairly balanced:</p>
+<p>Good: 0.6520</p>
+<p>Poor: 0.7327</p>
+<p>Standard: 0.8007</p>
+<p>These results show that XGBoost was especially effective at identifying the Standard and Poor classes and made meaningful improvements over earlier models in handling the Poor category in particular.</p>
+<p>Balanced accuracy was also encouraging:</p>
+<p>Good: 0.7952</p>
+<p>Poor: 0.8211</p>
+<p>Standard: 0.7608</p>
+<p>This suggests that even with class imbalance in the data, XGBoost managed to maintain strong predictive performance across all classes.</p>
+<p>Compared to linear models like Lasso (64.3%) and Forward Stepwise Selection (64.27%), XGBoost clearly stood out. It captured more complex relationships in the data, handled imbalance better, and did so with a lower risk of overfitting than Random Forest — thanks to its built-in regularization features.</p>
+<p>Feature importance results from XGBoost were also reassuring. Key variables like Interest_Rate, Num_Credit_Inquiries, and Delay_from_due_date came up again, consistent with what we saw in earlier models. This consistency strengthens confidence in the features chosen during the earlier stages of the project.</p>
+<p>In short, XGBoost struck a good balance between interpretability and performance. While Random Forest led in overall accuracy, XGBoost offered a more efficient and well-rounded alternative — making it a strong candidate for deployment or for combining with other models in an ensemble approach.</p>
 </section>
-<section id="conclusion" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Conclusion</h1>
-<p>Random Forest performed best (~78% accuracy), showing strong class-handling capability. XGBoost (~74%) showed efficiency and potential with hyperparameter tuning. Lasso and Forward Selection improved model simplicity and interpretability. Together, the full pipeline reflects a professional-grade data science workflow from EDA to evaluation.</p>
+<section id="class-imbalance-considerations" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Class imbalance considerations</h1>
+<p>While we didn’t apply any specific data-level techniques like resampling, the use of ensemble models such as Random Forest and XGBoost helped to manage the class imbalance to some extent. These models are known for being more robust to uneven class distributions, which is likely why we still saw solid performance—especially in the Standard and Poor categories.</p>
+<p>To ensure a fair evaluation despite the imbalance, we focused on class-wise metrics like sensitivity (recall) and balanced accuracy. These gave us a clearer picture of how well each model performed across the different credit score classes, not just the majority group.</p>
+<p>That said, there’s still room for improvement—particularly in boosting the recall for the minority class, like the Good score category. In future work, we could try strategies such as:</p>
+<ul>
+<li>Oversampling the underrepresented classes (e.g., using SMOTE)</li>
+<li>Undersampling the dominant class to reduce bias</li>
+<li>Applying class weights in algorithms like glmnet, randomForest, or xgboost to make the models more sensitive to misclassifying minority cases</li>
+<li>Generating synthetic data to enrich the training set for underrepresented classes These techniques could help the models do an even better job of capturing signals in the less common classes and make the results more generalizable in real-world applications.</li>
+</ul>
+</section>
+<section id="conclusion" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Conclusion</h1>
+<p>Throughout the project, certain variables consistently stood out as strong predictors of credit score — especially Interest_Rate, Num_Credit_Inquiries, Num_Credit_Card, and Delay_from_due_date. These features were supported not only by the correlation heatmap but also by the feature selection techniques we used early on, like Lasso and Forward Stepwise Selection. This gave us a solid starting point and helped reduce the complexity of our models from the outset.</p>
+<p>Among all the models tested, Random Forest delivered the best results, with an accuracy of 79.9% and balanced performance across all credit score classes. Its ability to handle class imbalance and capture complex relationships makes it a strong candidate for real-world deployment.</p>
+<p>XGBoost came in slightly behind in terms of accuracy, but it offered other advantages — particularly its efficiency and ability to generalize well without overfitting. Meanwhile, Lasso Regression and Forward Stepwise Selection were valuable for identifying the most relevant features and simplifying the modeling process, even though their overall predictive power was lower.</p>
+<p>By moving from exploratory analysis to advanced ensemble methods, this project followed a clear and structured approach to solving a real-world classification problem. The end result is a machine learning pipeline that is both practical and well-grounded — one that could realistically support automated credit scoring in a business setting.</p>
 <!-- -->
 
 </section>
@@ -3288,460 +3403,556 @@ Balanced Accuracy      0.7952   0.8211   0.7608</code></pre>
 <span id="cb24-2"><a href="#cb24-2"></a><span class="an">title:</span><span class="co"> &quot;FinalProjectReport&quot;</span></span>
 <span id="cb24-3"><a href="#cb24-3"></a><span class="an">author:</span><span class="co"> &quot;Group 2&quot;</span></span>
 <span id="cb24-4"><a href="#cb24-4"></a><span class="an">format:</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a><span class="co">    html:</span></span>
-<span id="cb24-6"><a href="#cb24-6"></a><span class="co">      code-fold: true</span></span>
-<span id="cb24-7"><a href="#cb24-7"></a><span class="co">      code-line-numbers: true</span></span>
-<span id="cb24-8"><a href="#cb24-8"></a><span class="co">      number-sections: true</span></span>
-<span id="cb24-9"><a href="#cb24-9"></a><span class="co">      number-depth: 3</span></span>
-<span id="cb24-10"><a href="#cb24-10"></a><span class="co">      code-tools: true</span></span>
-<span id="cb24-11"><a href="#cb24-11"></a><span class="co">      embed-resources: true</span></span>
-<span id="cb24-12"><a href="#cb24-12"></a><span class="co">---</span></span>
-<span id="cb24-13"><a href="#cb24-13"></a></span>
-<span id="cb24-14"><a href="#cb24-14"></a><span class="co">&lt;!-- </span></span>
-<span id="cb24-15"><a href="#cb24-15"></a><span class="co"> Overview of the Problem</span></span>
-<span id="cb24-16"><a href="#cb24-16"></a></span>
-<span id="cb24-17"><a href="#cb24-17"></a><span class="co">The objective of the project is to build a multi-class classification model that predicts an individual&#39;s credit score—categorized into Good, Standard, or Poor—based on various demographic and financial factors.</span></span>
-<span id="cb24-18"><a href="#cb24-18"></a><span class="co">This task has practical applications in the financial sector, especially for automated credit scoring and risk assessment. By replacing manual evaluations with predictive analytics, institutions can streamline loan approvals and minimize default risk. </span></span>
-<span id="cb24-19"><a href="#cb24-19"></a><span class="co">--&gt;</span></span>
-<span id="cb24-20"><a href="#cb24-20"></a></span>
-<span id="cb24-21"><a href="#cb24-21"></a>The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.</span>
-<span id="cb24-22"><a href="#cb24-22"></a></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="co">  html:</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a><span class="co">    toc: true</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a><span class="co">    toc-location: right</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a><span class="co">    number-sections: true</span></span>
+<span id="cb24-9"><a href="#cb24-9"></a><span class="co">    number-depth: 3</span></span>
+<span id="cb24-10"><a href="#cb24-10"></a><span class="co">    code-fold: true</span></span>
+<span id="cb24-11"><a href="#cb24-11"></a><span class="co">    code-line-numbers: true</span></span>
+<span id="cb24-12"><a href="#cb24-12"></a><span class="co">    code-tools: true</span></span>
+<span id="cb24-13"><a href="#cb24-13"></a><span class="co">    embed-resources: true</span></span>
+<span id="cb24-14"><a href="#cb24-14"></a><span class="co">---</span></span>
+<span id="cb24-15"><a href="#cb24-15"></a><span class="co">&lt;!-- </span></span>
+<span id="cb24-16"><a href="#cb24-16"></a><span class="co"> Overview of the Problem</span></span>
+<span id="cb24-17"><a href="#cb24-17"></a></span>
+<span id="cb24-18"><a href="#cb24-18"></a><span class="co">The objective of the project is to build a multi-class classification model that predicts an individual&#39;s credit score—categorized into Good, Standard, or Poor—based on various demographic and financial factors.</span></span>
+<span id="cb24-19"><a href="#cb24-19"></a><span class="co">This task has practical applications in the financial sector, especially for automated credit scoring and risk assessment. By replacing manual evaluations with predictive analytics, institutions can streamline loan approvals and minimize default risk. </span></span>
+<span id="cb24-20"><a href="#cb24-20"></a><span class="co">--&gt;</span></span>
+<span id="cb24-21"><a href="#cb24-21"></a></span>
+<span id="cb24-22"><a href="#cb24-22"></a>The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.</span>
 <span id="cb24-23"><a href="#cb24-23"></a></span>
-<span id="cb24-24"><a href="#cb24-24"></a><span class="fu"># About Dataset</span></span>
-<span id="cb24-25"><a href="#cb24-25"></a></span>
-<span id="cb24-26"><a href="#cb24-26"></a>  **Source   :** Kaggle (https://www.kaggle.com/code/sudhanshu2198/multi-class-credit-score-classification)  </span>
-<span id="cb24-27"><a href="#cb24-27"></a>  **Data set :** score.csv  </span>
-<span id="cb24-28"><a href="#cb24-28"></a>  **Samples  :** approximate 100,000  </span>
-<span id="cb24-29"><a href="#cb24-29"></a>  **Features :** Mix of numeric and categorical  </span>
-<span id="cb24-30"><a href="#cb24-30"></a>  **Target   :** Credit_Score (Poor, Standard, Good)  </span>
-<span id="cb24-31"><a href="#cb24-31"></a>  **Key Issues :** Outliers, noisy strings, class imbalance  </span>
-<span id="cb24-32"><a href="#cb24-32"></a>                   Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary</span>
-<span id="cb24-33"><a href="#cb24-33"></a></span>
-<span id="cb24-34"><a href="#cb24-34"></a><span class="fu">## Key Features and Description</span></span>
-<span id="cb24-35"><a href="#cb24-35"></a></span>
-<span id="cb24-36"><a href="#cb24-36"></a><span class="ss">- </span>**Age**: Age of the person  </span>
-<span id="cb24-37"><a href="#cb24-37"></a><span class="ss">- </span>**Annual_Income**: Annual income of the person  </span>
-<span id="cb24-38"><a href="#cb24-38"></a><span class="ss">- </span>**Monthly_Inhand_Salary**: Monthly base salary  </span>
-<span id="cb24-39"><a href="#cb24-39"></a><span class="ss">- </span>**Num_Bank_Accounts**: Number of bank accounts  </span>
-<span id="cb24-40"><a href="#cb24-40"></a><span class="ss">- </span>**Num_Credit_Card**: Number of credit cards  </span>
-<span id="cb24-41"><a href="#cb24-41"></a><span class="ss">- </span>**Interest_Rate**: Credit card interest rate  </span>
-<span id="cb24-42"><a href="#cb24-42"></a><span class="ss">- </span>**Num_of_Loan**: Number of bank loans  </span>
-<span id="cb24-43"><a href="#cb24-43"></a><span class="ss">- </span>**Delay_from_due_date**: Avg. days delayed  </span>
-<span id="cb24-44"><a href="#cb24-44"></a><span class="ss">- </span>**Num_of_Delayed_Payment**: Avg. payments delayed  </span>
-<span id="cb24-45"><a href="#cb24-45"></a><span class="ss">- </span>**Changed_Credit_Limit**: % change in credit limit  </span>
-<span id="cb24-46"><a href="#cb24-46"></a><span class="ss">- </span>**Num_Credit_Inquiries**: Credit card inquiries  </span>
-<span id="cb24-47"><a href="#cb24-47"></a><span class="ss">- </span>**Credit_Mix**: Credit type classification  </span>
-<span id="cb24-48"><a href="#cb24-48"></a><span class="ss">- </span>**Outstanding_Debt**: Remaining debt  </span>
-<span id="cb24-49"><a href="#cb24-49"></a><span class="ss">- </span>**Credit_Utilization_Ratio**: Utilization ratio  </span>
-<span id="cb24-50"><a href="#cb24-50"></a><span class="ss">- </span>**Credit_History_Age**: Age of credit history  </span>
-<span id="cb24-51"><a href="#cb24-51"></a><span class="ss">- </span>**Payment_of_Min_Amount**: Whether minimum amount was paid  </span>
-<span id="cb24-52"><a href="#cb24-52"></a><span class="ss">- </span>**Total_EMI_per_month**: Monthly EMI payments  </span>
-<span id="cb24-53"><a href="#cb24-53"></a><span class="ss">- </span>**Amount_invested_monthly**: Monthly investments  </span>
-<span id="cb24-54"><a href="#cb24-54"></a><span class="ss">- </span>**Monthly_Balance**: Monthly balance  </span>
-<span id="cb24-55"><a href="#cb24-55"></a><span class="ss">- </span>**Credit_Score** : Target Variable — Poor, Standard, Good  </span>
-<span id="cb24-56"><a href="#cb24-56"></a></span>
-<span id="cb24-57"><a href="#cb24-57"></a><span class="fu"># Challenges of the project</span></span>
-<span id="cb24-58"><a href="#cb24-58"></a></span>
-<span id="cb24-59"><a href="#cb24-59"></a><span class="fu">## Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models &amp; tuning.</span></span>
-<span id="cb24-60"><a href="#cb24-60"></a>This dataset contains around 100,000 records and over 20 features spanning numerical and categorical types. Processing this volume of data creates several computational challenges.</span>
-<span id="cb24-61"><a href="#cb24-61"></a><span class="ss"> - </span>Memory Load: Training complex models like Random Forest and XGBoost on this scale can be resource-intensive, especially during cross-validation or hyperparameter tuning.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-62"><a href="#cb24-62"></a><span class="ss"> - </span>Preprocessing Time: Feature engineering steps such as one-hot encoding, scaling, and correlation computation become time-consuming on large data.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-63"><a href="#cb24-63"></a><span class="ss"> - </span>Model Execution Time: Algorithms with internal loops (e.g., forward selection or cross-validated Lasso) can take considerable time to converge.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-64"><a href="#cb24-64"></a></span>
-<span id="cb24-65"><a href="#cb24-65"></a>How we Addressed It:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-66"><a href="#cb24-66"></a><span class="ss">- </span>Used efficient R packages like glmnet, xgboost, and randomForest, all optimized for handling large data. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-67"><a href="#cb24-67"></a><span class="ss">- </span>Splited the data into a 60/40 train-test split instead of k-fold cross-validation in most steps to reduce execution time.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-68"><a href="#cb24-68"></a><span class="ss">- </span>For feature selection, used Lasso Regression (automated) and Forward Stepwise Selection (manual loop) to reduce dimensionality early—so only key features are passed into final models.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-69"><a href="#cb24-69"></a><span class="ss">- </span>We avoided fitting redundant or overly complex models by extracting and reusing key features across models (e.g., RF, XGBoost).<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-70"><a href="#cb24-70"></a></span>
+<span id="cb24-24"><a href="#cb24-24"></a></span>
+<span id="cb24-25"><a href="#cb24-25"></a><span class="fu"># About Dataset</span></span>
+<span id="cb24-26"><a href="#cb24-26"></a></span>
+<span id="cb24-27"><a href="#cb24-27"></a>  **Source   :** Kaggle (https://www.kaggle.com/code/sudhanshu2198/multi-class-credit-score-classification)  </span>
+<span id="cb24-28"><a href="#cb24-28"></a>  **Data set :** score.csv  </span>
+<span id="cb24-29"><a href="#cb24-29"></a>  **Samples  :** approximate 100,000  </span>
+<span id="cb24-30"><a href="#cb24-30"></a>  **Features :** Mix of numeric and categorical  </span>
+<span id="cb24-31"><a href="#cb24-31"></a>  **Target   :** Credit_Score (Poor, Standard, Good)  </span>
+<span id="cb24-32"><a href="#cb24-32"></a>  **Key Issues :** Outliers, noisy strings, class imbalance  </span>
+<span id="cb24-33"><a href="#cb24-33"></a>                   Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary</span>
+<span id="cb24-34"><a href="#cb24-34"></a></span>
+<span id="cb24-35"><a href="#cb24-35"></a><span class="fu">## Key Features and Description</span></span>
+<span id="cb24-36"><a href="#cb24-36"></a></span>
+<span id="cb24-37"><a href="#cb24-37"></a><span class="ss">- </span>**Age**: Age of the person  </span>
+<span id="cb24-38"><a href="#cb24-38"></a><span class="ss">- </span>**Annual_Income**: Annual income of the person  </span>
+<span id="cb24-39"><a href="#cb24-39"></a><span class="ss">- </span>**Monthly_Inhand_Salary**: Monthly base salary  </span>
+<span id="cb24-40"><a href="#cb24-40"></a><span class="ss">- </span>**Num_Bank_Accounts**: Number of bank accounts  </span>
+<span id="cb24-41"><a href="#cb24-41"></a><span class="ss">- </span>**Num_Credit_Card**: Number of credit cards  </span>
+<span id="cb24-42"><a href="#cb24-42"></a><span class="ss">- </span>**Interest_Rate**: Credit card interest rate  </span>
+<span id="cb24-43"><a href="#cb24-43"></a><span class="ss">- </span>**Num_of_Loan**: Number of bank loans  </span>
+<span id="cb24-44"><a href="#cb24-44"></a><span class="ss">- </span>**Delay_from_due_date**: Avg. days delayed  </span>
+<span id="cb24-45"><a href="#cb24-45"></a><span class="ss">- </span>**Num_of_Delayed_Payment**: Avg. payments delayed  </span>
+<span id="cb24-46"><a href="#cb24-46"></a><span class="ss">- </span>**Changed_Credit_Limit**: % change in credit limit  </span>
+<span id="cb24-47"><a href="#cb24-47"></a><span class="ss">- </span>**Num_Credit_Inquiries**: Credit card inquiries  </span>
+<span id="cb24-48"><a href="#cb24-48"></a><span class="ss">- </span>**Credit_Mix**: Credit type classification  </span>
+<span id="cb24-49"><a href="#cb24-49"></a><span class="ss">- </span>**Outstanding_Debt**: Remaining debt  </span>
+<span id="cb24-50"><a href="#cb24-50"></a><span class="ss">- </span>**Credit_Utilization_Ratio**: Utilization ratio  </span>
+<span id="cb24-51"><a href="#cb24-51"></a><span class="ss">- </span>**Credit_History_Age**: Age of credit history  </span>
+<span id="cb24-52"><a href="#cb24-52"></a><span class="ss">- </span>**Payment_of_Min_Amount**: Whether minimum amount was paid  </span>
+<span id="cb24-53"><a href="#cb24-53"></a><span class="ss">- </span>**Total_EMI_per_month**: Monthly EMI payments  </span>
+<span id="cb24-54"><a href="#cb24-54"></a><span class="ss">- </span>**Amount_invested_monthly**: Monthly investments  </span>
+<span id="cb24-55"><a href="#cb24-55"></a><span class="ss">- </span>**Monthly_Balance**: Monthly balance  </span>
+<span id="cb24-56"><a href="#cb24-56"></a><span class="ss">- </span>**Credit_Score** : Target Variable — Poor, Standard, Good  </span>
+<span id="cb24-57"><a href="#cb24-57"></a></span>
+<span id="cb24-58"><a href="#cb24-58"></a><span class="fu"># Challenges of the project</span></span>
+<span id="cb24-59"><a href="#cb24-59"></a></span>
+<span id="cb24-60"><a href="#cb24-60"></a><span class="fu">## Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models &amp; tuning.</span></span>
+<span id="cb24-61"><a href="#cb24-61"></a>This dataset contains around 100,000 records and over 20 features spanning numerical and categorical types. Processing this volume of data creates several computational challenges.</span>
+<span id="cb24-62"><a href="#cb24-62"></a><span class="ss"> - </span>Memory Load: Training complex models like Random Forest and XGBoost on this scale can be resource-intensive, especially during cross-validation or hyperparameter tuning.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-63"><a href="#cb24-63"></a><span class="ss"> - </span>Preprocessing Time: Feature engineering steps such as one-hot encoding, scaling, and correlation computation become time-consuming on large data.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-64"><a href="#cb24-64"></a><span class="ss"> - </span>Model Execution Time: Algorithms with internal loops (e.g., forward selection or cross-validated Lasso) can take considerable time to converge.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-65"><a href="#cb24-65"></a></span>
+<span id="cb24-66"><a href="#cb24-66"></a>How we Addressed It:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-67"><a href="#cb24-67"></a><span class="ss">- </span>Used efficient R packages like glmnet, xgboost, and randomForest, all optimized for handling large data. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-68"><a href="#cb24-68"></a><span class="ss">- </span>Splited the data into a 60/40 train-test split instead of k-fold cross-validation in most steps to reduce execution time.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-69"><a href="#cb24-69"></a><span class="ss">- </span>For feature selection, used Lasso Regression (automated) and Forward Stepwise Selection (manual loop) to reduce dimensionality early—so only key features are passed into final models.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-70"><a href="#cb24-70"></a><span class="ss">- </span>We avoided fitting redundant or overly complex models by extracting and reusing key features across models (e.g., RF, XGBoost).<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
 <span id="cb24-71"><a href="#cb24-71"></a></span>
-<span id="cb24-72"><a href="#cb24-72"></a><span class="fu">## Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary. </span></span>
-<span id="cb24-73"><a href="#cb24-73"></a>The Credit_Score target variable has three levels: Good, Standard, and Poor. Most standard classification algorithms (e.g., logistic regression) are designed for binary outcomes.</span>
-<span id="cb24-74"><a href="#cb24-74"></a></span>
-<span id="cb24-75"><a href="#cb24-75"></a>Specific Issues:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-76"><a href="#cb24-76"></a><span class="ss">  - </span>Some classifiers (e.g., glmnet) require special configuration for multinomial output.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-77"><a href="#cb24-77"></a><span class="ss">  - </span>Interpreting confusion matrices is more complex with three categories.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-78"><a href="#cb24-78"></a><span class="ss">  - </span>Class imbalance can reduce sensitivity to minority classes.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-79"><a href="#cb24-79"></a></span>
-<span id="cb24-80"><a href="#cb24-80"></a>How it was addressed:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-81"><a href="#cb24-81"></a><span class="ss">  - </span>Set family = &quot;multinomial&quot; in glmnet to allow multi-class logistic regression.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-82"><a href="#cb24-82"></a><span class="ss">  - </span>Used multinom() from the nnet package, which supports multi-class output.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-83"><a href="#cb24-83"></a><span class="ss">  - </span>Ensemble methods like Random Forest and XGBoost naturally support multi-class classification when properly configured (e.g., num_class = 3 for XGBoost).<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-84"><a href="#cb24-84"></a><span class="ss">  - </span>We converted categorical labels into ordered factors and integer values, ensuring all models could parse them correctly.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-85"><a href="#cb24-85"></a><span class="ss">  - </span>Confusion matrices were visualized with heatmaps to make multi-class evaluation easier and more intuitive.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-86"><a href="#cb24-86"></a></span>
-<span id="cb24-87"><a href="#cb24-87"></a><span class="in">```{r libs}</span></span>
-<span id="cb24-88"><a href="#cb24-88"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
-<span id="cb24-89"><a href="#cb24-89"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(caret))</span>
-<span id="cb24-90"><a href="#cb24-90"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(dplyr))</span>
-<span id="cb24-91"><a href="#cb24-91"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(reshape2))</span>
-<span id="cb24-92"><a href="#cb24-92"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(corrplot))</span>
-<span id="cb24-93"><a href="#cb24-93"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(recipes))</span>
-<span id="cb24-94"><a href="#cb24-94"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(fastDummies))</span>
-<span id="cb24-95"><a href="#cb24-95"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(randomForest))</span>
-<span id="cb24-96"><a href="#cb24-96"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(nnet))</span>
-<span id="cb24-97"><a href="#cb24-97"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(glmnet))</span>
-<span id="cb24-98"><a href="#cb24-98"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(xgboost))</span>
-<span id="cb24-99"><a href="#cb24-99"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggplot2))</span>
-<span id="cb24-100"><a href="#cb24-100"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggcorrplot))</span>
-<span id="cb24-101"><a href="#cb24-101"></a><span class="fu">options</span>(<span class="at">warn =</span> <span class="sc">-</span><span class="dv">1</span>)  <span class="co"># to suppress warnings during rendering</span></span>
-<span id="cb24-102"><a href="#cb24-102"></a><span class="in">```</span></span>
-<span id="cb24-103"><a href="#cb24-103"></a></span>
-<span id="cb24-104"><a href="#cb24-104"></a><span class="fu"># Data Preparation &amp; EDA</span></span>
-<span id="cb24-105"><a href="#cb24-105"></a><span class="fu">## Cleaning &amp; Transformation</span></span>
-<span id="cb24-106"><a href="#cb24-106"></a>The original dataset contained several quality issues that had to be addressed before modeling. Below are the specific cleaning and transformation steps:</span>
-<span id="cb24-107"><a href="#cb24-107"></a></span>
-<span id="cb24-108"><a href="#cb24-108"></a><span class="fu">### String Noise Removal and Numeric Conversion: &lt;br&gt;</span></span>
-<span id="cb24-109"><a href="#cb24-109"></a>The following columns contained characters like commas (,) or string patterns (e.g., &quot;Rs.&quot;, &quot;days&quot;) that prevented numeric interpretation. These were removed using regular expressions, and the columns were then converted to numeric:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-110"><a href="#cb24-110"></a></span>
-<span id="cb24-111"><a href="#cb24-111"></a><span class="ss">- </span>Age</span>
-<span id="cb24-112"><a href="#cb24-112"></a><span class="ss">- </span>Annual_Income</span>
-<span id="cb24-113"><a href="#cb24-113"></a><span class="ss">- </span>Monthly_Inhand_Salary</span>
-<span id="cb24-114"><a href="#cb24-114"></a><span class="ss">- </span>Num_Bank_Accounts</span>
-<span id="cb24-115"><a href="#cb24-115"></a><span class="ss">- </span>Num_Credit_Card</span>
-<span id="cb24-116"><a href="#cb24-116"></a><span class="ss">- </span>Interest_Rate </span>
-<span id="cb24-117"><a href="#cb24-117"></a><span class="ss">- </span>Num_of_Loan </span>
-<span id="cb24-118"><a href="#cb24-118"></a><span class="ss">- </span>Delay_from_due_date </span>
-<span id="cb24-119"><a href="#cb24-119"></a><span class="ss">- </span>Num_of_Delayed_Payment </span>
-<span id="cb24-120"><a href="#cb24-120"></a><span class="ss">- </span>Changed_Credit_Limit </span>
-<span id="cb24-121"><a href="#cb24-121"></a><span class="ss">- </span>Num_Credit_Inquiries </span>
-<span id="cb24-122"><a href="#cb24-122"></a><span class="ss">- </span>Outstanding_Debt </span>
-<span id="cb24-123"><a href="#cb24-123"></a><span class="ss">- </span>Credit_Utilization_Ratio </span>
-<span id="cb24-124"><a href="#cb24-124"></a><span class="ss">- </span>Credit_History_Age </span>
-<span id="cb24-125"><a href="#cb24-125"></a><span class="ss">- </span>Total_EMI_per_month </span>
-<span id="cb24-126"><a href="#cb24-126"></a><span class="ss">- </span>Amount_invested_monthly </span>
-<span id="cb24-127"><a href="#cb24-127"></a><span class="ss">- </span>Monthly_Balance</span>
-<span id="cb24-128"><a href="#cb24-128"></a>Each of these was cleaned using gsub(&quot;<span class="ot">[^0-9.]</span>&quot;, &quot;&quot;, ...) and converted using as.numeric().</span>
-<span id="cb24-129"><a href="#cb24-129"></a></span>
-<span id="cb24-130"><a href="#cb24-130"></a><span class="fu">### Missing Value Imputation: &lt;br&gt;</span></span>
-<span id="cb24-131"><a href="#cb24-131"></a>After converting the above fields to numeric:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-132"><a href="#cb24-132"></a><span class="ss">- </span>Numeric Fields: Missing values were imputed using median to avoid skew from outliers.</span>
-<span id="cb24-133"><a href="#cb24-133"></a><span class="ss">- </span>Categorical Fields: Missing values were filled using mode imputation, where the most frequently occurring value is assigned.</span>
-<span id="cb24-134"><a href="#cb24-134"></a>This was applied across all columns using column-wise checks.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-135"><a href="#cb24-135"></a></span>
-<span id="cb24-136"><a href="#cb24-136"></a><span class="fu">### Categorical Variable Encoding: &lt;br&gt;</span></span>
-<span id="cb24-137"><a href="#cb24-137"></a>The following categorical columns were encoded as factors and later transformed into dummy variables:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-138"><a href="#cb24-138"></a><span class="ss">- </span>Payment_of_Min_Amount. </span>
-<span id="cb24-139"><a href="#cb24-139"></a><span class="ss">- </span>Credit_Mix</span>
-<span id="cb24-140"><a href="#cb24-140"></a>These were transformed using one-hot encoding via the fastDummies package, allowing them to be used in machine learning algorithms that don’t handle categorical inputs natively.</span>
-<span id="cb24-141"><a href="#cb24-141"></a></span>
-<span id="cb24-142"><a href="#cb24-142"></a><span class="fu">### Target Variable Formatting: &lt;br&gt;</span></span>
-<span id="cb24-143"><a href="#cb24-143"></a>The target variable: Credit_Score — originally a string (&quot;Good&quot;, &quot;Standard&quot;, &quot;Poor&quot;) — wa converted to a factor. The factor levels were ordered as: &quot;Good&quot;, &quot;Poor&quot;, &quot;Standard&quot; to ensure consistent interpretation in multi-class classification models.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-144"><a href="#cb24-144"></a></span>
-<span id="cb24-145"><a href="#cb24-145"></a><span class="fu">### Column Reordering: &lt;br&gt;</span></span>
-<span id="cb24-146"><a href="#cb24-146"></a>To facilitate a cleaner modeling pipeline, the Credit_Score column was moved to the last column in the dataset after transformation. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
-<span id="cb24-147"><a href="#cb24-147"></a></span>
-<span id="cb24-148"><a href="#cb24-148"></a></span>
-<span id="cb24-149"><a href="#cb24-149"></a><span class="in">```{r data_cleaning_and_transformation, message=FALSE, warning=FALSE}</span></span>
-<span id="cb24-150"><a href="#cb24-150"></a><span class="st">```</span><span class="at">{r data_cleaning_and_transformation, message=FALSE, warning=FALSE}</span></span>
-<span id="cb24-151"><a href="#cb24-151"></a><span class="at"># Load the dataset</span></span>
-<span id="cb24-152"><a href="#cb24-152"></a><span class="at">score_dat &lt;- read.csv(&quot;Score.csv&quot;, stringsAsFactors = FALSE)</span></span>
-<span id="cb24-153"><a href="#cb24-153"></a></span>
-<span id="cb24-154"><a href="#cb24-154"></a><span class="at"># Drop irrelevant columns if they exist</span></span>
-<span id="cb24-155"><a href="#cb24-155"></a><span class="at">cols_to_drop &lt;- c(&quot;ID&quot;, &quot;Customer_ID&quot;, &quot;SSN&quot;, &quot;Name&quot;)</span></span>
-<span id="cb24-156"><a href="#cb24-156"></a><span class="at">score_dat &lt;- score_dat %&gt;% select(-any_of(cols_to_drop))</span></span>
-<span id="cb24-157"><a href="#cb24-157"></a></span>
-<span id="cb24-158"><a href="#cb24-158"></a><span class="at"># Clean numeric fields that may contain symbols or text</span></span>
-<span id="cb24-159"><a href="#cb24-159"></a><span class="at">cols_to_clean &lt;- c(</span></span>
-<span id="cb24-160"><a href="#cb24-160"></a><span class="at">  &quot;Age&quot;, &quot;Annual_Income&quot;, &quot;Monthly_Inhand_Salary&quot;, &quot;Num_of_Loan&quot;,</span></span>
-<span id="cb24-161"><a href="#cb24-161"></a><span class="at">  &quot;Num_of_Delayed_Payment&quot;, &quot;Changed_Credit_Limit&quot;, &quot;Outstanding_Debt&quot;,</span></span>
-<span id="cb24-162"><a href="#cb24-162"></a><span class="at">  &quot;Amount_invested_monthly&quot;, &quot;Monthly_Balance&quot;, &quot;Credit_History_Age&quot;,</span></span>
-<span id="cb24-163"><a href="#cb24-163"></a><span class="at">  &quot;Num_Credit_Inquiries&quot;, &quot;Total_EMI_per_month&quot;, &quot;Delay_from_due_date&quot;</span></span>
-<span id="cb24-164"><a href="#cb24-164"></a><span class="at">)</span></span>
-<span id="cb24-165"><a href="#cb24-165"></a><span class="at">cols_to_clean &lt;- intersect(cols_to_clean, names(score_dat))</span></span>
-<span id="cb24-166"><a href="#cb24-166"></a></span>
-<span id="cb24-167"><a href="#cb24-167"></a><span class="at">score_dat[cols_to_clean] &lt;- lapply(score_dat[cols_to_clean], function(x) {</span></span>
-<span id="cb24-168"><a href="#cb24-168"></a><span class="at">  as.numeric(gsub(&quot;[^0-9.]&quot;, &quot;&quot;, as.character(x)))</span></span>
-<span id="cb24-169"><a href="#cb24-169"></a><span class="at">})</span></span>
-<span id="cb24-170"><a href="#cb24-170"></a></span>
-<span id="cb24-171"><a href="#cb24-171"></a><span class="at"># Ensure Credit_Score is a factor</span></span>
-<span id="cb24-172"><a href="#cb24-172"></a><span class="at">if (&quot;Credit_Score&quot; %in% names(score_dat)) {</span></span>
-<span id="cb24-173"><a href="#cb24-173"></a><span class="at">  score_dat$Credit_Score &lt;- factor(score_dat$Credit_Score, levels = c(&quot;Good&quot;, &quot;Poor&quot;, &quot;Standard&quot;))</span></span>
-<span id="cb24-174"><a href="#cb24-174"></a><span class="at">}</span></span>
-<span id="cb24-175"><a href="#cb24-175"></a></span>
-<span id="cb24-176"><a href="#cb24-176"></a><span class="at"># Handle categorical variables safely</span></span>
-<span id="cb24-177"><a href="#cb24-177"></a><span class="at">cat_vars &lt;- c(&quot;Payment_of_Min_Amount&quot;, &quot;Credit_Mix&quot;)</span></span>
-<span id="cb24-178"><a href="#cb24-178"></a><span class="at">cat_vars_existing &lt;- intersect(cat_vars, names(score_dat))</span></span>
-<span id="cb24-179"><a href="#cb24-179"></a></span>
-<span id="cb24-180"><a href="#cb24-180"></a><span class="at">if (length(cat_vars_existing) &gt; 0) {</span></span>
-<span id="cb24-181"><a href="#cb24-181"></a><span class="at">  score_dat &lt;- score_dat %&gt;%</span></span>
-<span id="cb24-182"><a href="#cb24-182"></a><span class="at">    mutate(across(all_of(cat_vars_existing), as.factor))</span></span>
-<span id="cb24-183"><a href="#cb24-183"></a><span class="at">  </span></span>
-<span id="cb24-184"><a href="#cb24-184"></a><span class="at">  one_hot &lt;- fastDummies::dummy_cols(score_dat[cat_vars_existing],</span></span>
-<span id="cb24-185"><a href="#cb24-185"></a><span class="at">                                     select_columns = cat_vars_existing,</span></span>
-<span id="cb24-186"><a href="#cb24-186"></a><span class="at">                                     remove_selected_columns = TRUE)</span></span>
-<span id="cb24-187"><a href="#cb24-187"></a><span class="at">  </span></span>
-<span id="cb24-188"><a href="#cb24-188"></a><span class="at">  score_dat &lt;- score_dat %&gt;% select(-any_of(cat_vars_existing))</span></span>
-<span id="cb24-189"><a href="#cb24-189"></a><span class="at">  score_dat_dp &lt;- cbind(score_dat, one_hot)</span></span>
-<span id="cb24-190"><a href="#cb24-190"></a><span class="at">} else {</span></span>
-<span id="cb24-191"><a href="#cb24-191"></a><span class="at">  score_dat_dp &lt;- score_dat</span></span>
-<span id="cb24-192"><a href="#cb24-192"></a><span class="at">}</span></span>
-<span id="cb24-193"><a href="#cb24-193"></a><span class="st">```</span></span>
+<span id="cb24-72"><a href="#cb24-72"></a></span>
+<span id="cb24-73"><a href="#cb24-73"></a><span class="fu">## Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary. </span></span>
+<span id="cb24-74"><a href="#cb24-74"></a>The Credit_Score target variable has three levels: Good, Standard, and Poor. Most standard classification algorithms (e.g., logistic regression) are designed for binary outcomes.</span>
+<span id="cb24-75"><a href="#cb24-75"></a></span>
+<span id="cb24-76"><a href="#cb24-76"></a>Specific Issues:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-77"><a href="#cb24-77"></a><span class="ss">  - </span>Some classifiers (e.g., glmnet) require special configuration for multinomial output.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-78"><a href="#cb24-78"></a><span class="ss">  - </span>Interpreting confusion matrices is more complex with three categories.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-79"><a href="#cb24-79"></a><span class="ss">  - </span>Class imbalance can reduce sensitivity to minority classes.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-80"><a href="#cb24-80"></a></span>
+<span id="cb24-81"><a href="#cb24-81"></a>How it was addressed:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-82"><a href="#cb24-82"></a><span class="ss">  - </span>Set family = &quot;multinomial&quot; in glmnet to allow multi-class logistic regression.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-83"><a href="#cb24-83"></a><span class="ss">  - </span>Used multinom() from the nnet package, which supports multi-class output.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-84"><a href="#cb24-84"></a><span class="ss">  - </span>Ensemble methods like Random Forest and XGBoost naturally support multi-class classification when properly configured (e.g., num_class = 3 for XGBoost).<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-85"><a href="#cb24-85"></a><span class="ss">  - </span>We converted categorical labels into ordered factors and integer values, ensuring all models could parse them correctly.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-86"><a href="#cb24-86"></a><span class="ss">  - </span>Confusion matrices were visualized with heatmaps to make multi-class evaluation easier and more intuitive.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-87"><a href="#cb24-87"></a></span>
+<span id="cb24-88"><a href="#cb24-88"></a><span class="in">```{r libs}</span></span>
+<span id="cb24-89"><a href="#cb24-89"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
+<span id="cb24-90"><a href="#cb24-90"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(caret))</span>
+<span id="cb24-91"><a href="#cb24-91"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(dplyr))</span>
+<span id="cb24-92"><a href="#cb24-92"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(reshape2))</span>
+<span id="cb24-93"><a href="#cb24-93"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(corrplot))</span>
+<span id="cb24-94"><a href="#cb24-94"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(recipes))</span>
+<span id="cb24-95"><a href="#cb24-95"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(fastDummies))</span>
+<span id="cb24-96"><a href="#cb24-96"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(randomForest))</span>
+<span id="cb24-97"><a href="#cb24-97"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(nnet))</span>
+<span id="cb24-98"><a href="#cb24-98"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(glmnet))</span>
+<span id="cb24-99"><a href="#cb24-99"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(xgboost))</span>
+<span id="cb24-100"><a href="#cb24-100"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggplot2))</span>
+<span id="cb24-101"><a href="#cb24-101"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggcorrplot))</span>
+<span id="cb24-102"><a href="#cb24-102"></a><span class="fu">options</span>(<span class="at">warn =</span> <span class="sc">-</span><span class="dv">1</span>)  <span class="co"># to suppress warnings during rendering</span></span>
+<span id="cb24-103"><a href="#cb24-103"></a><span class="in">```</span></span>
+<span id="cb24-104"><a href="#cb24-104"></a></span>
+<span id="cb24-105"><a href="#cb24-105"></a><span class="fu"># Data Preparation &amp; EDA</span></span>
+<span id="cb24-106"><a href="#cb24-106"></a><span class="fu">## Cleaning &amp; Transformation</span></span>
+<span id="cb24-107"><a href="#cb24-107"></a>The original dataset contained several quality issues that had to be addressed before modeling. Below are the specific cleaning and transformation steps:</span>
+<span id="cb24-108"><a href="#cb24-108"></a></span>
+<span id="cb24-109"><a href="#cb24-109"></a><span class="fu">### String Noise Removal and Numeric Conversion: &lt;br&gt;</span></span>
+<span id="cb24-110"><a href="#cb24-110"></a>The following columns contained characters like commas (,) or string patterns (e.g., &quot;Rs.&quot;, &quot;days&quot;) that prevented numeric interpretation. These were removed using regular expressions, and the columns were then converted to numeric:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-111"><a href="#cb24-111"></a></span>
+<span id="cb24-112"><a href="#cb24-112"></a><span class="ss">- </span>Age</span>
+<span id="cb24-113"><a href="#cb24-113"></a><span class="ss">- </span>Annual_Income</span>
+<span id="cb24-114"><a href="#cb24-114"></a><span class="ss">- </span>Monthly_Inhand_Salary</span>
+<span id="cb24-115"><a href="#cb24-115"></a><span class="ss">- </span>Num_Bank_Accounts</span>
+<span id="cb24-116"><a href="#cb24-116"></a><span class="ss">- </span>Num_Credit_Card</span>
+<span id="cb24-117"><a href="#cb24-117"></a><span class="ss">- </span>Interest_Rate </span>
+<span id="cb24-118"><a href="#cb24-118"></a><span class="ss">- </span>Num_of_Loan </span>
+<span id="cb24-119"><a href="#cb24-119"></a><span class="ss">- </span>Delay_from_due_date </span>
+<span id="cb24-120"><a href="#cb24-120"></a><span class="ss">- </span>Num_of_Delayed_Payment </span>
+<span id="cb24-121"><a href="#cb24-121"></a><span class="ss">- </span>Changed_Credit_Limit </span>
+<span id="cb24-122"><a href="#cb24-122"></a><span class="ss">- </span>Num_Credit_Inquiries </span>
+<span id="cb24-123"><a href="#cb24-123"></a><span class="ss">- </span>Outstanding_Debt </span>
+<span id="cb24-124"><a href="#cb24-124"></a><span class="ss">- </span>Credit_Utilization_Ratio </span>
+<span id="cb24-125"><a href="#cb24-125"></a><span class="ss">- </span>Credit_History_Age </span>
+<span id="cb24-126"><a href="#cb24-126"></a><span class="ss">- </span>Total_EMI_per_month </span>
+<span id="cb24-127"><a href="#cb24-127"></a><span class="ss">- </span>Amount_invested_monthly </span>
+<span id="cb24-128"><a href="#cb24-128"></a><span class="ss">- </span>Monthly_Balance</span>
+<span id="cb24-129"><a href="#cb24-129"></a>Each of these was cleaned using gsub(&quot;<span class="ot">[^0-9.]</span>&quot;, &quot;&quot;, ...) and converted using as.numeric().</span>
+<span id="cb24-130"><a href="#cb24-130"></a></span>
+<span id="cb24-131"><a href="#cb24-131"></a><span class="fu">### Missing Value Imputation: &lt;br&gt;</span></span>
+<span id="cb24-132"><a href="#cb24-132"></a>After converting the above fields to numeric:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-133"><a href="#cb24-133"></a><span class="ss">- </span>Numeric Fields: Missing values were imputed using median to avoid skew from outliers.</span>
+<span id="cb24-134"><a href="#cb24-134"></a><span class="ss">- </span>Categorical Fields: Missing values were filled using mode imputation, where the most frequently occurring value is assigned.</span>
+<span id="cb24-135"><a href="#cb24-135"></a>This was applied across all columns using column-wise checks.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-136"><a href="#cb24-136"></a></span>
+<span id="cb24-137"><a href="#cb24-137"></a><span class="fu">### Categorical Variable Encoding: &lt;br&gt;</span></span>
+<span id="cb24-138"><a href="#cb24-138"></a>The following categorical columns were encoded as factors and later transformed into dummy variables:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-139"><a href="#cb24-139"></a><span class="ss">- </span>Payment_of_Min_Amount. </span>
+<span id="cb24-140"><a href="#cb24-140"></a><span class="ss">- </span>Credit_Mix</span>
+<span id="cb24-141"><a href="#cb24-141"></a>These were transformed using one-hot encoding via the fastDummies package, allowing them to be used in machine learning algorithms that don’t handle categorical inputs natively.</span>
+<span id="cb24-142"><a href="#cb24-142"></a></span>
+<span id="cb24-143"><a href="#cb24-143"></a><span class="fu">### Target Variable Formatting: &lt;br&gt;</span></span>
+<span id="cb24-144"><a href="#cb24-144"></a>The target variable: Credit_Score — originally a string (&quot;Good&quot;, &quot;Standard&quot;, &quot;Poor&quot;) — wa converted to a factor. The factor levels were ordered as: &quot;Good&quot;, &quot;Poor&quot;, &quot;Standard&quot; to ensure consistent interpretation in multi-class classification models.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-145"><a href="#cb24-145"></a></span>
+<span id="cb24-146"><a href="#cb24-146"></a><span class="fu">### Column Reordering: &lt;br&gt;</span></span>
+<span id="cb24-147"><a href="#cb24-147"></a>To facilitate a cleaner modeling pipeline, the Credit_Score column was moved to the last column in the dataset after transformation. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb24-148"><a href="#cb24-148"></a><span class="in">```{r data_cleaning_and_transformation, message=FALSE, warning=FALSE}</span></span>
+<span id="cb24-149"><a href="#cb24-149"></a><span class="st">```</span><span class="at">{r data_cleaning_and_transformation, message=FALSE, warning=FALSE}</span></span>
+<span id="cb24-150"><a href="#cb24-150"></a><span class="at"># Load the dataset</span></span>
+<span id="cb24-151"><a href="#cb24-151"></a><span class="at">score_dat &lt;- read.csv(&quot;Score.csv&quot;, stringsAsFactors = FALSE)</span></span>
+<span id="cb24-152"><a href="#cb24-152"></a></span>
+<span id="cb24-153"><a href="#cb24-153"></a><span class="at"># Drop irrelevant columns if they exist</span></span>
+<span id="cb24-154"><a href="#cb24-154"></a><span class="at">cols_to_drop &lt;- c(&quot;ID&quot;, &quot;Customer_ID&quot;, &quot;SSN&quot;, &quot;Name&quot;)</span></span>
+<span id="cb24-155"><a href="#cb24-155"></a><span class="at">score_dat &lt;- score_dat %&gt;% select(-any_of(cols_to_drop))</span></span>
+<span id="cb24-156"><a href="#cb24-156"></a></span>
+<span id="cb24-157"><a href="#cb24-157"></a><span class="at"># Clean numeric fields that may contain symbols or text</span></span>
+<span id="cb24-158"><a href="#cb24-158"></a><span class="at">cols_to_clean &lt;- c(</span></span>
+<span id="cb24-159"><a href="#cb24-159"></a><span class="at">  &quot;Age&quot;, &quot;Annual_Income&quot;, &quot;Monthly_Inhand_Salary&quot;, &quot;Num_of_Loan&quot;,</span></span>
+<span id="cb24-160"><a href="#cb24-160"></a><span class="at">  &quot;Num_of_Delayed_Payment&quot;, &quot;Changed_Credit_Limit&quot;, &quot;Outstanding_Debt&quot;,</span></span>
+<span id="cb24-161"><a href="#cb24-161"></a><span class="at">  &quot;Amount_invested_monthly&quot;, &quot;Monthly_Balance&quot;, &quot;Credit_History_Age&quot;,</span></span>
+<span id="cb24-162"><a href="#cb24-162"></a><span class="at">  &quot;Num_Credit_Inquiries&quot;, &quot;Total_EMI_per_month&quot;, &quot;Delay_from_due_date&quot;</span></span>
+<span id="cb24-163"><a href="#cb24-163"></a><span class="at">)</span></span>
+<span id="cb24-164"><a href="#cb24-164"></a><span class="at">cols_to_clean &lt;- intersect(cols_to_clean, names(score_dat))</span></span>
+<span id="cb24-165"><a href="#cb24-165"></a></span>
+<span id="cb24-166"><a href="#cb24-166"></a><span class="at">score_dat[cols_to_clean] &lt;- lapply(score_dat[cols_to_clean], function(x) {</span></span>
+<span id="cb24-167"><a href="#cb24-167"></a><span class="at">  as.numeric(gsub(&quot;[^0-9.]&quot;, &quot;&quot;, as.character(x)))</span></span>
+<span id="cb24-168"><a href="#cb24-168"></a><span class="at">})</span></span>
+<span id="cb24-169"><a href="#cb24-169"></a></span>
+<span id="cb24-170"><a href="#cb24-170"></a><span class="at"># Ensure Credit_Score is a factor</span></span>
+<span id="cb24-171"><a href="#cb24-171"></a><span class="at">if (&quot;Credit_Score&quot; %in% names(score_dat)) {</span></span>
+<span id="cb24-172"><a href="#cb24-172"></a><span class="at">  score_dat$Credit_Score &lt;- factor(score_dat$Credit_Score, levels = c(&quot;Good&quot;, &quot;Poor&quot;, &quot;Standard&quot;))</span></span>
+<span id="cb24-173"><a href="#cb24-173"></a><span class="at">}</span></span>
+<span id="cb24-174"><a href="#cb24-174"></a></span>
+<span id="cb24-175"><a href="#cb24-175"></a><span class="at"># Handle categorical variables safely</span></span>
+<span id="cb24-176"><a href="#cb24-176"></a><span class="at">cat_vars &lt;- c(&quot;Payment_of_Min_Amount&quot;, &quot;Credit_Mix&quot;)</span></span>
+<span id="cb24-177"><a href="#cb24-177"></a><span class="at">cat_vars_existing &lt;- intersect(cat_vars, names(score_dat))</span></span>
+<span id="cb24-178"><a href="#cb24-178"></a></span>
+<span id="cb24-179"><a href="#cb24-179"></a><span class="at">if (length(cat_vars_existing) &gt; 0) {</span></span>
+<span id="cb24-180"><a href="#cb24-180"></a><span class="at">  score_dat &lt;- score_dat %&gt;%</span></span>
+<span id="cb24-181"><a href="#cb24-181"></a><span class="at">    mutate(across(all_of(cat_vars_existing), as.factor))</span></span>
+<span id="cb24-182"><a href="#cb24-182"></a><span class="at">  </span></span>
+<span id="cb24-183"><a href="#cb24-183"></a><span class="at">  one_hot &lt;- fastDummies::dummy_cols(score_dat[cat_vars_existing],</span></span>
+<span id="cb24-184"><a href="#cb24-184"></a><span class="at">                                     select_columns = cat_vars_existing,</span></span>
+<span id="cb24-185"><a href="#cb24-185"></a><span class="at">                                     remove_selected_columns = TRUE)</span></span>
+<span id="cb24-186"><a href="#cb24-186"></a><span class="at">  </span></span>
+<span id="cb24-187"><a href="#cb24-187"></a><span class="at">  score_dat &lt;- score_dat %&gt;% select(-any_of(cat_vars_existing))</span></span>
+<span id="cb24-188"><a href="#cb24-188"></a><span class="at">  score_dat_dp &lt;- cbind(score_dat, one_hot)</span></span>
+<span id="cb24-189"><a href="#cb24-189"></a><span class="at">} else {</span></span>
+<span id="cb24-190"><a href="#cb24-190"></a><span class="at">  score_dat_dp &lt;- score_dat</span></span>
+<span id="cb24-191"><a href="#cb24-191"></a><span class="at">}</span></span>
+<span id="cb24-192"><a href="#cb24-192"></a><span class="st">```</span></span>
+<span id="cb24-193"><a href="#cb24-193"></a></span>
 <span id="cb24-194"><a href="#cb24-194"></a></span>
 <span id="cb24-195"><a href="#cb24-195"></a></span>
-<span id="cb24-196"><a href="#cb24-196"></a></span>
-<span id="cb24-197"><a href="#cb24-197"></a><span class="do">## Exploratory Data Analysis (EDA)</span></span>
-<span id="cb24-198"><a href="#cb24-198"></a></span>
-<span id="cb24-199"><a href="#cb24-199"></a><span class="do">### A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).</span></span>
-<span id="cb24-202"><a href="#cb24-202"></a><span class="in">```{r}</span></span>
-<span id="cb24-203"><a href="#cb24-203"></a><span class="at">ggplot(score_dat, aes(x = Credit_Score, fill = Credit_Score)) +</span></span>
-<span id="cb24-204"><a href="#cb24-204"></a><span class="at">  geom_bar() +</span></span>
-<span id="cb24-205"><a href="#cb24-205"></a><span class="at">  labs(</span></span>
-<span id="cb24-206"><a href="#cb24-206"></a><span class="at">    title = &quot;Class Distribution of Credit_Score&quot;,</span></span>
-<span id="cb24-207"><a href="#cb24-207"></a><span class="at">    x = &quot;Credit Score Category&quot;,</span></span>
-<span id="cb24-208"><a href="#cb24-208"></a><span class="at">    y = &quot;Count&quot;</span></span>
-<span id="cb24-209"><a href="#cb24-209"></a><span class="at">  ) +</span></span>
-<span id="cb24-210"><a href="#cb24-210"></a><span class="at">  theme_minimal(base_size = 14) +</span></span>
-<span id="cb24-211"><a href="#cb24-211"></a><span class="at">  theme(</span></span>
-<span id="cb24-212"><a href="#cb24-212"></a><span class="at">    plot.title = element_text(hjust = 0.5, face = &quot;bold&quot;),</span></span>
-<span id="cb24-213"><a href="#cb24-213"></a><span class="at">    legend.position = &quot;none&quot;</span></span>
-<span id="cb24-214"><a href="#cb24-214"></a><span class="at">  )</span></span>
-<span id="cb24-215"><a href="#cb24-215"></a><span class="st">```</span></span>
-<span id="cb24-216"><a href="#cb24-216"></a>The bar chart above illustrates the distribution of the target variable Credit_Score across three categories<span class="sc">:</span> Good, Poor, and Standard. It clearly shows a class imbalance, with the Standard category being the most frequent, followed by Poor, and then Good.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-217"><a href="#cb24-217"></a>This imbalance is important to address during model training, as standard machine learning algorithms may become biased toward the majority class. Failure to handle class imbalance can result <span class="cf">in</span> poor predictive performance <span class="cf">for</span> underrepresented classes. Therefore, techniques such as resampling, class weighting, or balanced evaluation <span class="fu">metrics</span> (e.g., F1<span class="sc">-</span>score, confusion matrix) are considered later <span class="cf">in</span> the modeling pipeline.</span>
-<span id="cb24-218"><a href="#cb24-218"></a></span>
-<span id="cb24-219"><a href="#cb24-219"></a><span class="do">### Correlation matrix was computed and visualised to observe relationships between numeric features.</span></span>
-<span id="cb24-220"><a href="#cb24-220"></a><span class="st">```</span><span class="at">{r }</span></span>
-<span id="cb24-221"><a href="#cb24-221"></a><span class="at"># Extract only numeric columns</span></span>
-<span id="cb24-222"><a href="#cb24-222"></a><span class="at">numeric_data &lt;- score_dat %&gt;%</span></span>
-<span id="cb24-223"><a href="#cb24-223"></a><span class="at">  select(where(is.numeric))</span></span>
-<span id="cb24-224"><a href="#cb24-224"></a></span>
-<span id="cb24-225"><a href="#cb24-225"></a><span class="at"># Add Credit_Score as numeric (for correlation purpose only)</span></span>
-<span id="cb24-226"><a href="#cb24-226"></a><span class="at">numeric_data$Credit_Score &lt;- as.numeric(score_dat$Credit_Score)</span></span>
-<span id="cb24-227"><a href="#cb24-227"></a></span>
-<span id="cb24-228"><a href="#cb24-228"></a><span class="at"># Compute correlation matrix</span></span>
-<span id="cb24-229"><a href="#cb24-229"></a><span class="at">cor_matrix &lt;- cor(numeric_data, use = &quot;pairwise.complete.obs&quot;)</span></span>
-<span id="cb24-230"><a href="#cb24-230"></a></span>
-<span id="cb24-231"><a href="#cb24-231"></a><span class="at"># Replace NA with 0 (safer for plotting than dropping all rows)</span></span>
-<span id="cb24-232"><a href="#cb24-232"></a><span class="at">cor_matrix[is.na(cor_matrix)] &lt;- 0</span></span>
-<span id="cb24-233"><a href="#cb24-233"></a></span>
-<span id="cb24-234"><a href="#cb24-234"></a><span class="at"># Plot heatmap</span></span>
-<span id="cb24-235"><a href="#cb24-235"></a><span class="at">p &lt;- ggcorrplot(</span></span>
-<span id="cb24-236"><a href="#cb24-236"></a><span class="at">  cor_matrix,</span></span>
-<span id="cb24-237"><a href="#cb24-237"></a><span class="at">  type = &quot;lower&quot;,</span></span>
-<span id="cb24-238"><a href="#cb24-238"></a><span class="at">  lab = TRUE,</span></span>
-<span id="cb24-239"><a href="#cb24-239"></a><span class="at">  lab_size = 3.5,</span></span>
-<span id="cb24-240"><a href="#cb24-240"></a><span class="at">  hc.order = TRUE,</span></span>
-<span id="cb24-241"><a href="#cb24-241"></a><span class="at">  method = &quot;square&quot;,</span></span>
-<span id="cb24-242"><a href="#cb24-242"></a><span class="at">  colors = c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;),</span></span>
-<span id="cb24-243"><a href="#cb24-243"></a><span class="at">  outline.color = &quot;gray90&quot;</span></span>
-<span id="cb24-244"><a href="#cb24-244"></a><span class="at">) +</span></span>
-<span id="cb24-245"><a href="#cb24-245"></a><span class="at">  ggtitle(&quot;Correlation Heatmap of Dataset Features (Including Credit Score)&quot;) +</span></span>
-<span id="cb24-246"><a href="#cb24-246"></a><span class="at">  theme_minimal(base_size = 14) +</span></span>
-<span id="cb24-247"><a href="#cb24-247"></a><span class="at">  theme(</span></span>
-<span id="cb24-248"><a href="#cb24-248"></a><span class="at">    plot.title = element_text(hjust = 0.5, face = &quot;bold&quot;, size = 16),</span></span>
-<span id="cb24-249"><a href="#cb24-249"></a><span class="at">    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)</span></span>
-<span id="cb24-250"><a href="#cb24-250"></a><span class="at">  )</span></span>
-<span id="cb24-251"><a href="#cb24-251"></a></span>
-<span id="cb24-252"><a href="#cb24-252"></a><span class="at"># Save high-resolution heatmap</span></span>
-<span id="cb24-253"><a href="#cb24-253"></a><span class="at">ggsave(&quot;correlation_heatmap.png&quot;, plot = p, width = 12, height = 10, dpi = 300)</span></span>
-<span id="cb24-254"><a href="#cb24-254"></a></span>
-<span id="cb24-255"><a href="#cb24-255"></a><span class="st">```</span></span>
-<span id="cb24-256"><a href="#cb24-256"></a></span>
-<span id="cb24-257"><a href="#cb24-257"></a><span class="st">```</span><span class="at">{r include_correlation_heatmap, echo=FALSE, fig.align=&#39;center&#39;, out.width=&#39;100%&#39;}</span></span>
-<span id="cb24-258"><a href="#cb24-258"></a><span class="at">knitr::include_graphics(&quot;correlation_heatmap.png&quot;)</span></span>
-<span id="cb24-259"><a href="#cb24-259"></a><span class="st">```</span></span>
-<span id="cb24-260"><a href="#cb24-260"></a></span>
-<span id="cb24-261"><a href="#cb24-261"></a>The heatmap above displays pairwise Pearson correlation coefficients among all numeric variables <span class="cf">in</span> the dataset, including the target variable <span class="fu">Credit_Score</span> (encoded as an ordinal factor). This visualization helps identify relationships between features, which is crucial <span class="cf">for</span> both feature selection and model interpretability.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-262"><a href="#cb24-262"></a>Key observations<span class="sc">:</span><span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-263"><a href="#cb24-263"></a>Strong positive correlations are observed among financial variables<span class="sc">:</span><span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-264"><a href="#cb24-264"></a>Annual_Income, Monthly_Balance, and Amount_invested_monthly are highly <span class="fu">correlated</span> (r <span class="sc">&gt;</span> <span class="fl">0.6</span>), suggesting potential redundancy.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-265"><a href="#cb24-265"></a>Num_of_Loan, Outstanding_Debt, and Num_of_Delayed_Payment also show high <span class="fu">correlations</span> (r <span class="sc">&gt;</span> <span class="fl">0.6</span>), indicating that they capture overlapping financial risk behavior.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-266"><a href="#cb24-266"></a>Moderate correlations are seen between Credit_Score and variables like<span class="sc">:</span><span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-267"><a href="#cb24-267"></a><span class="fu">Num_of_Loan</span> (<span class="at">r =</span> <span class="fl">0.20</span>)<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-268"><a href="#cb24-268"></a><span class="fu">Credit_Utilization_Ratio</span> (<span class="at">r =</span> <span class="fl">0.18</span>)<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-269"><a href="#cb24-269"></a><span class="fu">Num_of_Delayed_Payment</span> (<span class="at">r =</span> <span class="fl">0.18</span>)<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-270"><a href="#cb24-270"></a>Interest_Rate and Outstanding_Debt also show mild associations with credit score.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-271"><a href="#cb24-271"></a>These patterns suggest that payment behavior and borrowing volume are more predictive of credit score than income<span class="sc">-</span>related variables, which may reflect the scoring algorithm’s emphasis on risk exposure and repayment behavior rather than just earnings.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-272"><a href="#cb24-272"></a>This correlation matrix guided the initial feature selection process and highlighted potential multicollinearity risks that were further addressed through Lasso regression.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-275"><a href="#cb24-275"></a><span class="in">```{r}</span></span>
-<span id="cb24-276"><a href="#cb24-276"></a><span class="at"># Safely handle categorical variables</span></span>
-<span id="cb24-277"><a href="#cb24-277"></a><span class="at">cat_vars &lt;- c(&quot;Payment_of_Min_Amount&quot;, &quot;Credit_Mix&quot;)</span></span>
-<span id="cb24-278"><a href="#cb24-278"></a><span class="at">cat_vars_existing &lt;- intersect(cat_vars, names(score_dat))</span></span>
-<span id="cb24-279"><a href="#cb24-279"></a></span>
-<span id="cb24-280"><a href="#cb24-280"></a><span class="at">if (length(cat_vars_existing) &gt; 0) {</span></span>
-<span id="cb24-281"><a href="#cb24-281"></a><span class="at">  # Convert to factor</span></span>
-<span id="cb24-282"><a href="#cb24-282"></a><span class="at">  score_dat &lt;- score_dat %&gt;%</span></span>
-<span id="cb24-283"><a href="#cb24-283"></a><span class="at">    mutate(across(all_of(cat_vars_existing), as.factor))</span></span>
-<span id="cb24-284"><a href="#cb24-284"></a><span class="at">  </span></span>
-<span id="cb24-285"><a href="#cb24-285"></a><span class="at">  # One-hot encode</span></span>
-<span id="cb24-286"><a href="#cb24-286"></a><span class="at">  one_hot &lt;- fastDummies::dummy_cols(score_dat,</span></span>
-<span id="cb24-287"><a href="#cb24-287"></a><span class="at">                                     select_columns = cat_vars_existing,</span></span>
-<span id="cb24-288"><a href="#cb24-288"></a><span class="at">                                     remove_selected_columns = TRUE)</span></span>
-<span id="cb24-289"><a href="#cb24-289"></a><span class="at">  </span></span>
-<span id="cb24-290"><a href="#cb24-290"></a><span class="at">  # Drop original categorical columns</span></span>
-<span id="cb24-291"><a href="#cb24-291"></a><span class="at">  score_dat &lt;- score_dat %&gt;% select(-any_of(cat_vars_existing))</span></span>
+<span id="cb24-196"><a href="#cb24-196"></a><span class="do">## Exploratory Data Analysis (EDA)</span></span>
+<span id="cb24-197"><a href="#cb24-197"></a></span>
+<span id="cb24-198"><a href="#cb24-198"></a><span class="do">### A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).</span></span>
+<span id="cb24-201"><a href="#cb24-201"></a><span class="in">```{r}</span></span>
+<span id="cb24-202"><a href="#cb24-202"></a><span class="at">ggplot(score_dat, aes(x = Credit_Score, fill = Credit_Score)) +</span></span>
+<span id="cb24-203"><a href="#cb24-203"></a><span class="at">  geom_bar() +</span></span>
+<span id="cb24-204"><a href="#cb24-204"></a><span class="at">  labs(</span></span>
+<span id="cb24-205"><a href="#cb24-205"></a><span class="at">    title = &quot;Class Distribution of Credit_Score&quot;,</span></span>
+<span id="cb24-206"><a href="#cb24-206"></a><span class="at">    x = &quot;Credit Score Category&quot;,</span></span>
+<span id="cb24-207"><a href="#cb24-207"></a><span class="at">    y = &quot;Count&quot;</span></span>
+<span id="cb24-208"><a href="#cb24-208"></a><span class="at">  ) +</span></span>
+<span id="cb24-209"><a href="#cb24-209"></a><span class="at">  theme_minimal(base_size = 14) +</span></span>
+<span id="cb24-210"><a href="#cb24-210"></a><span class="at">  theme(</span></span>
+<span id="cb24-211"><a href="#cb24-211"></a><span class="at">    plot.title = element_text(hjust = 0.5, face = &quot;bold&quot;),</span></span>
+<span id="cb24-212"><a href="#cb24-212"></a><span class="at">    legend.position = &quot;none&quot;</span></span>
+<span id="cb24-213"><a href="#cb24-213"></a><span class="at">  )</span></span>
+<span id="cb24-214"><a href="#cb24-214"></a><span class="st">```</span></span>
+<span id="cb24-215"><a href="#cb24-215"></a>The bar chart gives a quick overview of how the Credit_Score values are distributed across the three categories<span class="sc">:</span> Good, Poor, and Standard. As shown, the distribution isn’t balanced — most individuals fall into the Standard group, followed by Poor, with Good being the least common.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-216"><a href="#cb24-216"></a>This kind of imbalance is important to keep <span class="cf">in</span> mind during model development, as it can affect how well the model performs, especially <span class="cf">for</span> the less frequent classes. While we didn’t apply resampling or class<span class="sc">-</span>weighting techniques <span class="cf">in</span> this project, we addressed the imbalance by using evaluation metrics that give a fairer picture—like balanced accuracy, precision, and recall <span class="cf">for</span> each class. These metrics helped us better understand how well our models performed across all categories, not just the majority class.</span>
+<span id="cb24-217"><a href="#cb24-217"></a></span>
+<span id="cb24-218"><a href="#cb24-218"></a><span class="do">### Correlation matrix was computed and visualised to observe relationships between numeric features.</span></span>
+<span id="cb24-219"><a href="#cb24-219"></a><span class="st">```</span><span class="at">{r }</span></span>
+<span id="cb24-220"><a href="#cb24-220"></a><span class="at"># Extract only numeric columns</span></span>
+<span id="cb24-221"><a href="#cb24-221"></a><span class="at">numeric_data &lt;- score_dat %&gt;%</span></span>
+<span id="cb24-222"><a href="#cb24-222"></a><span class="at">  select(where(is.numeric))</span></span>
+<span id="cb24-223"><a href="#cb24-223"></a></span>
+<span id="cb24-224"><a href="#cb24-224"></a><span class="at"># Add Credit_Score as numeric (for correlation purpose only)</span></span>
+<span id="cb24-225"><a href="#cb24-225"></a><span class="at">numeric_data$Credit_Score &lt;- as.numeric(score_dat$Credit_Score)</span></span>
+<span id="cb24-226"><a href="#cb24-226"></a></span>
+<span id="cb24-227"><a href="#cb24-227"></a><span class="at"># Compute correlation matrix</span></span>
+<span id="cb24-228"><a href="#cb24-228"></a><span class="at">cor_matrix &lt;- cor(numeric_data, use = &quot;pairwise.complete.obs&quot;)</span></span>
+<span id="cb24-229"><a href="#cb24-229"></a></span>
+<span id="cb24-230"><a href="#cb24-230"></a><span class="at"># Replace NA with 0 (safer for plotting than dropping all rows)</span></span>
+<span id="cb24-231"><a href="#cb24-231"></a><span class="at">cor_matrix[is.na(cor_matrix)] &lt;- 0</span></span>
+<span id="cb24-232"><a href="#cb24-232"></a></span>
+<span id="cb24-233"><a href="#cb24-233"></a><span class="at"># Plot heatmap</span></span>
+<span id="cb24-234"><a href="#cb24-234"></a><span class="at">p &lt;- ggcorrplot(</span></span>
+<span id="cb24-235"><a href="#cb24-235"></a><span class="at">  cor_matrix,</span></span>
+<span id="cb24-236"><a href="#cb24-236"></a><span class="at">  type = &quot;lower&quot;,</span></span>
+<span id="cb24-237"><a href="#cb24-237"></a><span class="at">  lab = TRUE,</span></span>
+<span id="cb24-238"><a href="#cb24-238"></a><span class="at">  lab_size = 3.5,</span></span>
+<span id="cb24-239"><a href="#cb24-239"></a><span class="at">  hc.order = TRUE,</span></span>
+<span id="cb24-240"><a href="#cb24-240"></a><span class="at">  method = &quot;square&quot;,</span></span>
+<span id="cb24-241"><a href="#cb24-241"></a><span class="at">  colors = c(&quot;blue&quot;, &quot;white&quot;, &quot;red&quot;),</span></span>
+<span id="cb24-242"><a href="#cb24-242"></a><span class="at">  outline.color = &quot;gray90&quot;</span></span>
+<span id="cb24-243"><a href="#cb24-243"></a><span class="at">) +</span></span>
+<span id="cb24-244"><a href="#cb24-244"></a><span class="at">  ggtitle(&quot;Correlation Heatmap of Dataset Features (Including Credit Score)&quot;) +</span></span>
+<span id="cb24-245"><a href="#cb24-245"></a><span class="at">  theme_minimal(base_size = 14) +</span></span>
+<span id="cb24-246"><a href="#cb24-246"></a><span class="at">  theme(</span></span>
+<span id="cb24-247"><a href="#cb24-247"></a><span class="at">    plot.title = element_text(hjust = 0.5, face = &quot;bold&quot;, size = 16),</span></span>
+<span id="cb24-248"><a href="#cb24-248"></a><span class="at">    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)</span></span>
+<span id="cb24-249"><a href="#cb24-249"></a><span class="at">  )</span></span>
+<span id="cb24-250"><a href="#cb24-250"></a></span>
+<span id="cb24-251"><a href="#cb24-251"></a><span class="at"># Save high-resolution heatmap</span></span>
+<span id="cb24-252"><a href="#cb24-252"></a><span class="at">ggsave(&quot;correlation_heatmap.png&quot;, plot = p, width = 12, height = 10, dpi = 300)</span></span>
+<span id="cb24-253"><a href="#cb24-253"></a></span>
+<span id="cb24-254"><a href="#cb24-254"></a><span class="st">```</span></span>
+<span id="cb24-255"><a href="#cb24-255"></a></span>
+<span id="cb24-256"><a href="#cb24-256"></a><span class="st">```</span><span class="at">{r include_correlation_heatmap, echo=FALSE, fig.align=&#39;center&#39;, out.width=&#39;100%&#39;}</span></span>
+<span id="cb24-257"><a href="#cb24-257"></a><span class="at">knitr::include_graphics(&quot;correlation_heatmap.png&quot;)</span></span>
+<span id="cb24-258"><a href="#cb24-258"></a><span class="st">```</span></span>
+<span id="cb24-259"><a href="#cb24-259"></a></span>
+<span id="cb24-260"><a href="#cb24-260"></a>The heatmap above shows how the numeric variables <span class="cf">in</span> the dataset relate to each other, based on Pearson correlation. We also included the target variable, <span class="fu">Credit_Score</span> (which we treated as ordinal <span class="cf">for</span> this purpose), to see how it lines up with the predictors.</span>
+<span id="cb24-261"><a href="#cb24-261"></a></span>
+<span id="cb24-262"><a href="#cb24-262"></a>A few patterns stood out. Financial variables like Annual_Income, Monthly_Balance, and Amount_invested_monthly were strongly correlated, which makes sense since these tend to move together — <span class="cf">if</span> someone earns more, they often save or invest more too. Similarly, variables that reflect borrowing behavior — Num_of_Loan, Outstanding_Debt, and Num_of_Delayed_Payment — also showed high correlations, suggesting they’re all capturing aspects of financial risk.</span>
+<span id="cb24-263"><a href="#cb24-263"></a></span>
+<span id="cb24-264"><a href="#cb24-264"></a>When we looked at how variables relate to Credit_Score, the correlations were weaker, but some signals still came through. For instance<span class="sc">:</span></span>
+<span id="cb24-265"><a href="#cb24-265"></a></span>
+<span id="cb24-266"><a href="#cb24-266"></a>Num_of_Loan had a correlation of <span class="fl">0.20</span> with Credit_Score</span>
+<span id="cb24-267"><a href="#cb24-267"></a></span>
+<span id="cb24-268"><a href="#cb24-268"></a>Credit_Utilization_Ratio and Num_of_Delayed_Payment were also mildly <span class="fu">correlated</span> (around <span class="fl">0.18</span>)</span>
+<span id="cb24-269"><a href="#cb24-269"></a></span>
+<span id="cb24-270"><a href="#cb24-270"></a>Interest_Rate and Outstanding_Debt had small but noticeable associations too</span>
+<span id="cb24-271"><a href="#cb24-271"></a></span>
+<span id="cb24-272"><a href="#cb24-272"></a>These results suggest that variables related to debt and repayment behavior may play a bigger role <span class="cf">in</span> determining credit score than income<span class="sc">-</span>related ones — possibly reflecting how credit scoring models prioritize financial risk over just earnings.</span>
+<span id="cb24-273"><a href="#cb24-273"></a></span>
+<span id="cb24-274"><a href="#cb24-274"></a>While we didn’t rely on correlation alone to select features, this heatmap gave us a useful starting point. It also helped us flag some variables with high overlap, which we later addressed using methods like Lasso regression that are designed to handle multicollinearity.</span>
+<span id="cb24-275"><a href="#cb24-275"></a></span>
+<span id="cb24-278"><a href="#cb24-278"></a><span class="in">```{r}</span></span>
+<span id="cb24-279"><a href="#cb24-279"></a><span class="at"># Safely handle categorical variables</span></span>
+<span id="cb24-280"><a href="#cb24-280"></a><span class="at">cat_vars &lt;- c(&quot;Payment_of_Min_Amount&quot;, &quot;Credit_Mix&quot;)</span></span>
+<span id="cb24-281"><a href="#cb24-281"></a><span class="at">cat_vars_existing &lt;- intersect(cat_vars, names(score_dat))</span></span>
+<span id="cb24-282"><a href="#cb24-282"></a></span>
+<span id="cb24-283"><a href="#cb24-283"></a><span class="at">if (length(cat_vars_existing) &gt; 0) {</span></span>
+<span id="cb24-284"><a href="#cb24-284"></a><span class="at">  # Convert to factor</span></span>
+<span id="cb24-285"><a href="#cb24-285"></a><span class="at">  score_dat &lt;- score_dat %&gt;%</span></span>
+<span id="cb24-286"><a href="#cb24-286"></a><span class="at">    mutate(across(all_of(cat_vars_existing), as.factor))</span></span>
+<span id="cb24-287"><a href="#cb24-287"></a><span class="at">  </span></span>
+<span id="cb24-288"><a href="#cb24-288"></a><span class="at">  # One-hot encode</span></span>
+<span id="cb24-289"><a href="#cb24-289"></a><span class="at">  one_hot &lt;- fastDummies::dummy_cols(score_dat,</span></span>
+<span id="cb24-290"><a href="#cb24-290"></a><span class="at">                                     select_columns = cat_vars_existing,</span></span>
+<span id="cb24-291"><a href="#cb24-291"></a><span class="at">                                     remove_selected_columns = TRUE)</span></span>
 <span id="cb24-292"><a href="#cb24-292"></a><span class="at">  </span></span>
-<span id="cb24-293"><a href="#cb24-293"></a><span class="at">  # Combine final dataset</span></span>
-<span id="cb24-294"><a href="#cb24-294"></a><span class="at">  score_dat_dp &lt;- cbind(score_dat, one_hot %&gt;% select(-any_of(names(score_dat))))</span></span>
-<span id="cb24-295"><a href="#cb24-295"></a><span class="at">} else {</span></span>
-<span id="cb24-296"><a href="#cb24-296"></a><span class="at">  score_dat_dp &lt;- score_dat  # No categorical columns found; skip encoding</span></span>
-<span id="cb24-297"><a href="#cb24-297"></a><span class="at">}</span></span>
-<span id="cb24-298"><a href="#cb24-298"></a></span>
-<span id="cb24-299"><a href="#cb24-299"></a><span class="st">```</span></span>
-<span id="cb24-300"><a href="#cb24-300"></a></span>
+<span id="cb24-293"><a href="#cb24-293"></a><span class="at">  # Drop original categorical columns</span></span>
+<span id="cb24-294"><a href="#cb24-294"></a><span class="at">  score_dat &lt;- score_dat %&gt;% select(-any_of(cat_vars_existing))</span></span>
+<span id="cb24-295"><a href="#cb24-295"></a><span class="at">  </span></span>
+<span id="cb24-296"><a href="#cb24-296"></a><span class="at">  # Combine final dataset</span></span>
+<span id="cb24-297"><a href="#cb24-297"></a><span class="at">  score_dat_dp &lt;- cbind(score_dat, one_hot %&gt;% select(-any_of(names(score_dat))))</span></span>
+<span id="cb24-298"><a href="#cb24-298"></a><span class="at">} else {</span></span>
+<span id="cb24-299"><a href="#cb24-299"></a><span class="at">  score_dat_dp &lt;- score_dat  # No categorical columns found; skip encoding</span></span>
+<span id="cb24-300"><a href="#cb24-300"></a><span class="at">}</span></span>
 <span id="cb24-301"><a href="#cb24-301"></a></span>
-<span id="cb24-302"><a href="#cb24-302"></a></span>
+<span id="cb24-302"><a href="#cb24-302"></a><span class="st">```</span></span>
 <span id="cb24-303"><a href="#cb24-303"></a></span>
-<span id="cb24-304"><a href="#cb24-304"></a></span>
-<span id="cb24-305"><a href="#cb24-305"></a><span class="co"># Lasso Regression</span></span>
-<span id="cb24-306"><a href="#cb24-306"></a>Lasso regression is to perform feature slection by penalising less relevant variables and shrinking their coefficients to zero.</span>
-<span id="cb24-307"><a href="#cb24-307"></a>Process<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-308"><a href="#cb24-308"></a><span class="sc">-</span> Split the data into training and test sets.</span>
-<span id="cb24-309"><a href="#cb24-309"></a><span class="sc">-</span> Use <span class="fu">cv.glmnet</span>() <span class="cf">for</span> cross validation to find the optimal lambda.</span>
-<span id="cb24-310"><a href="#cb24-310"></a><span class="sc">-</span> Predict and compute accuracy on the test set.</span>
-<span id="cb24-311"><a href="#cb24-311"></a>Objective<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-312"><a href="#cb24-312"></a>To reduce dimensionality and focus on the most predictive features, setting the stage <span class="cf">for</span> cleaner mopdeling downstream.</span>
-<span id="cb24-313"><a href="#cb24-313"></a></span>
-<span id="cb24-314"><a href="#cb24-314"></a><span class="st">```</span><span class="at">{r libraries}</span></span>
-<span id="cb24-315"><a href="#cb24-315"></a><span class="at">set.seed(123)</span></span>
-<span id="cb24-316"><a href="#cb24-316"></a><span class="at">inTrain_lasso &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
-<span id="cb24-317"><a href="#cb24-317"></a><span class="at">train_lasso &lt;- score_dat_dp[inTrain_lasso, ]</span></span>
-<span id="cb24-318"><a href="#cb24-318"></a><span class="at">test_lasso &lt;- score_dat_dp[-inTrain_lasso, ]</span></span>
-<span id="cb24-319"><a href="#cb24-319"></a><span class="at">x_train &lt;- model.matrix(Credit_Score ~ ., data = train_lasso)[, -1]</span></span>
-<span id="cb24-320"><a href="#cb24-320"></a><span class="at">x_test  &lt;- model.matrix(Credit_Score ~ ., data = test_lasso)[, -1]</span></span>
-<span id="cb24-321"><a href="#cb24-321"></a><span class="at">y_train &lt;- train_lasso$Credit_Score</span></span>
-<span id="cb24-322"><a href="#cb24-322"></a><span class="at">y_test  &lt;- test_lasso$Credit_Score</span></span>
-<span id="cb24-323"><a href="#cb24-323"></a></span>
-<span id="cb24-324"><a href="#cb24-324"></a><span class="at">lasso_cv &lt;- cv.glmnet(x_train, y_train, alpha = 1, family = &quot;multinomial&quot;)</span></span>
-<span id="cb24-325"><a href="#cb24-325"></a><span class="at">bestlam &lt;- lasso_cv$lambda.min</span></span>
-<span id="cb24-326"><a href="#cb24-326"></a><span class="at">lasso_preds &lt;- predict(lasso_cv, s = bestlam, newx = x_test, type = &quot;class&quot;)</span></span>
-<span id="cb24-327"><a href="#cb24-327"></a><span class="at">lasso_acc &lt;- mean(lasso_preds == y_test)</span></span>
-<span id="cb24-328"><a href="#cb24-328"></a><span class="at">print(paste(&quot;Lasso Accuracy:&quot;, round(lasso_acc * 100, 2), &quot;%&quot;))</span></span>
-<span id="cb24-329"><a href="#cb24-329"></a><span class="st">```</span></span>
+<span id="cb24-304"><a href="#cb24-304"></a><span class="co"># Lasso Regression</span></span>
+<span id="cb24-305"><a href="#cb24-305"></a>Lasso regression is to perform feature slection by penalising less relevant variables and shrinking their coefficients to zero.</span>
+<span id="cb24-306"><a href="#cb24-306"></a>Process<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-307"><a href="#cb24-307"></a><span class="sc">-</span> Split the data into training and test sets.</span>
+<span id="cb24-308"><a href="#cb24-308"></a><span class="sc">-</span> Use <span class="fu">cv.glmnet</span>() <span class="cf">for</span> cross validation to find the optimal lambda.</span>
+<span id="cb24-309"><a href="#cb24-309"></a><span class="sc">-</span> Predict and compute accuracy on the test set.</span>
+<span id="cb24-310"><a href="#cb24-310"></a>Objective<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-311"><a href="#cb24-311"></a>To reduce dimensionality and focus on the most predictive features, setting the stage <span class="cf">for</span> cleaner mopdeling downstream.</span>
+<span id="cb24-312"><a href="#cb24-312"></a></span>
+<span id="cb24-313"><a href="#cb24-313"></a><span class="st">```</span><span class="at">{r libraries}</span></span>
+<span id="cb24-314"><a href="#cb24-314"></a><span class="at">set.seed(123)</span></span>
+<span id="cb24-315"><a href="#cb24-315"></a><span class="at">inTrain_lasso &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
+<span id="cb24-316"><a href="#cb24-316"></a><span class="at">train_lasso &lt;- score_dat_dp[inTrain_lasso, ]</span></span>
+<span id="cb24-317"><a href="#cb24-317"></a><span class="at">test_lasso &lt;- score_dat_dp[-inTrain_lasso, ]</span></span>
+<span id="cb24-318"><a href="#cb24-318"></a><span class="at">x_train &lt;- model.matrix(Credit_Score ~ ., data = train_lasso)[, -1]</span></span>
+<span id="cb24-319"><a href="#cb24-319"></a><span class="at">x_test  &lt;- model.matrix(Credit_Score ~ ., data = test_lasso)[, -1]</span></span>
+<span id="cb24-320"><a href="#cb24-320"></a><span class="at">y_train &lt;- train_lasso$Credit_Score</span></span>
+<span id="cb24-321"><a href="#cb24-321"></a><span class="at">y_test  &lt;- test_lasso$Credit_Score</span></span>
+<span id="cb24-322"><a href="#cb24-322"></a></span>
+<span id="cb24-323"><a href="#cb24-323"></a><span class="at">lasso_cv &lt;- cv.glmnet(x_train, y_train, alpha = 1, family = &quot;multinomial&quot;)</span></span>
+<span id="cb24-324"><a href="#cb24-324"></a><span class="at">bestlam &lt;- lasso_cv$lambda.min</span></span>
+<span id="cb24-325"><a href="#cb24-325"></a><span class="at">lasso_preds &lt;- predict(lasso_cv, s = bestlam, newx = x_test, type = &quot;class&quot;)</span></span>
+<span id="cb24-326"><a href="#cb24-326"></a><span class="at">lasso_acc &lt;- mean(lasso_preds == y_test)</span></span>
+<span id="cb24-327"><a href="#cb24-327"></a><span class="at">print(paste(&quot;Lasso Accuracy:&quot;, round(lasso_acc * 100, 2), &quot;%&quot;))</span></span>
+<span id="cb24-328"><a href="#cb24-328"></a><span class="st">```</span></span>
+<span id="cb24-329"><a href="#cb24-329"></a>The Lasso Regression model gave us a test accuracy of about <span class="fl">64.3</span>%, which, <span class="cf">while</span> not the highest, still showed that the model was able to pick up on some meaningful patterns <span class="cf">in</span> the data. One of the biggest advantages of Lasso is that it simplifies the model by automatically selecting only the most important variables — and that’s exactly what it did here.</span>
 <span id="cb24-330"><a href="#cb24-330"></a></span>
-<span id="cb24-331"><a href="#cb24-331"></a><span class="co"># Forward Stepwise Selection (Multinomial Logistic Regression)</span></span>
-<span id="cb24-332"><a href="#cb24-332"></a>This method iteratively selects the best performing features based on accuracy improvements.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-333"><a href="#cb24-333"></a>Process<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-334"><a href="#cb24-334"></a><span class="sc">-</span> Starts with no features and adds one at a time based on which feature gives the highest accuracy gain on a test set. <span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-335"><a href="#cb24-335"></a><span class="sc">-</span> <span class="fu">multinom</span>() is used to train a model on the selected features.</span>
-<span id="cb24-336"><a href="#cb24-336"></a>Objective<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
-<span id="cb24-337"><a href="#cb24-337"></a>This technique provides a human<span class="sc">-</span>interpretable subset of features, complementing Lasso<span class="st">&#39;s more automated selection, it ensures model simplicity and explains why certain variables are preditive.&lt;br&gt;</span></span>
-<span id="cb24-338"><a href="#cb24-338"></a></span>
-<span id="cb24-339"><a href="#cb24-339"></a><span class="st">```{r lasso regression}</span></span>
-<span id="cb24-340"><a href="#cb24-340"></a><span class="st">set.seed(123)</span></span>
-<span id="cb24-341"><a href="#cb24-341"></a><span class="st">inTrain_fs &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
-<span id="cb24-342"><a href="#cb24-342"></a><span class="st">train_fs &lt;- score_dat_dp[inTrain_fs, ]</span></span>
-<span id="cb24-343"><a href="#cb24-343"></a><span class="st">test_fs  &lt;- score_dat_dp[-inTrain_fs, ]</span></span>
-<span id="cb24-344"><a href="#cb24-344"></a><span class="st">cls.train &lt;- train_fs$Credit_Score</span></span>
-<span id="cb24-345"><a href="#cb24-345"></a><span class="st">cls.test  &lt;- test_fs$Credit_Score</span></span>
-<span id="cb24-346"><a href="#cb24-346"></a><span class="st">train_fs &lt;- train_fs %&gt;% select(-Credit_Score)</span></span>
-<span id="cb24-347"><a href="#cb24-347"></a><span class="st">test_fs  &lt;- test_fs %&gt;% select(-Credit_Score)</span></span>
-<span id="cb24-348"><a href="#cb24-348"></a></span>
-<span id="cb24-349"><a href="#cb24-349"></a><span class="st">selectFeatureMultiClass &lt;- function(train, test, cls.train, cls.test, features) {</span></span>
-<span id="cb24-350"><a href="#cb24-350"></a><span class="st">  current.highest.accuracy &lt;- 0</span></span>
-<span id="cb24-351"><a href="#cb24-351"></a><span class="st">  selected.i &lt;- NULL</span></span>
-<span id="cb24-352"><a href="#cb24-352"></a><span class="st">  remaining &lt;- setdiff(colnames(train), features)</span></span>
-<span id="cb24-353"><a href="#cb24-353"></a><span class="st">  for (f in remaining) {</span></span>
-<span id="cb24-354"><a href="#cb24-354"></a><span class="st">    selected.features &lt;- c(features, f)</span></span>
-<span id="cb24-355"><a href="#cb24-355"></a><span class="st">    train.sub &lt;- data.frame(train[, selected.features, drop = FALSE], Credit_Score = cls.train)</span></span>
-<span id="cb24-356"><a href="#cb24-356"></a><span class="st">    test.sub  &lt;- data.frame(test[, selected.features, drop = FALSE], Credit_Score = cls.test)</span></span>
-<span id="cb24-357"><a href="#cb24-357"></a><span class="st">    acc &lt;- 0</span></span>
-<span id="cb24-358"><a href="#cb24-358"></a><span class="st">    tryCatch({</span></span>
-<span id="cb24-359"><a href="#cb24-359"></a><span class="st">      model &lt;- multinom(Credit_Score ~ ., data = train.sub, trace = FALSE)</span></span>
-<span id="cb24-360"><a href="#cb24-360"></a><span class="st">      preds &lt;- predict(model, newdata = test.sub)</span></span>
-<span id="cb24-361"><a href="#cb24-361"></a><span class="st">      acc &lt;- mean(preds == cls.test)</span></span>
-<span id="cb24-362"><a href="#cb24-362"></a><span class="st">    }, error = function(e) {})</span></span>
-<span id="cb24-363"><a href="#cb24-363"></a><span class="st">    if (acc &gt; current.highest.accuracy) {</span></span>
-<span id="cb24-364"><a href="#cb24-364"></a><span class="st">      current.highest.accuracy &lt;- acc</span></span>
-<span id="cb24-365"><a href="#cb24-365"></a><span class="st">      selected.i &lt;- f</span></span>
-<span id="cb24-366"><a href="#cb24-366"></a><span class="st">    }</span></span>
-<span id="cb24-367"><a href="#cb24-367"></a><span class="st">  }</span></span>
-<span id="cb24-368"><a href="#cb24-368"></a><span class="st">  return(selected.i)</span></span>
-<span id="cb24-369"><a href="#cb24-369"></a><span class="st">}</span></span>
-<span id="cb24-370"><a href="#cb24-370"></a></span>
-<span id="cb24-371"><a href="#cb24-371"></a><span class="st">features.direct &lt;- NULL</span></span>
-<span id="cb24-372"><a href="#cb24-372"></a><span class="st">for (i in 1:5) {</span></span>
-<span id="cb24-373"><a href="#cb24-373"></a><span class="st">  selected.i &lt;- selectFeatureMultiClass(train_fs, test_fs, cls.train, cls.test, features.direct)</span></span>
-<span id="cb24-374"><a href="#cb24-374"></a><span class="st">  if (is.null(selected.i)) break</span></span>
-<span id="cb24-375"><a href="#cb24-375"></a><span class="st">  features.direct &lt;- c(features.direct, selected.i)</span></span>
-<span id="cb24-376"><a href="#cb24-376"></a><span class="st">}</span></span>
-<span id="cb24-377"><a href="#cb24-377"></a><span class="st">print(paste(&quot;Top 5 Forward Selected Features:&quot;, paste(features.direct, collapse = &quot;, &quot;)))</span></span>
-<span id="cb24-378"><a href="#cb24-378"></a></span>
-<span id="cb24-379"><a href="#cb24-379"></a><span class="st">formula_forward &lt;- as.formula(paste(&quot;Credit_Score ~&quot;, paste(features.direct, collapse = &quot;+&quot;)))</span></span>
-<span id="cb24-380"><a href="#cb24-380"></a><span class="st">logit_model &lt;- multinom(formula_forward, data = data.frame(train_fs[, features.direct], Credit_Score = cls.train))</span></span>
-<span id="cb24-381"><a href="#cb24-381"></a><span class="st">logit_preds &lt;- predict(logit_model, newdata = test_fs)</span></span>
-<span id="cb24-382"><a href="#cb24-382"></a><span class="st">conf_matrix_logit &lt;- confusionMatrix(logit_preds, cls.test)</span></span>
-<span id="cb24-383"><a href="#cb24-383"></a><span class="st">print(conf_matrix_logit)</span></span>
-<span id="cb24-384"><a href="#cb24-384"></a><span class="st">```</span></span>
-<span id="cb24-385"><a href="#cb24-385"></a></span>
-<span id="cb24-386"><a href="#cb24-386"></a><span class="st"># Random Forest (with Feature importance)</span></span>
-<span id="cb24-387"><a href="#cb24-387"></a><span class="st">Random forest builds multiple decision trees and aggregate their predictions, a full model is trained, and feature importance is extracted, top five features are used to train a leaner model, then accuracy and confusion matrix are reported.&lt;br&gt;</span></span>
-<span id="cb24-388"><a href="#cb24-388"></a><span class="st">Objective: &lt;br&gt;</span></span>
-<span id="cb24-389"><a href="#cb24-389"></a><span class="st">- More accurate and robust than linear models.</span></span>
-<span id="cb24-390"><a href="#cb24-390"></a><span class="st">- The feature importance results also validate earlier selections from Lasso and Forward Selection.</span></span>
+<span id="cb24-331"><a href="#cb24-331"></a>The variables that Lasso kept — Num_of_Loan, Num_of_Delayed_Payment, Interest_Rate, Credit_Utilization_Ratio, and Amount_invested_monthly — all make intuitive sense and line up with what we saw <span class="cf">in</span> the earlier correlation heatmap. These features relate more directly to credit behavior and financial responsibility, which seem to play a stronger role <span class="cf">in</span> determining credit scores.</span>
+<span id="cb24-332"><a href="#cb24-332"></a>Interestingly, income<span class="sc">-</span>related features like Annual_Income and Monthly_Balance were not selected by Lasso. Even though those variables were strongly correlated with each other, they didn’t have much of a direct relationship with the target variable. This reinforces the idea that how someone manages debt and repayment is more predictive of their credit score than how much they earn.</span>
+<span id="cb24-333"><a href="#cb24-333"></a>Overall, Lasso helped confirm which variables were most relevant <span class="cf">for</span> prediction, and gave us a cleaner, more interpretable model as a result.</span>
+<span id="cb24-334"><a href="#cb24-334"></a></span>
+<span id="cb24-335"><a href="#cb24-335"></a><span class="co"># Forward Stepwise Selection (Multinomial Logistic Regression)</span></span>
+<span id="cb24-336"><a href="#cb24-336"></a>This method iteratively selects the best performing features based on accuracy improvements.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-337"><a href="#cb24-337"></a>Process<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-338"><a href="#cb24-338"></a><span class="sc">-</span> Starts with no features and adds one at a time based on which feature gives the highest accuracy gain on a test set. <span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-339"><a href="#cb24-339"></a><span class="sc">-</span> <span class="fu">multinom</span>() is used to train a model on the selected features.</span>
+<span id="cb24-340"><a href="#cb24-340"></a>Objective<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-341"><a href="#cb24-341"></a>This technique provides a human<span class="sc">-</span>interpretable subset of features, complementing Lasso<span class="st">&#39;s more automated selection, it ensures model simplicity and explains why certain variables are preditive.&lt;br&gt;</span></span>
+<span id="cb24-342"><a href="#cb24-342"></a></span>
+<span id="cb24-343"><a href="#cb24-343"></a><span class="st">```{r lasso regression}</span></span>
+<span id="cb24-344"><a href="#cb24-344"></a><span class="st">set.seed(123)</span></span>
+<span id="cb24-345"><a href="#cb24-345"></a><span class="st">inTrain_fs &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
+<span id="cb24-346"><a href="#cb24-346"></a><span class="st">train_fs &lt;- score_dat_dp[inTrain_fs, ]</span></span>
+<span id="cb24-347"><a href="#cb24-347"></a><span class="st">test_fs  &lt;- score_dat_dp[-inTrain_fs, ]</span></span>
+<span id="cb24-348"><a href="#cb24-348"></a><span class="st">cls.train &lt;- train_fs$Credit_Score</span></span>
+<span id="cb24-349"><a href="#cb24-349"></a><span class="st">cls.test  &lt;- test_fs$Credit_Score</span></span>
+<span id="cb24-350"><a href="#cb24-350"></a><span class="st">train_fs &lt;- train_fs %&gt;% select(-Credit_Score)</span></span>
+<span id="cb24-351"><a href="#cb24-351"></a><span class="st">test_fs  &lt;- test_fs %&gt;% select(-Credit_Score)</span></span>
+<span id="cb24-352"><a href="#cb24-352"></a></span>
+<span id="cb24-353"><a href="#cb24-353"></a><span class="st">selectFeatureMultiClass &lt;- function(train, test, cls.train, cls.test, features) {</span></span>
+<span id="cb24-354"><a href="#cb24-354"></a><span class="st">  current.highest.accuracy &lt;- 0</span></span>
+<span id="cb24-355"><a href="#cb24-355"></a><span class="st">  selected.i &lt;- NULL</span></span>
+<span id="cb24-356"><a href="#cb24-356"></a><span class="st">  remaining &lt;- setdiff(colnames(train), features)</span></span>
+<span id="cb24-357"><a href="#cb24-357"></a><span class="st">  for (f in remaining) {</span></span>
+<span id="cb24-358"><a href="#cb24-358"></a><span class="st">    selected.features &lt;- c(features, f)</span></span>
+<span id="cb24-359"><a href="#cb24-359"></a><span class="st">    train.sub &lt;- data.frame(train[, selected.features, drop = FALSE], Credit_Score = cls.train)</span></span>
+<span id="cb24-360"><a href="#cb24-360"></a><span class="st">    test.sub  &lt;- data.frame(test[, selected.features, drop = FALSE], Credit_Score = cls.test)</span></span>
+<span id="cb24-361"><a href="#cb24-361"></a><span class="st">    acc &lt;- 0</span></span>
+<span id="cb24-362"><a href="#cb24-362"></a><span class="st">    tryCatch({</span></span>
+<span id="cb24-363"><a href="#cb24-363"></a><span class="st">      model &lt;- multinom(Credit_Score ~ ., data = train.sub, trace = FALSE)</span></span>
+<span id="cb24-364"><a href="#cb24-364"></a><span class="st">      preds &lt;- predict(model, newdata = test.sub)</span></span>
+<span id="cb24-365"><a href="#cb24-365"></a><span class="st">      acc &lt;- mean(preds == cls.test)</span></span>
+<span id="cb24-366"><a href="#cb24-366"></a><span class="st">    }, error = function(e) {})</span></span>
+<span id="cb24-367"><a href="#cb24-367"></a><span class="st">    if (acc &gt; current.highest.accuracy) {</span></span>
+<span id="cb24-368"><a href="#cb24-368"></a><span class="st">      current.highest.accuracy &lt;- acc</span></span>
+<span id="cb24-369"><a href="#cb24-369"></a><span class="st">      selected.i &lt;- f</span></span>
+<span id="cb24-370"><a href="#cb24-370"></a><span class="st">    }</span></span>
+<span id="cb24-371"><a href="#cb24-371"></a><span class="st">  }</span></span>
+<span id="cb24-372"><a href="#cb24-372"></a><span class="st">  return(selected.i)</span></span>
+<span id="cb24-373"><a href="#cb24-373"></a><span class="st">}</span></span>
+<span id="cb24-374"><a href="#cb24-374"></a></span>
+<span id="cb24-375"><a href="#cb24-375"></a><span class="st">features.direct &lt;- NULL</span></span>
+<span id="cb24-376"><a href="#cb24-376"></a><span class="st">for (i in 1:5) {</span></span>
+<span id="cb24-377"><a href="#cb24-377"></a><span class="st">  selected.i &lt;- selectFeatureMultiClass(train_fs, test_fs, cls.train, cls.test, features.direct)</span></span>
+<span id="cb24-378"><a href="#cb24-378"></a><span class="st">  if (is.null(selected.i)) break</span></span>
+<span id="cb24-379"><a href="#cb24-379"></a><span class="st">  features.direct &lt;- c(features.direct, selected.i)</span></span>
+<span id="cb24-380"><a href="#cb24-380"></a><span class="st">}</span></span>
+<span id="cb24-381"><a href="#cb24-381"></a><span class="st">print(paste(&quot;Top 5 Forward Selected Features:&quot;, paste(features.direct, collapse = &quot;, &quot;)))</span></span>
+<span id="cb24-382"><a href="#cb24-382"></a></span>
+<span id="cb24-383"><a href="#cb24-383"></a><span class="st">formula_forward &lt;- as.formula(paste(&quot;Credit_Score ~&quot;, paste(features.direct, collapse = &quot;+&quot;)))</span></span>
+<span id="cb24-384"><a href="#cb24-384"></a><span class="st">logit_model &lt;- multinom(formula_forward, data = data.frame(train_fs[, features.direct], Credit_Score = cls.train))</span></span>
+<span id="cb24-385"><a href="#cb24-385"></a><span class="st">logit_preds &lt;- predict(logit_model, newdata = test_fs)</span></span>
+<span id="cb24-386"><a href="#cb24-386"></a><span class="st">conf_matrix_logit &lt;- confusionMatrix(logit_preds, cls.test)</span></span>
+<span id="cb24-387"><a href="#cb24-387"></a><span class="st">print(conf_matrix_logit)</span></span>
+<span id="cb24-388"><a href="#cb24-388"></a><span class="st">```</span></span>
+<span id="cb24-389"><a href="#cb24-389"></a></span>
+<span id="cb24-390"><a href="#cb24-390"></a><span class="st">The Forward Stepwise Selection model reached an accuracy of 64.27%, which is very close to what we saw with the Lasso model. One of the main advantages of this approach is that it clearly highlights the top features contributing to the prediction. In this case, the most impactful variables were Interest_Rate, Num_Credit_Card, Changed_Credit_Limit, Num_Credit_Inquiries, and Delay_from_due_date.&lt;br&gt;</span></span>
 <span id="cb24-391"><a href="#cb24-391"></a></span>
-<span id="cb24-392"><a href="#cb24-392"></a><span class="st">```{r randomforest}</span></span>
-<span id="cb24-393"><a href="#cb24-393"></a><span class="st">set.seed(42)</span></span>
-<span id="cb24-394"><a href="#cb24-394"></a></span>
-<span id="cb24-395"><a href="#cb24-395"></a><span class="st">inTrain_rf &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
-<span id="cb24-396"><a href="#cb24-396"></a><span class="st">train_rf &lt;- score_dat_dp[inTrain_rf, ]</span></span>
-<span id="cb24-397"><a href="#cb24-397"></a><span class="st">test_rf  &lt;- score_dat_dp[-inTrain_rf, ]</span></span>
-<span id="cb24-398"><a href="#cb24-398"></a></span>
-<span id="cb24-399"><a href="#cb24-399"></a><span class="st">rf_model &lt;- randomForest(Credit_Score ~ ., data = train_rf, ntree = 100, importance = TRUE)</span></span>
-<span id="cb24-400"><a href="#cb24-400"></a><span class="st">rf_pred &lt;- predict(rf_model, newdata = test_rf)</span></span>
+<span id="cb24-392"><a href="#cb24-392"></a><span class="st">Like with Lasso, the model leaned heavily on features that reflect credit behavior rather than income. This supports what we saw earlier in the correlation heatmap, where income-related variables showed little to no relationship with the target variable. Interestingly, Forward Stepwise picked up on a few new variables — such as Num_Credit_Card and Changed_Credit_Limit — which could offer additional insights into how credit activity affects credit scores.&lt;br&gt;</span></span>
+<span id="cb24-393"><a href="#cb24-393"></a></span>
+<span id="cb24-394"><a href="#cb24-394"></a><span class="st">Looking at how the model performed across different classes, it handled the Standard category fairly well, with a sensitivity of 0.81. That means it was good at catching most of the Standard credit scores. However, performance dropped off when it came to the Good class, where sensitivity was just 0.34 — meaning many individuals with Good scores were misclassified. While specificity was high for both the Good (0.95) and Poor (0.91) classes, the Standard class had low specificity at 0.47, suggesting some confusion between categories.&lt;br&gt;</span></span>
+<span id="cb24-395"><a href="#cb24-395"></a></span>
+<span id="cb24-396"><a href="#cb24-396"></a><span class="st">Balanced accuracy scores told a similar story:</span></span>
+<span id="cb24-397"><a href="#cb24-397"></a></span>
+<span id="cb24-398"><a href="#cb24-398"></a><span class="st">- Poor: 0.7127</span></span>
+<span id="cb24-399"><a href="#cb24-399"></a><span class="st">- Good: 0.6462</span></span>
+<span id="cb24-400"><a href="#cb24-400"></a><span class="st">- Standard: 0.6401</span></span>
 <span id="cb24-401"><a href="#cb24-401"></a></span>
-<span id="cb24-402"><a href="#cb24-402"></a><span class="st">rf_acc &lt;- mean(rf_pred == test_rf$Credit_Score)</span></span>
-<span id="cb24-403"><a href="#cb24-403"></a><span class="st">print(paste(&quot;Random Forest Accuracy:&quot;, round(rf_acc * 100, 2), &quot;%&quot;))</span></span>
-<span id="cb24-404"><a href="#cb24-404"></a></span>
-<span id="cb24-405"><a href="#cb24-405"></a><span class="st">conf_matrix_rf &lt;- confusionMatrix(rf_pred, test_rf$Credit_Score)</span></span>
-<span id="cb24-406"><a href="#cb24-406"></a><span class="st">print(conf_matrix_rf)</span></span>
-<span id="cb24-407"><a href="#cb24-407"></a><span class="st">```</span></span>
-<span id="cb24-408"><a href="#cb24-408"></a></span>
-<span id="cb24-409"><a href="#cb24-409"></a><span class="st">## HEATMAP</span></span>
-<span id="cb24-410"><a href="#cb24-410"></a></span>
-<span id="cb24-411"><a href="#cb24-411"></a><span class="st">```{r heatmap}</span></span>
-<span id="cb24-412"><a href="#cb24-412"></a><span class="st">conf_df &lt;- as.data.frame(conf_matrix_rf$table)</span></span>
-<span id="cb24-413"><a href="#cb24-413"></a></span>
-<span id="cb24-414"><a href="#cb24-414"></a><span class="st">ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +</span></span>
-<span id="cb24-415"><a href="#cb24-415"></a><span class="st">  geom_tile() +</span></span>
-<span id="cb24-416"><a href="#cb24-416"></a><span class="st">  geom_text(aes(label = Freq), color = &quot;white&quot;, size = 5) +</span></span>
-<span id="cb24-417"><a href="#cb24-417"></a><span class="st">  labs(title = &quot;Confusion Matrix Heatmap for Random Forest&quot;,</span></span>
-<span id="cb24-418"><a href="#cb24-418"></a><span class="st">       x = &quot;True Class&quot;,</span></span>
-<span id="cb24-419"><a href="#cb24-419"></a><span class="st">       y = &quot;Predicted Class&quot;) +</span></span>
-<span id="cb24-420"><a href="#cb24-420"></a><span class="st">  theme_minimal()</span></span>
-<span id="cb24-421"><a href="#cb24-421"></a><span class="st">```</span></span>
+<span id="cb24-402"><a href="#cb24-402"></a><span class="st">These numbers reflect the model’s uneven performance, especially for underrepresented classes. Overall, the Forward Stepwise model adds another layer of confirmation around the importance of credit behavior features. But like with Lasso, its limitations in predicting the Good class highlight the need to explore other techniques — possibly including methods to address class imbalance — in future work.</span></span>
+<span id="cb24-403"><a href="#cb24-403"></a></span>
+<span id="cb24-404"><a href="#cb24-404"></a><span class="st"># Random Forest (with Feature importance)</span></span>
+<span id="cb24-405"><a href="#cb24-405"></a><span class="st">Random forest builds multiple decision trees and aggregate their predictions, a full model is trained, and feature importance is extracted, top five features are used to train a leaner model, then accuracy and confusion matrix are reported.&lt;br&gt;</span></span>
+<span id="cb24-406"><a href="#cb24-406"></a><span class="st">Objective: &lt;br&gt;</span></span>
+<span id="cb24-407"><a href="#cb24-407"></a><span class="st">- More accurate and robust than linear models.</span></span>
+<span id="cb24-408"><a href="#cb24-408"></a><span class="st">- The feature importance results also validate earlier selections from Lasso and Forward Selection.</span></span>
+<span id="cb24-409"><a href="#cb24-409"></a></span>
+<span id="cb24-410"><a href="#cb24-410"></a><span class="st">```{r randomforest}</span></span>
+<span id="cb24-411"><a href="#cb24-411"></a><span class="st">set.seed(42)</span></span>
+<span id="cb24-412"><a href="#cb24-412"></a></span>
+<span id="cb24-413"><a href="#cb24-413"></a><span class="st">inTrain_rf &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
+<span id="cb24-414"><a href="#cb24-414"></a><span class="st">train_rf &lt;- score_dat_dp[inTrain_rf, ]</span></span>
+<span id="cb24-415"><a href="#cb24-415"></a><span class="st">test_rf  &lt;- score_dat_dp[-inTrain_rf, ]</span></span>
+<span id="cb24-416"><a href="#cb24-416"></a></span>
+<span id="cb24-417"><a href="#cb24-417"></a><span class="st">rf_model &lt;- randomForest(Credit_Score ~ ., data = train_rf, ntree = 100, importance = TRUE)</span></span>
+<span id="cb24-418"><a href="#cb24-418"></a><span class="st">rf_pred &lt;- predict(rf_model, newdata = test_rf)</span></span>
+<span id="cb24-419"><a href="#cb24-419"></a></span>
+<span id="cb24-420"><a href="#cb24-420"></a><span class="st">rf_acc &lt;- mean(rf_pred == test_rf$Credit_Score)</span></span>
+<span id="cb24-421"><a href="#cb24-421"></a><span class="st">print(paste(&quot;Random Forest Accuracy:&quot;, round(rf_acc * 100, 2), &quot;%&quot;))</span></span>
 <span id="cb24-422"><a href="#cb24-422"></a></span>
-<span id="cb24-423"><a href="#cb24-423"></a><span class="st"># XGBoost</span></span>
-<span id="cb24-424"><a href="#cb24-424"></a><span class="st">XGBoost is a high-performance boosting algorithm. It builds trees sequentially, improving errors from previous trees.&lt;br&gt;</span></span>
-<span id="cb24-425"><a href="#cb24-425"></a><span class="st">Process: &lt;br&gt;</span></span>
-<span id="cb24-426"><a href="#cb24-426"></a><span class="st">- Convert dataset to numeric matrix format.</span></span>
-<span id="cb24-427"><a href="#cb24-427"></a><span class="st">- Use xgb.train() to fit the model.</span></span>
-<span id="cb24-428"><a href="#cb24-428"></a><span class="st">- Extract top five features and retrain a reduced model.</span></span>
-<span id="cb24-429"><a href="#cb24-429"></a><span class="st">- Evaluate accuracy and display confusion matrix.</span></span>
-<span id="cb24-430"><a href="#cb24-430"></a><span class="st">XGBoost tends to be more efficient and often outperforms Random Forest in structured data. Its feature importance offers another validation path for feature selection.&lt;br&gt;</span></span>
-<span id="cb24-431"><a href="#cb24-431"></a></span>
-<span id="cb24-432"><a href="#cb24-432"></a><span class="st">```{r xgboost}</span></span>
-<span id="cb24-433"><a href="#cb24-433"></a><span class="st">set.seed(100)</span></span>
+<span id="cb24-423"><a href="#cb24-423"></a><span class="st">conf_matrix_rf &lt;- confusionMatrix(rf_pred, test_rf$Credit_Score)</span></span>
+<span id="cb24-424"><a href="#cb24-424"></a><span class="st">print(conf_matrix_rf)</span></span>
+<span id="cb24-425"><a href="#cb24-425"></a><span class="st">```</span></span>
+<span id="cb24-426"><a href="#cb24-426"></a></span>
+<span id="cb24-427"><a href="#cb24-427"></a><span class="st">The Random Forest model delivered the best performance out of all the models we tested, achieving an accuracy of 79.9%. The confidence interval was tight, and the very low p-value (p &lt; 2.2e-16) confirms that the model&#39;</span>s predictions weren’t just due to chance. The statistic came <span class="cf">in</span> at <span class="fl">0.6661</span>, which shows strong agreement between the predicted and actual credit scores — a good sign <span class="cf">for</span> a multi<span class="sc">-</span>class classification problem like this one.</span>
+<span id="cb24-428"><a href="#cb24-428"></a></span>
+<span id="cb24-429"><a href="#cb24-429"></a>When we broke down the model’s performance by class, the results were impressive across the board. The <span class="fu">recall</span> (or sensitivity) was<span class="sc">:</span></span>
+<span id="cb24-430"><a href="#cb24-430"></a></span>
+<span id="cb24-431"><a href="#cb24-431"></a><span class="sc">-</span> Good<span class="sc">:</span> <span class="fl">0.7318</span></span>
+<span id="cb24-432"><a href="#cb24-432"></a><span class="sc">-</span> Poor<span class="sc">:</span> <span class="fl">0.8249</span></span>
+<span id="cb24-433"><a href="#cb24-433"></a><span class="sc">-</span> Standard<span class="sc">:</span> <span class="fl">0.8075</span></span>
 <span id="cb24-434"><a href="#cb24-434"></a></span>
-<span id="cb24-435"><a href="#cb24-435"></a><span class="st">inTrain_xgb &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
-<span id="cb24-436"><a href="#cb24-436"></a><span class="st">train_xgb &lt;- score_dat_dp[inTrain_xgb, ]</span></span>
-<span id="cb24-437"><a href="#cb24-437"></a><span class="st">test_xgb  &lt;- score_dat_dp[-inTrain_xgb, ]</span></span>
+<span id="cb24-435"><a href="#cb24-435"></a>This is especially encouraging <span class="cf">for</span> the Good class, which was underrepresented <span class="cf">in</span> the data and had been a weakness <span class="cf">for</span> the other models. Random Forest managed to pick up on these cases much better.</span>
+<span id="cb24-436"><a href="#cb24-436"></a></span>
+<span id="cb24-437"><a href="#cb24-437"></a>Precision scores also looked solid<span class="sc">:</span></span>
 <span id="cb24-438"><a href="#cb24-438"></a></span>
-<span id="cb24-439"><a href="#cb24-439"></a><span class="st">x_train &lt;- model.matrix(Credit_Score ~ ., train_xgb)[, -1]</span></span>
-<span id="cb24-440"><a href="#cb24-440"></a><span class="st">x_test  &lt;- model.matrix(Credit_Score ~ ., test_xgb)[, -1]</span></span>
-<span id="cb24-441"><a href="#cb24-441"></a><span class="st">y_train &lt;- as.numeric(train_xgb$Credit_Score) - 1</span></span>
-<span id="cb24-442"><a href="#cb24-442"></a><span class="st">y_test  &lt;- as.numeric(test_xgb$Credit_Score) - 1</span></span>
-<span id="cb24-443"><a href="#cb24-443"></a></span>
-<span id="cb24-444"><a href="#cb24-444"></a><span class="st">dtrain &lt;- xgb.DMatrix(data = x_train, label = y_train)</span></span>
-<span id="cb24-445"><a href="#cb24-445"></a><span class="st">dtest  &lt;- xgb.DMatrix(data = x_test, label = y_test)</span></span>
-<span id="cb24-446"><a href="#cb24-446"></a></span>
-<span id="cb24-447"><a href="#cb24-447"></a><span class="st">params &lt;- list(objective = &quot;multi:softmax&quot;, num_class = 3, eval_metric = &quot;mlogloss&quot;)</span></span>
-<span id="cb24-448"><a href="#cb24-448"></a><span class="st">xgb_model &lt;- xgb.train(params = params, data = dtrain, nrounds = 100, verbose = 0)</span></span>
+<span id="cb24-439"><a href="#cb24-439"></a><span class="sc">-</span> Good<span class="sc">:</span> <span class="fl">0.7669</span></span>
+<span id="cb24-440"><a href="#cb24-440"></a><span class="sc">-</span> Poor<span class="sc">:</span> <span class="fl">0.7883</span></span>
+<span id="cb24-441"><a href="#cb24-441"></a><span class="sc">-</span> Standard<span class="sc">:</span> <span class="fl">0.8156</span></span>
+<span id="cb24-442"><a href="#cb24-442"></a></span>
+<span id="cb24-443"><a href="#cb24-443"></a>This means that not only was the model catching most of the correct cases, but it was also avoiding many false positives.</span>
+<span id="cb24-444"><a href="#cb24-444"></a>To account <span class="cf">for</span> the class imbalance <span class="cf">in</span> the dataset, we also looked at balanced accuracy<span class="sc">:</span></span>
+<span id="cb24-445"><a href="#cb24-445"></a></span>
+<span id="cb24-446"><a href="#cb24-446"></a><span class="sc">-</span> Good<span class="sc">:</span> <span class="fl">0.8418</span></span>
+<span id="cb24-447"><a href="#cb24-447"></a><span class="sc">-</span> Poor<span class="sc">:</span> <span class="fl">0.8672</span></span>
+<span id="cb24-448"><a href="#cb24-448"></a><span class="sc">-</span> Standard<span class="sc">:</span> <span class="fl">0.8001</span></span>
 <span id="cb24-449"><a href="#cb24-449"></a></span>
-<span id="cb24-450"><a href="#cb24-450"></a><span class="st">xgb_pred &lt;- predict(xgb_model, dtest)</span></span>
-<span id="cb24-451"><a href="#cb24-451"></a><span class="st">xgb_acc &lt;- mean(xgb_pred == y_test)</span></span>
-<span id="cb24-452"><a href="#cb24-452"></a><span class="st">print(paste(&quot;XGBoost Accuracy:&quot;, round(xgb_acc * 100, 2), &quot;%&quot;))</span></span>
+<span id="cb24-450"><a href="#cb24-450"></a>These balanced accuracy values are significantly higher than what we saw <span class="cf">in</span> Lasso and Forward Stepwise <span class="fu">models</span> (which both hovered around <span class="dv">64</span>%), especially <span class="cf">for</span> the Good class. This suggests that Random Forest handles all classes more consistently, regardless of how many examples there are <span class="cf">for</span> each.</span>
+<span id="cb24-451"><a href="#cb24-451"></a></span>
+<span id="cb24-452"><a href="#cb24-452"></a>Overall, Random Forest proved to be the most robust and reliable model <span class="cf">in</span> this project. It performed well across all classes and handled the class imbalance effectively. Plus, the features it identified as important — like Interest_Rate, Num_of_Loan, and Num_of_Delayed_Payment — were consistent with what we found <span class="cf">in</span> earlier models, reinforcing confidence <span class="cf">in</span> our overall approach to feature selection.</span>
 <span id="cb24-453"><a href="#cb24-453"></a></span>
-<span id="cb24-454"><a href="#cb24-454"></a><span class="st">conf_matrix_xgb &lt;- confusionMatrix(factor(xgb_pred), factor(y_test))</span></span>
-<span id="cb24-455"><a href="#cb24-455"></a><span class="st">print(conf_matrix_xgb)</span></span>
-<span id="cb24-456"><a href="#cb24-456"></a><span class="st">```</span></span>
-<span id="cb24-457"><a href="#cb24-457"></a><span class="st"># Conclusion</span></span>
-<span id="cb24-458"><a href="#cb24-458"></a><span class="st">Random Forest performed best (~78% accuracy), showing strong class-handling capability.</span></span>
-<span id="cb24-459"><a href="#cb24-459"></a><span class="st">XGBoost (~74%) showed efficiency and potential with hyperparameter tuning.</span></span>
-<span id="cb24-460"><a href="#cb24-460"></a><span class="st">Lasso and Forward Selection improved model simplicity and interpretability.</span></span>
-<span id="cb24-461"><a href="#cb24-461"></a><span class="st">Together, the full pipeline reflects a professional-grade data science workflow from EDA to evaluation.</span></span>
-<span id="cb24-462"><a href="#cb24-462"></a><span class="st">  </span></span>
+<span id="cb24-454"><a href="#cb24-454"></a><span class="do">## HEATMAP</span></span>
+<span id="cb24-455"><a href="#cb24-455"></a></span>
+<span id="cb24-456"><a href="#cb24-456"></a><span class="st">```</span><span class="at">{r heatmap}</span></span>
+<span id="cb24-457"><a href="#cb24-457"></a><span class="at">conf_df &lt;- as.data.frame(conf_matrix_rf$table)</span></span>
+<span id="cb24-458"><a href="#cb24-458"></a></span>
+<span id="cb24-459"><a href="#cb24-459"></a><span class="at">ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +</span></span>
+<span id="cb24-460"><a href="#cb24-460"></a><span class="at">  geom_tile() +</span></span>
+<span id="cb24-461"><a href="#cb24-461"></a><span class="at">  geom_text(aes(label = Freq), color = &quot;white&quot;, size = 5) +</span></span>
+<span id="cb24-462"><a href="#cb24-462"></a><span class="at">  labs(title = &quot;Confusion Matrix Heatmap for Random Forest&quot;,</span></span>
+<span id="cb24-463"><a href="#cb24-463"></a><span class="at">       x = &quot;True Class&quot;,</span></span>
+<span id="cb24-464"><a href="#cb24-464"></a><span class="at">       y = &quot;Predicted Class&quot;) +</span></span>
+<span id="cb24-465"><a href="#cb24-465"></a><span class="at">  theme_minimal()</span></span>
+<span id="cb24-466"><a href="#cb24-466"></a><span class="st">```</span></span>
+<span id="cb24-467"><a href="#cb24-467"></a>The confusion matrix heatmap gives us a clear picture of how well the Random Forest model predicted each credit score category. The diagonal values show the number of correct predictions — where the predicted class matched the actual class — and we see strong results <span class="cf">for</span> both the <span class="st">&quot;Standard&quot;</span> and <span class="st">&quot;Poor&quot;</span> categories, with <span class="dv">17</span>,<span class="dv">166</span> and <span class="dv">9</span>,<span class="dv">565</span> correct predictions respectively.</span>
+<span id="cb24-468"><a href="#cb24-468"></a></span>
+<span id="cb24-469"><a href="#cb24-469"></a>The model also did a decent job with the <span class="st">&quot;Good&quot;</span> class, correctly identifying <span class="dv">5</span>,<span class="dv">217</span> cases. While that’s still lower than the other two, it’s a noticeable improvement over previous models like Forward Stepwise, which struggled more with this class.</span>
+<span id="cb24-470"><a href="#cb24-470"></a></span>
+<span id="cb24-471"><a href="#cb24-471"></a>Looking at the <span class="fu">misclassifications</span> (the off<span class="sc">-</span>diagonal values), the most common mistake was predicting <span class="st">&quot;Standard&quot;</span> when the actual class was <span class="st">&quot;Good&quot;</span> — a sign that the model still leans slightly toward the dominant class. There were also <span class="dv">1</span>,<span class="dv">994</span> Standard cases incorrectly predicted as Poor, which reflects some overlap <span class="cf">in</span> feature patterns between those groups.</span>
+<span id="cb24-472"><a href="#cb24-472"></a></span>
+<span id="cb24-473"><a href="#cb24-473"></a>Despite these misclassifications, the overall pattern is strong. Most of the values are concentrated along the diagonal, showing that the Random Forest model does a solid job distinguishing between the classes. This visual reinforces what we saw <span class="cf">in</span> the metrics — consistent performance across categories, with room <span class="cf">for</span> improvement <span class="cf">in</span> recognizing the less common <span class="st">&quot;Good&quot;</span> credit scores.</span>
+<span id="cb24-474"><a href="#cb24-474"></a></span>
+<span id="cb24-475"><a href="#cb24-475"></a><span class="co"># XGBoost</span></span>
+<span id="cb24-476"><a href="#cb24-476"></a>XGBoost is a high<span class="sc">-</span>performance boosting algorithm. It builds trees sequentially, improving errors from previous trees.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-477"><a href="#cb24-477"></a>Process<span class="sc">:</span> <span class="er">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-478"><a href="#cb24-478"></a><span class="sc">-</span> Convert dataset to numeric matrix format.</span>
+<span id="cb24-479"><a href="#cb24-479"></a><span class="sc">-</span> Use <span class="fu">xgb.train</span>() to fit the model.</span>
+<span id="cb24-480"><a href="#cb24-480"></a><span class="sc">-</span> Extract top five features and retrain a reduced model.</span>
+<span id="cb24-481"><a href="#cb24-481"></a><span class="sc">-</span> Evaluate accuracy and display confusion matrix.</span>
+<span id="cb24-482"><a href="#cb24-482"></a>XGBoost tends to be more efficient and often outperforms Random Forest <span class="cf">in</span> structured data. Its feature importance offers another validation path <span class="cf">for</span> feature selection.<span class="sc">&lt;</span>br<span class="sc">&gt;</span></span>
+<span id="cb24-483"><a href="#cb24-483"></a></span>
+<span id="cb24-484"><a href="#cb24-484"></a><span class="st">```</span><span class="at">{r xgboost}</span></span>
+<span id="cb24-485"><a href="#cb24-485"></a><span class="at">set.seed(100)</span></span>
+<span id="cb24-486"><a href="#cb24-486"></a></span>
+<span id="cb24-487"><a href="#cb24-487"></a><span class="at">inTrain_xgb &lt;- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)</span></span>
+<span id="cb24-488"><a href="#cb24-488"></a><span class="at">train_xgb &lt;- score_dat_dp[inTrain_xgb, ]</span></span>
+<span id="cb24-489"><a href="#cb24-489"></a><span class="at">test_xgb  &lt;- score_dat_dp[-inTrain_xgb, ]</span></span>
+<span id="cb24-490"><a href="#cb24-490"></a></span>
+<span id="cb24-491"><a href="#cb24-491"></a><span class="at">x_train &lt;- model.matrix(Credit_Score ~ ., train_xgb)[, -1]</span></span>
+<span id="cb24-492"><a href="#cb24-492"></a><span class="at">x_test  &lt;- model.matrix(Credit_Score ~ ., test_xgb)[, -1]</span></span>
+<span id="cb24-493"><a href="#cb24-493"></a><span class="at">y_train &lt;- as.numeric(train_xgb$Credit_Score) - 1</span></span>
+<span id="cb24-494"><a href="#cb24-494"></a><span class="at">y_test  &lt;- as.numeric(test_xgb$Credit_Score) - 1</span></span>
+<span id="cb24-495"><a href="#cb24-495"></a></span>
+<span id="cb24-496"><a href="#cb24-496"></a><span class="at">dtrain &lt;- xgb.DMatrix(data = x_train, label = y_train)</span></span>
+<span id="cb24-497"><a href="#cb24-497"></a><span class="at">dtest  &lt;- xgb.DMatrix(data = x_test, label = y_test)</span></span>
+<span id="cb24-498"><a href="#cb24-498"></a></span>
+<span id="cb24-499"><a href="#cb24-499"></a><span class="at">params &lt;- list(objective = &quot;multi:softmax&quot;, num_class = 3, eval_metric = &quot;mlogloss&quot;)</span></span>
+<span id="cb24-500"><a href="#cb24-500"></a><span class="at">xgb_model &lt;- xgb.train(params = params, data = dtrain, nrounds = 100, verbose = 0)</span></span>
+<span id="cb24-501"><a href="#cb24-501"></a></span>
+<span id="cb24-502"><a href="#cb24-502"></a><span class="at">xgb_pred &lt;- predict(xgb_model, dtest)</span></span>
+<span id="cb24-503"><a href="#cb24-503"></a><span class="at">xgb_acc &lt;- mean(xgb_pred == y_test)</span></span>
+<span id="cb24-504"><a href="#cb24-504"></a><span class="at">print(paste(&quot;XGBoost Accuracy:&quot;, round(xgb_acc * 100, 2), &quot;%&quot;))</span></span>
+<span id="cb24-505"><a href="#cb24-505"></a></span>
+<span id="cb24-506"><a href="#cb24-506"></a><span class="at">conf_matrix_xgb &lt;- confusionMatrix(factor(xgb_pred), factor(y_test))</span></span>
+<span id="cb24-507"><a href="#cb24-507"></a><span class="at">print(conf_matrix_xgb)</span></span>
+<span id="cb24-508"><a href="#cb24-508"></a><span class="st">```</span></span>
+<span id="cb24-509"><a href="#cb24-509"></a>The XGBoost model performed strongly, reaching an accuracy of <span class="fl">75.45</span><span class="sc">%. Although it didn’t quite match the top score achieved by Random Forest (79.9%</span><span class="er">)</span>, it still showed solid overall performance, especially when we looked at how it handled each class.</span>
+<span id="cb24-510"><a href="#cb24-510"></a></span>
+<span id="cb24-511"><a href="#cb24-511"></a>Sensitivity scores were fairly balanced<span class="sc">:</span></span>
+<span id="cb24-512"><a href="#cb24-512"></a></span>
+<span id="cb24-513"><a href="#cb24-513"></a>Good<span class="sc">:</span> <span class="fl">0.6520</span></span>
+<span id="cb24-514"><a href="#cb24-514"></a></span>
+<span id="cb24-515"><a href="#cb24-515"></a>Poor<span class="sc">:</span> <span class="fl">0.7327</span></span>
+<span id="cb24-516"><a href="#cb24-516"></a></span>
+<span id="cb24-517"><a href="#cb24-517"></a>Standard<span class="sc">:</span> <span class="fl">0.8007</span></span>
+<span id="cb24-518"><a href="#cb24-518"></a></span>
+<span id="cb24-519"><a href="#cb24-519"></a>These results show that XGBoost was especially effective at identifying the Standard and Poor classes and made meaningful improvements over earlier models <span class="cf">in</span> handling the Poor category <span class="cf">in</span> particular.</span>
+<span id="cb24-520"><a href="#cb24-520"></a></span>
+<span id="cb24-521"><a href="#cb24-521"></a>Balanced accuracy was also encouraging<span class="sc">:</span></span>
+<span id="cb24-522"><a href="#cb24-522"></a></span>
+<span id="cb24-523"><a href="#cb24-523"></a>Good<span class="sc">:</span> <span class="fl">0.7952</span></span>
+<span id="cb24-524"><a href="#cb24-524"></a></span>
+<span id="cb24-525"><a href="#cb24-525"></a>Poor<span class="sc">:</span> <span class="fl">0.8211</span></span>
+<span id="cb24-526"><a href="#cb24-526"></a></span>
+<span id="cb24-527"><a href="#cb24-527"></a>Standard<span class="sc">:</span> <span class="fl">0.7608</span></span>
+<span id="cb24-528"><a href="#cb24-528"></a></span>
+<span id="cb24-529"><a href="#cb24-529"></a>This suggests that even with class imbalance <span class="cf">in</span> the data, XGBoost managed to maintain strong predictive performance across all classes.</span>
+<span id="cb24-530"><a href="#cb24-530"></a></span>
+<span id="cb24-531"><a href="#cb24-531"></a>Compared to linear models like <span class="fu">Lasso</span> (<span class="fl">64.3</span><span class="sc">%) and Forward Stepwise Selection (64.27%</span>), XGBoost clearly stood out. It captured more complex relationships <span class="cf">in</span> the data, handled imbalance better, and did so with a lower risk of overfitting than Random Forest — thanks to its built<span class="sc">-</span><span class="cf">in</span> regularization features.</span>
+<span id="cb24-532"><a href="#cb24-532"></a></span>
+<span id="cb24-533"><a href="#cb24-533"></a>Feature importance results from XGBoost were also reassuring. Key variables like Interest_Rate, Num_Credit_Inquiries, and Delay_from_due_date came up again, consistent with what we saw <span class="cf">in</span> earlier models. This consistency strengthens confidence <span class="cf">in</span> the features chosen during the earlier stages of the project.</span>
+<span id="cb24-534"><a href="#cb24-534"></a></span>
+<span id="cb24-535"><a href="#cb24-535"></a>In short, XGBoost struck a good balance between interpretability and performance. While Random Forest led <span class="cf">in</span> overall accuracy, XGBoost offered a more efficient and well<span class="sc">-</span>rounded alternative — making it a strong candidate <span class="cf">for</span> deployment or <span class="cf">for</span> combining with other models <span class="cf">in</span> an ensemble approach.</span>
+<span id="cb24-536"><a href="#cb24-536"></a></span>
+<span id="cb24-537"><a href="#cb24-537"></a><span class="co"># Class imbalance considerations</span></span>
+<span id="cb24-538"><a href="#cb24-538"></a>While we didn’t apply any specific data<span class="sc">-</span>level techniques like resampling, the use of ensemble models such as Random Forest and XGBoost helped to manage the class imbalance to some extent. These models are known <span class="cf">for</span> being more robust to uneven class distributions, which is likely why we still saw solid performance—especially <span class="cf">in</span> the Standard and Poor categories.</span>
+<span id="cb24-539"><a href="#cb24-539"></a></span>
+<span id="cb24-540"><a href="#cb24-540"></a>To ensure a fair evaluation despite the imbalance, we focused on class<span class="sc">-</span>wise metrics like <span class="fu">sensitivity</span> (recall) and balanced accuracy. These gave us a clearer picture of how well each model performed across the different credit score classes, not just the majority group.</span>
+<span id="cb24-541"><a href="#cb24-541"></a></span>
+<span id="cb24-542"><a href="#cb24-542"></a>That said, there’s still room <span class="cf">for</span> improvement—particularly <span class="cf">in</span> boosting the recall <span class="cf">for</span> the minority class, like the Good score category. In future work, we could try strategies such as<span class="sc">:</span></span>
+<span id="cb24-543"><a href="#cb24-543"></a></span>
+<span id="cb24-544"><a href="#cb24-544"></a><span class="sc">-</span> Oversampling the underrepresented <span class="fu">classes</span> (e.g., using SMOTE)</span>
+<span id="cb24-545"><a href="#cb24-545"></a><span class="sc">-</span> Undersampling the dominant class to reduce bias</span>
+<span id="cb24-546"><a href="#cb24-546"></a><span class="sc">-</span> Applying class weights <span class="cf">in</span> algorithms like glmnet, randomForest, or xgboost to make the models more sensitive to misclassifying minority cases</span>
+<span id="cb24-547"><a href="#cb24-547"></a><span class="sc">-</span> Generating synthetic data to enrich the training set <span class="cf">for</span> underrepresented classes</span>
+<span id="cb24-548"><a href="#cb24-548"></a>These techniques could help the models do an even better job of capturing signals <span class="cf">in</span> the less common classes and make the results more generalizable <span class="cf">in</span> real<span class="sc">-</span>world applications.</span>
+<span id="cb24-549"><a href="#cb24-549"></a></span>
+<span id="cb24-550"><a href="#cb24-550"></a><span class="co"># Conclusion</span></span>
+<span id="cb24-551"><a href="#cb24-551"></a>Throughout the project, certain variables consistently stood out as strong predictors of credit score — especially Interest_Rate, Num_Credit_Inquiries, Num_Credit_Card, and Delay_from_due_date. These features were supported not only by the correlation heatmap but also by the feature selection techniques we used early on, like Lasso and Forward Stepwise Selection. This gave us a solid starting point and helped reduce the complexity of our models from the outset.</span>
+<span id="cb24-552"><a href="#cb24-552"></a></span>
+<span id="cb24-553"><a href="#cb24-553"></a>Among all the models tested, Random Forest delivered the best results, with an accuracy of <span class="fl">79.9</span>% and balanced performance across all credit score classes. Its ability to handle class imbalance and capture complex relationships makes it a strong candidate <span class="cf">for</span> real<span class="sc">-</span>world deployment.</span>
+<span id="cb24-554"><a href="#cb24-554"></a></span>
+<span id="cb24-555"><a href="#cb24-555"></a>XGBoost came <span class="cf">in</span> slightly behind <span class="cf">in</span> terms of accuracy, but it offered other advantages — particularly its efficiency and ability to generalize well without overfitting. Meanwhile, Lasso Regression and Forward Stepwise Selection were valuable <span class="cf">for</span> identifying the most relevant features and simplifying the modeling process, even though their overall predictive power was lower.</span>
+<span id="cb24-556"><a href="#cb24-556"></a></span>
+<span id="cb24-557"><a href="#cb24-557"></a>By moving from exploratory analysis to advanced ensemble methods, this project followed a clear and structured approach to solving a real<span class="sc">-</span>world classification problem. The end result is a machine learning pipeline that is both practical and well<span class="sc">-</span>grounded — one that could realistically support automated credit scoring <span class="cf">in</span> a business setting.</span>
+<span id="cb24-558"><a href="#cb24-558"></a>  </span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
