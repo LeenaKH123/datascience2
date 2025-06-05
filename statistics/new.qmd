@@ -11,9 +11,15 @@ format:
       embed-resources: true
 ---
 
-# Overview of Problem
+<!-- 
+ Overview of the Problem
+
+The objective of the project is to build a multi-class classification model that predicts an individual's credit score—categorized into Good, Standard, or Poor—based on various demographic and financial factors.
+This task has practical applications in the financial sector, especially for automated credit scoring and risk assessment. By replacing manual evaluations with predictive analytics, institutions can streamline loan approvals and minimize default risk. 
+-->
 
 The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.
+
 
 # About Dataset
 
@@ -50,8 +56,33 @@ The goal of this project is to build a multi-class classification model to predi
 
 # Challenges of the project
 
-**a)** Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models & tuning.  
-**b)** Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary.  
+## Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models & tuning.
+This dataset contains around 100,000 records and over 20 features spanning numerical and categorical types. Processing this volume of data creates several computational challenges.
+ - Memory Load: Training complex models like Random Forest and XGBoost on this scale can be resource-intensive, especially during cross-validation or hyperparameter tuning.<br>
+ - Preprocessing Time: Feature engineering steps such as one-hot encoding, scaling, and correlation computation become time-consuming on large data.<br>
+ - Model Execution Time: Algorithms with internal loops (e.g., forward selection or cross-validated Lasso) can take considerable time to converge.<br>
+
+How We Addressed It:<br>
+- Used efficient R packages like glmnet, xgboost, and randomForest, all optimized for handling large data. <br>
+- Splited the data into a 60/40 train-test split instead of k-fold cross-validation in most steps to reduce execution time.<br>
+- For feature selection, used Lasso Regression (automated) and Forward Stepwise Selection (manual loop) to reduce dimensionality early—so only key features are passed into final models.<br>
+- We avoided fitting redundant or overly complex models by extracting and reusing key features across models (e.g., RF, XGBoost).<br>
+
+
+## Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary. 
+The Credit_Score target variable has three levels: Good, Standard, and Poor. Most standard classification algorithms (e.g., logistic regression) are designed for binary outcomes.
+
+Specific Issues:<br>
+  - Some classifiers (e.g., glmnet) require special configuration for multinomial output.<br>
+  - Interpreting confusion matrices is more complex with three categories.<br>
+  - Class imbalance can reduce sensitivity to minority classes.<br>
+
+How it was addressed:<br>
+  - Set family = "multinomial" in glmnet to allow multi-class logistic regression.
+  - Used multinom() from the nnet package, which supports multi-class output.
+  - Ensemble methods like Random Forest and XGBoost naturally support multi-class classification when properly configured (e.g., num_class = 3 for XGBoost).
+  - We converted categorical labels into ordered factors and integer values, ensuring all models could parse them correctly.
+  - Confusion matrices were visualized with heatmaps to make multi-class evaluation easier and more intuitive.
 
 ```{r libs}
 suppressPackageStartupMessages(library(tidyverse))
@@ -70,29 +101,119 @@ suppressPackageStartupMessages(library(ggcorrplot))
 options(warn = -1)  # to suppress warnings during rendering
 ```
 
-Data Preparation & EDA
+# Data Preparation & EDA
+## Cleaning & Transformation
+The original dataset contained several quality issues that had to be addressed before modeling. Below are the specific cleaning and transformation steps:
 
+1. String Noise Removal and Numeric Conversion: <br>
+The following columns contained characters like commas (,) or string patterns (e.g., "Rs.", "days") that prevented numeric interpretation. These were removed using regular expressions, and the columns were then converted to numeric:<br>
+
+- Age
+- Annual_Income
+- Monthly_Inhand_Salary
+- Num_Bank_Accounts
+- Num_Credit_Card
+- Interest_Rate 
+- Num_of_Loan 
+- Delay_from_due_date 
+- Num_of_Delayed_Payment 
+- Changed_Credit_Limit 
+- Num_Credit_Inquiries 
+- Outstanding_Debt 
+- Credit_Utilization_Ratio 
+- Credit_History_Age 
+- Total_EMI_per_month 
+- Amount_invested_monthly 
+- Monthly_Balance
+Each of these was cleaned using gsub("[^0-9.]", "", ...) and converted using as.numeric().
+
+2. Missing Value Imputation: <br>
+After converting the above fields to numeric:<br>
+- Numeric Fields: Missing values were imputed using median to avoid skew from outliers.
+- Categorical Fields: Missing values were filled using mode imputation, where the most frequently occurring value is assigned.
+This was applied across all columns using column-wise checks.<br>
+
+3. Categorical Variable Encoding: <br>
+The following categorical columns were encoded as factors and later transformed into dummy variables:<br>
+- Payment_of_Min_Amount. 
+- Credit_Mix
+These were transformed using one-hot encoding via the fastDummies package, allowing them to be used in machine learning algorithms that don’t handle categorical inputs natively.
+
+4. Target Variable Formatting: <br>
+The target variable:
+- Credit_Score — originally a string ("Good", "Standard", "Poor") — wa converted to a factor. The factor levels were ordered as: "Good", "Poor", "Standard" to ensure consistent interpretation in multi-class classification models.<br>
+
+5. Column Reordering: <br>
+To facilitate a cleaner modeling pipeline, the Credit_Score column was moved to the last column in the dataset after transformation. <br>
 
 ```{r}
-score_dat <- read.csv("Score.csv", stringsAsFactors = TRUE)
+# Load raw dataset
+score_dat <- read.csv("Score.csv", stringsAsFactors = FALSE)
+
+# Fields that need numeric conversion due to extra characters
+cols_to_clean <- c("Age", "Annual_Income", "Monthly_Inhand_Salary",
+                   "Num_Bank_Accounts", "Num_Credit_Card", "Interest_Rate",
+                   "Num_of_Loan", "Delay_from_due_date", "Num_of_Delayed_Payment",
+                   "Changed_Credit_Limit", "Num_Credit_Inquiries", "Outstanding_Debt",
+                   "Credit_Utilization_Ratio", "Credit_History_Age",
+                   "Total_EMI_per_month", "Amount_invested_monthly", "Monthly_Balance")
+
+# Remove non-numeric characters (e.g., commas, currency symbols)
+score_dat[cols_to_clean] <- lapply(score_dat[cols_to_clean], function(x) {
+  as.numeric(gsub("[^0-9.]", "", as.character(x)))
+})
+
+# Median imputation for numeric fields
+median_impute <- function(x) {
+  x[is.na(x)] <- median(x, na.rm = TRUE)
+  return(x)
+}
+score_dat[cols_to_clean] <- lapply(score_dat[cols_to_clean], median_impute)
+
+# Handle categorical variables
+cat_vars <- c("Payment_of_Min_Amount", "Credit_Mix")
+score_dat[cat_vars] <- lapply(score_dat[cat_vars], as.factor)
+
+# Mode imputation for categorical fields
+mode_impute <- function(x) {
+  mode_val <- names(sort(table(x), decreasing = TRUE))[1]
+  x[is.na(x)] <- mode_val
+  return(x)
+}
+score_dat[cat_vars] <- lapply(score_dat[cat_vars], mode_impute)
+
+# One-hot encoding for categorical variables
+library(fastDummies)
+score_dat <- dummy_cols(score_dat, select_columns = cat_vars, remove_selected_columns = TRUE)
+
+# Convert target to factor
+score_dat$Credit_Score <- factor(score_dat$Credit_Score, levels = c("Good", "Poor", "Standard"))
+
+# Move Credit_Score to last column for readability
 score_dat <- score_dat %>% select(-Credit_Score, Credit_Score)
+
 ```
 
-- EDA
 
+## Exploratory Data Analysis (EDA)
+- Correlation matrix was computed and visualised to observe relationships between numeric features.
+- A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).
+- These visualizations guide which features might be important and which require scaling or imputation.
 ```{r }
 library(ggcorrplot)
 
-# Prepare numeric data
+# Prepare clean numeric subset for correlation matrix
 numeric_data <- score_dat %>%
-  mutate(across(where(is.character), as.numeric)) %>%
-  mutate(across(where(is.factor), as.numeric))
+  select(-Credit_Score) %>%
+  mutate(across(everything(), as.numeric))
+
+# Add Credit_Score as numeric for inclusion in correlation
 numeric_data$Credit_Score <- as.numeric(score_dat$Credit_Score)
 
-# Compute correlation matrix
+# Compute correlation
 cor_matrix <- cor(numeric_data, use = "pairwise.complete.obs")
 
-# Save high-res heatmap
+# Generate plot
 p <- ggcorrplot(
   cor_matrix,
   type = "lower",
@@ -110,7 +231,7 @@ p <- ggcorrplot(
     axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)
   )
 
-# Save as PNG (higher resolution)
+# Save image
 ggsave("correlation_heatmap.png", plot = p, width = 12, height = 10, dpi = 300)
 
 ```
@@ -120,18 +241,14 @@ knitr::include_graphics("correlation_heatmap.png")
 ```
 
 
-
-```{r}
-score_dat$Credit_Score <- factor(score_dat$Credit_Score, levels = c("Good", "Poor", "Standard"))
-cat_vars <- c("Payment_of_Min_Amount", "Credit_Mix")
-one_hot <- dummy_cols(score_dat[cat_vars], select_columns = cat_vars, remove_selected_columns = TRUE)
-score_dat <- score_dat %>% select(-one_of(cat_vars))
-score_dat_dp <- cbind(score_dat, one_hot)
-```
-
-- Feature Engineering
-
-Lasso Regression
+# Lasso Regression
+Lasso regression is to perform feature slection by penalising less relevant variables and shrinking their coefficients to zero.
+Process: <br>
+- Split the data into training and test sets.
+- Use cv.glmnet() for cross validation to find the optimal lambda.
+- Predict and compute accuracy on the test set.
+Objective: <br>
+To reduce dimensionality and focus on the most predictive features, setting the stage for cleaner mopdeling downstream.
 
 ```{r libraries}
 set.seed(123)
@@ -150,7 +267,13 @@ lasso_acc <- mean(lasso_preds == y_test)
 print(paste("Lasso Accuracy:", round(lasso_acc * 100, 2), "%"))
 ```
 
-Forward Stepwise Selection
+# Forward Stepwise Selection (Multinomial Logistic Regression)
+This method iteratively selects the best performing features based on accuracy improvements.<br>
+Process: <br>
+- Starts with no features and adds one at a time based on which feature gives the highest accuracy gain on a test set. <br>
+- multinom() is used to train a model on the selected features.
+Objective: <br>
+This technique provides a human-interpretable subset of features, complementing Lasso's more automated selection, it ensures model simplicity and explains why certain variables are preditive.<br>
 
 ```{r lasso regression}
 set.seed(123)
@@ -199,7 +322,11 @@ conf_matrix_logit <- confusionMatrix(logit_preds, cls.test)
 print(conf_matrix_logit)
 ```
 
-Random Forest
+# Random Forest (with Feature importance)
+Random forest builds multiple decision trees and aggregate their predictions, a full model is trained, and feature importance is extracted, top five features are used to train a leaner model, then accuracy and confusion matrix are reported.<br>
+Objective: <br>
+- More accurate and robust than linear models.
+- The feature importance results also validate earlier selections from Lasso and Forward Selection.
 
 ```{r randomforest}
 set.seed(42)
@@ -218,7 +345,7 @@ conf_matrix_rf <- confusionMatrix(rf_pred, test_rf$Credit_Score)
 print(conf_matrix_rf)
 ```
 
-HEATMAP
+## HEATMAP
 
 ```{r heatmap}
 conf_df <- as.data.frame(conf_matrix_rf$table)
@@ -232,7 +359,15 @@ ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +
   theme_minimal()
 ```
 
-XGBoost
+# XGBoost
+XGBoost is a high-performance boosting algorithm. It builds trees sequentially, improving errors from previous trees.<br>
+Process: <br>
+- Convert dataset to numeric matrix format.
+- Use xgb.train() to fit the model.
+- Extract top five features and retrain a reduced model.
+- Evaluate accuracy and display confusion matrix.
+XGBoost tends to be more efficient and often outperforms Random Forest in structured data. Its feature importance offers another validation path for feature selection.<br>
+
 ```{r xgboost}
 set.seed(100)
 
@@ -258,13 +393,10 @@ print(paste("XGBoost Accuracy:", round(xgb_acc * 100, 2), "%"))
 conf_matrix_xgb <- confusionMatrix(factor(xgb_pred), factor(y_test))
 print(conf_matrix_xgb)
 ```
-Conclusion
-
-    Random Forest performed the best (~78% accuracy), with robust class handling.
-
-    XGBoost came close with ~74% accuracy and faster execution.
-
-    Lasso and Forward Selection helped in dimensionality reduction and feature insight.
-
-    The analysis confirms that robust machine learning models can effectively automate credit scoring in financial services.
+# Conclusion
+Random Forest performed best (~78% accuracy), showing strong class-handling capability.
+XGBoost (~74%) showed efficiency and potential with hyperparameter tuning.
+Lasso and Forward Selection improved model simplicity and interpretability.
+Together, the full pipeline reflects a professional-grade data science workflow from EDA to evaluation.
+  
 

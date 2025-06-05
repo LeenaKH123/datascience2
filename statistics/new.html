@@ -2202,12 +2202,15 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="overview-of-problem" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Overview of Problem</h1>
+<!-- 
+ Overview of the Problem
+
+The objective of the project is to build a multi-class classification model that predicts an individual's credit score—categorized into Good, Standard, or Poor—based on various demographic and financial factors.
+This task has practical applications in the financial sector, especially for automated credit scoring and risk assessment. By replacing manual evaluations with predictive analytics, institutions can streamline loan approvals and minimize default risk. 
+-->
 <p>The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.</p>
-</section>
-<section id="about-dataset" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> About Dataset</h1>
+<section id="about-dataset" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> About Dataset</h1>
 <p><strong>Source :</strong> Kaggle (https://www.kaggle.com/code/sudhanshu2198/multi-class-credit-score-classification)<br>
 <strong>Data set :</strong> score.csv<br>
 <strong>Samples :</strong> approximate 100,000<br>
@@ -2215,8 +2218,8 @@ vertical-align: -.125em;
 <strong>Target :</strong> Credit_Score (Poor, Standard, Good)<br>
 <strong>Key Issues :</strong> Outliers, noisy strings, class imbalance<br>
 Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary</p>
-<section id="key-features-and-description" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="key-features-and-description"><span class="header-section-number">2.1</span> Key Features and Description</h2>
+<section id="key-features-and-description" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="key-features-and-description"><span class="header-section-number">1.1</span> Key Features and Description</h2>
 <ul>
 <li><strong>Age</strong>: Age of the person<br>
 </li>
@@ -2260,8 +2263,8 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 </ul>
 </section>
 </section>
-<section id="challenges-of-the-project" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Challenges of the project</h1>
+<section id="challenges-of-the-project" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Challenges of the project</h1>
 <p><strong>a)</strong> Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models &amp; tuning.<br>
 <strong>b)</strong> Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary.</p>
 <div class="cell">
@@ -2283,7 +2286,23 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 <span id="cb1-14"><a href="#cb1-14"></a><span class="fu">options</span>(<span class="at">warn =</span> <span class="sc">-</span><span class="dv">1</span>)  <span class="co"># to suppress warnings during rendering</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Data Preparation &amp; EDA</p>
+</section>
+<section id="data-preparation-eda" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Data Preparation &amp; EDA</h1>
+<section id="cleaning-transformation" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="cleaning-transformation"><span class="header-section-number">3.1</span> Cleaning &amp; Transformation</h2>
+<ul>
+<li>Categorical variables are converted into dummy variables using one-hot encoding to make them usable in machine learning models.</li>
+<li>Categorical fields like Credit_Mix and Payment_of_Min_Amount are transformed accordingly.</li>
+</ul>
+</section>
+<section id="exploratory-data-analysis-eda" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="exploratory-data-analysis-eda"><span class="header-section-number">3.2</span> Exploratory Data Analysis (EDA)</h2>
+<ul>
+<li>We compute and visualize the correlation matrix to observe relationships between numeric features.</li>
+<li>A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).</li>
+<li>These visualizations guide which features might be important and which require scaling or imputation.</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2291,9 +2310,6 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 <span id="cb2-2"><a href="#cb2-2"></a>score_dat <span class="ot">&lt;-</span> score_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Credit_Score, Credit_Score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<ul>
-<li>EDA</li>
-</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2349,10 +2365,11 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 <span id="cb4-5"><a href="#cb4-5"></a>score_dat_dp <span class="ot">&lt;-</span> <span class="fu">cbind</span>(score_dat, one_hot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<ul>
-<li>Feature Engineering</li>
-</ul>
-<p>Lasso Regression</p>
+</section>
+</section>
+<section id="lasso-regression" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Lasso Regression</h1>
+<p>Lasso regression is to perform feature slection by penalising less relevant variables and shrinking their coefficients to zero. Process: <br> - Split the data into training and test sets. - Use cv.glmnet() for cross validation to find the optimal lambda. - Predict and compute accuracy on the test set. Objective: <br> To reduce dimensionality and focus on the most predictive features, setting the stage for cleaner mopdeling downstream.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2375,7 +2392,10 @@ Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary
 <pre><code>[1] &quot;Lasso Accuracy: 66.06 %&quot;</code></pre>
 </div>
 </div>
-<p>Forward Stepwise Selection</p>
+</section>
+<section id="forward-stepwise-selection-multinomial-logistic-regression" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Forward Stepwise Selection (Multinomial Logistic Regression)</h1>
+<p>This method iteratively selects the best performing features based on accuracy improvements.<br> Process: <br> - Starts with no features and adds one at a time based on which feature gives the highest accuracy gain on a test set. <br> - multinom() is used to train a model on the selected features. Objective: <br> This technique provides a human-interpretable subset of features, complementing Lasso’s more automated selection, it ensures model simplicity and explains why certain variables are preditive.<br></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2473,7 +2493,10 @@ Detection Prevalence      0.2319      0.2298          0.5382
 Balanced Accuracy         0.7815      0.7009          0.6889</code></pre>
 </div>
 </div>
-<p>Random Forest</p>
+</section>
+<section id="random-forest-with-feature-importance" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Random Forest (with Feature importance)</h1>
+<p>Random forest builds multiple decision trees and aggregate their predictions, a full model is trained, and feature importance is extracted, top five features are used to train a leaner model, then accuracy and confusion matrix are reported.<br> Objective: <br> - More accurate and robust than linear models. - The feature importance results also validate earlier selections from Lasso and Forward Selection.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2530,7 +2553,8 @@ Detection Prevalence      0.1749      0.3036          0.5215
 Balanced Accuracy         0.8528      0.8692          0.8060</code></pre>
 </div>
 </div>
-<p>HEATMAP</p>
+<section id="heatmap" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="heatmap"><span class="header-section-number">6.1</span> HEATMAP</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2552,7 +2576,11 @@ Balanced Accuracy         0.8528      0.8692          0.8060</code></pre>
 </div>
 </div>
 </div>
-<p>XGBoost</p>
+</section>
+</section>
+<section id="xgboost" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> XGBoost</h1>
+<p>XGBoost is a high-performance boosting algorithm. It builds trees sequentially, improving errors from previous trees.<br> Process: <br> - Convert dataset to numeric matrix format. - Use xgb.train() to fit the model. - Extract top five features and retrain a reduced model. - Evaluate accuracy and display confusion matrix. XGBoost tends to be more efficient and often outperforms Random Forest in structured data. Its feature importance offers another validation path for feature selection.<br></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -2618,14 +2646,10 @@ Detection Prevalence   0.1913   0.2876   0.5211
 Balanced Accuracy      0.8333   0.8321   0.7802</code></pre>
 </div>
 </div>
-<p>Conclusion</p>
-<pre><code>Random Forest performed the best (~78% accuracy), with robust class handling.
-
-XGBoost came close with ~74% accuracy and faster execution.
-
-Lasso and Forward Selection helped in dimensionality reduction and feature insight.
-
-The analysis confirms that robust machine learning models can effectively automate credit scoring in financial services.</code></pre>
+</section>
+<section id="conclusion" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Conclusion</h1>
+<p>Random Forest performed best (~78% accuracy), showing strong class-handling capability. XGBoost (~74%) showed efficiency and potential with hyperparameter tuning. Lasso and Forward Selection improved model simplicity and interpretability. Together, the full pipeline reflects a professional-grade data science workflow from EDA to evaluation.</p>
 <!-- -->
 
 </section>
@@ -3082,275 +3106,307 @@ The analysis confirms that robust machine learning models can effectively automa
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
-<div class="sourceCode" id="cb23" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">---</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="an">title:</span><span class="co"> &quot;FinalProjectReport&quot;</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a><span class="an">author:</span><span class="co"> &quot;Group 2&quot;</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="an">format:</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="co">    html:</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a><span class="co">      code-fold: true</span></span>
-<span id="cb23-7"><a href="#cb23-7"></a><span class="co">      code-line-numbers: true</span></span>
-<span id="cb23-8"><a href="#cb23-8"></a><span class="co">      number-sections: true</span></span>
-<span id="cb23-9"><a href="#cb23-9"></a><span class="co">      number-depth: 3</span></span>
-<span id="cb23-10"><a href="#cb23-10"></a><span class="co">      code-tools: true</span></span>
-<span id="cb23-11"><a href="#cb23-11"></a><span class="co">      embed-resources: true</span></span>
-<span id="cb23-12"><a href="#cb23-12"></a><span class="co">---</span></span>
-<span id="cb23-13"><a href="#cb23-13"></a></span>
-<span id="cb23-14"><a href="#cb23-14"></a><span class="fu"># Overview of Problem</span></span>
-<span id="cb23-15"><a href="#cb23-15"></a></span>
-<span id="cb23-16"><a href="#cb23-16"></a>The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.</span>
-<span id="cb23-17"><a href="#cb23-17"></a></span>
-<span id="cb23-18"><a href="#cb23-18"></a><span class="fu"># About Dataset</span></span>
-<span id="cb23-19"><a href="#cb23-19"></a></span>
-<span id="cb23-20"><a href="#cb23-20"></a>  **Source   :** Kaggle (https://www.kaggle.com/code/sudhanshu2198/multi-class-credit-score-classification)  </span>
-<span id="cb23-21"><a href="#cb23-21"></a>  **Data set :** score.csv  </span>
-<span id="cb23-22"><a href="#cb23-22"></a>  **Samples  :** approximate 100,000  </span>
-<span id="cb23-23"><a href="#cb23-23"></a>  **Features :** Mix of numeric and categorical  </span>
-<span id="cb23-24"><a href="#cb23-24"></a>  **Target   :** Credit_Score (Poor, Standard, Good)  </span>
-<span id="cb23-25"><a href="#cb23-25"></a>  **Key Issues :** Outliers, noisy strings, class imbalance  </span>
-<span id="cb23-26"><a href="#cb23-26"></a>                   Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary</span>
-<span id="cb23-27"><a href="#cb23-27"></a></span>
-<span id="cb23-28"><a href="#cb23-28"></a><span class="fu">## Key Features and Description</span></span>
-<span id="cb23-29"><a href="#cb23-29"></a></span>
-<span id="cb23-30"><a href="#cb23-30"></a><span class="ss">- </span>**Age**: Age of the person  </span>
-<span id="cb23-31"><a href="#cb23-31"></a><span class="ss">- </span>**Annual_Income**: Annual income of the person  </span>
-<span id="cb23-32"><a href="#cb23-32"></a><span class="ss">- </span>**Monthly_Inhand_Salary**: Monthly base salary  </span>
-<span id="cb23-33"><a href="#cb23-33"></a><span class="ss">- </span>**Num_Bank_Accounts**: Number of bank accounts  </span>
-<span id="cb23-34"><a href="#cb23-34"></a><span class="ss">- </span>**Num_Credit_Card**: Number of credit cards  </span>
-<span id="cb23-35"><a href="#cb23-35"></a><span class="ss">- </span>**Interest_Rate**: Credit card interest rate  </span>
-<span id="cb23-36"><a href="#cb23-36"></a><span class="ss">- </span>**Num_of_Loan**: Number of bank loans  </span>
-<span id="cb23-37"><a href="#cb23-37"></a><span class="ss">- </span>**Delay_from_due_date**: Avg. days delayed  </span>
-<span id="cb23-38"><a href="#cb23-38"></a><span class="ss">- </span>**Num_of_Delayed_Payment**: Avg. payments delayed  </span>
-<span id="cb23-39"><a href="#cb23-39"></a><span class="ss">- </span>**Changed_Credit_Limit**: % change in credit limit  </span>
-<span id="cb23-40"><a href="#cb23-40"></a><span class="ss">- </span>**Num_Credit_Inquiries**: Credit card inquiries  </span>
-<span id="cb23-41"><a href="#cb23-41"></a><span class="ss">- </span>**Credit_Mix**: Credit type classification  </span>
-<span id="cb23-42"><a href="#cb23-42"></a><span class="ss">- </span>**Outstanding_Debt**: Remaining debt  </span>
-<span id="cb23-43"><a href="#cb23-43"></a><span class="ss">- </span>**Credit_Utilization_Ratio**: Utilization ratio  </span>
-<span id="cb23-44"><a href="#cb23-44"></a><span class="ss">- </span>**Credit_History_Age**: Age of credit history  </span>
-<span id="cb23-45"><a href="#cb23-45"></a><span class="ss">- </span>**Payment_of_Min_Amount**: Whether minimum amount was paid  </span>
-<span id="cb23-46"><a href="#cb23-46"></a><span class="ss">- </span>**Total_EMI_per_month**: Monthly EMI payments  </span>
-<span id="cb23-47"><a href="#cb23-47"></a><span class="ss">- </span>**Amount_invested_monthly**: Monthly investments  </span>
-<span id="cb23-48"><a href="#cb23-48"></a><span class="ss">- </span>**Monthly_Balance**: Monthly balance  </span>
-<span id="cb23-49"><a href="#cb23-49"></a><span class="ss">- </span>**Credit_Score** : Target Variable — Poor, Standard, Good  </span>
-<span id="cb23-50"><a href="#cb23-50"></a></span>
-<span id="cb23-51"><a href="#cb23-51"></a><span class="fu"># Challenges of the project</span></span>
-<span id="cb23-52"><a href="#cb23-52"></a></span>
-<span id="cb23-53"><a href="#cb23-53"></a>**a)** Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models &amp; tuning.  </span>
-<span id="cb23-54"><a href="#cb23-54"></a>**b)** Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary.  </span>
-<span id="cb23-55"><a href="#cb23-55"></a></span>
-<span id="cb23-56"><a href="#cb23-56"></a><span class="in">```{r libs}</span></span>
-<span id="cb23-57"><a href="#cb23-57"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
-<span id="cb23-58"><a href="#cb23-58"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(caret))</span>
-<span id="cb23-59"><a href="#cb23-59"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(dplyr))</span>
-<span id="cb23-60"><a href="#cb23-60"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(reshape2))</span>
-<span id="cb23-61"><a href="#cb23-61"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(corrplot))</span>
-<span id="cb23-62"><a href="#cb23-62"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(recipes))</span>
-<span id="cb23-63"><a href="#cb23-63"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(fastDummies))</span>
-<span id="cb23-64"><a href="#cb23-64"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(randomForest))</span>
-<span id="cb23-65"><a href="#cb23-65"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(nnet))</span>
-<span id="cb23-66"><a href="#cb23-66"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(glmnet))</span>
-<span id="cb23-67"><a href="#cb23-67"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(xgboost))</span>
-<span id="cb23-68"><a href="#cb23-68"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggplot2))</span>
-<span id="cb23-69"><a href="#cb23-69"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggcorrplot))</span>
-<span id="cb23-70"><a href="#cb23-70"></a><span class="fu">options</span>(<span class="at">warn =</span> <span class="sc">-</span><span class="dv">1</span>)  <span class="co"># to suppress warnings during rendering</span></span>
-<span id="cb23-71"><a href="#cb23-71"></a><span class="in">```</span></span>
-<span id="cb23-72"><a href="#cb23-72"></a></span>
-<span id="cb23-73"><a href="#cb23-73"></a>Data Preparation &amp; EDA</span>
-<span id="cb23-74"><a href="#cb23-74"></a></span>
-<span id="cb23-75"><a href="#cb23-75"></a></span>
-<span id="cb23-78"><a href="#cb23-78"></a><span class="in">```{r}</span></span>
-<span id="cb23-79"><a href="#cb23-79"></a>score_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Score.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-80"><a href="#cb23-80"></a>score_dat <span class="ot">&lt;-</span> score_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Credit_Score, Credit_Score)</span>
-<span id="cb23-81"><a href="#cb23-81"></a><span class="in">```</span></span>
-<span id="cb23-82"><a href="#cb23-82"></a></span>
-<span id="cb23-83"><a href="#cb23-83"></a><span class="ss">- </span>EDA</span>
-<span id="cb23-84"><a href="#cb23-84"></a></span>
-<span id="cb23-85"><a href="#cb23-85"></a><span class="in">```{r }</span></span>
-<span id="cb23-86"><a href="#cb23-86"></a><span class="fu">library</span>(ggcorrplot)</span>
-<span id="cb23-87"><a href="#cb23-87"></a></span>
-<span id="cb23-88"><a href="#cb23-88"></a><span class="co"># Prepare numeric data</span></span>
-<span id="cb23-89"><a href="#cb23-89"></a>numeric_data <span class="ot">&lt;-</span> score_dat <span class="sc">%&gt;%</span></span>
-<span id="cb23-90"><a href="#cb23-90"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), as.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-91"><a href="#cb23-91"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.factor), as.numeric))</span>
-<span id="cb23-92"><a href="#cb23-92"></a>numeric_data<span class="sc">$</span>Credit_Score <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(score_dat<span class="sc">$</span>Credit_Score)</span>
-<span id="cb23-93"><a href="#cb23-93"></a></span>
-<span id="cb23-94"><a href="#cb23-94"></a><span class="co"># Compute correlation matrix</span></span>
-<span id="cb23-95"><a href="#cb23-95"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(numeric_data, <span class="at">use =</span> <span class="st">&quot;pairwise.complete.obs&quot;</span>)</span>
-<span id="cb23-96"><a href="#cb23-96"></a></span>
-<span id="cb23-97"><a href="#cb23-97"></a><span class="co"># Save high-res heatmap</span></span>
-<span id="cb23-98"><a href="#cb23-98"></a>p <span class="ot">&lt;-</span> <span class="fu">ggcorrplot</span>(</span>
-<span id="cb23-99"><a href="#cb23-99"></a>  cor_matrix,</span>
-<span id="cb23-100"><a href="#cb23-100"></a>  <span class="at">type =</span> <span class="st">&quot;lower&quot;</span>,</span>
-<span id="cb23-101"><a href="#cb23-101"></a>  <span class="at">lab =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb23-102"><a href="#cb23-102"></a>  <span class="at">lab_size =</span> <span class="fl">3.5</span>,</span>
-<span id="cb23-103"><a href="#cb23-103"></a>  <span class="at">hc.order =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb23-104"><a href="#cb23-104"></a>  <span class="at">method =</span> <span class="st">&quot;square&quot;</span>,</span>
-<span id="cb23-105"><a href="#cb23-105"></a>  <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
-<span id="cb23-106"><a href="#cb23-106"></a>  <span class="at">outline.color =</span> <span class="st">&quot;gray90&quot;</span></span>
-<span id="cb23-107"><a href="#cb23-107"></a>) <span class="sc">+</span></span>
-<span id="cb23-108"><a href="#cb23-108"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Correlation Heatmap of Dataset Features (Including Credit Score)&quot;</span>) <span class="sc">+</span></span>
-<span id="cb23-109"><a href="#cb23-109"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb23-110"><a href="#cb23-110"></a>  <span class="fu">theme</span>(</span>
-<span id="cb23-111"><a href="#cb23-111"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
-<span id="cb23-112"><a href="#cb23-112"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
-<span id="cb23-113"><a href="#cb23-113"></a>  )</span>
-<span id="cb23-114"><a href="#cb23-114"></a></span>
-<span id="cb23-115"><a href="#cb23-115"></a><span class="co"># Save as PNG (higher resolution)</span></span>
-<span id="cb23-116"><a href="#cb23-116"></a><span class="fu">ggsave</span>(<span class="st">&quot;correlation_heatmap.png&quot;</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">10</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb23-117"><a href="#cb23-117"></a></span>
-<span id="cb23-118"><a href="#cb23-118"></a><span class="in">```</span></span>
-<span id="cb23-119"><a href="#cb23-119"></a></span>
-<span id="cb23-120"><a href="#cb23-120"></a><span class="in">```{r include_correlation_heatmap, echo=FALSE, fig.align=&#39;center&#39;, out.width=&#39;100%&#39;}</span></span>
-<span id="cb23-121"><a href="#cb23-121"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;correlation_heatmap.png&quot;</span>)</span>
-<span id="cb23-122"><a href="#cb23-122"></a><span class="in">```</span></span>
-<span id="cb23-123"><a href="#cb23-123"></a></span>
-<span id="cb23-124"><a href="#cb23-124"></a></span>
-<span id="cb23-125"><a href="#cb23-125"></a></span>
-<span id="cb23-128"><a href="#cb23-128"></a><span class="in">```{r}</span></span>
-<span id="cb23-129"><a href="#cb23-129"></a>score_dat<span class="sc">$</span>Credit_Score <span class="ot">&lt;-</span> <span class="fu">factor</span>(score_dat<span class="sc">$</span>Credit_Score, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Good&quot;</span>, <span class="st">&quot;Poor&quot;</span>, <span class="st">&quot;Standard&quot;</span>))</span>
-<span id="cb23-130"><a href="#cb23-130"></a>cat_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Payment_of_Min_Amount&quot;</span>, <span class="st">&quot;Credit_Mix&quot;</span>)</span>
-<span id="cb23-131"><a href="#cb23-131"></a>one_hot <span class="ot">&lt;-</span> <span class="fu">dummy_cols</span>(score_dat[cat_vars], <span class="at">select_columns =</span> cat_vars, <span class="at">remove_selected_columns =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-132"><a href="#cb23-132"></a>score_dat <span class="ot">&lt;-</span> score_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">one_of</span>(cat_vars))</span>
-<span id="cb23-133"><a href="#cb23-133"></a>score_dat_dp <span class="ot">&lt;-</span> <span class="fu">cbind</span>(score_dat, one_hot)</span>
-<span id="cb23-134"><a href="#cb23-134"></a><span class="in">```</span></span>
-<span id="cb23-135"><a href="#cb23-135"></a></span>
-<span id="cb23-136"><a href="#cb23-136"></a><span class="ss">- </span>Feature Engineering</span>
-<span id="cb23-137"><a href="#cb23-137"></a></span>
-<span id="cb23-138"><a href="#cb23-138"></a>Lasso Regression</span>
-<span id="cb23-139"><a href="#cb23-139"></a></span>
-<span id="cb23-140"><a href="#cb23-140"></a><span class="in">```{r libraries}</span></span>
-<span id="cb23-141"><a href="#cb23-141"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb23-142"><a href="#cb23-142"></a>inTrain_lasso <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb23-143"><a href="#cb23-143"></a>train_lasso <span class="ot">&lt;-</span> score_dat_dp[inTrain_lasso, ]</span>
-<span id="cb23-144"><a href="#cb23-144"></a>test_lasso <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_lasso, ]</span>
-<span id="cb23-145"><a href="#cb23-145"></a>x_train <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> train_lasso)[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb23-146"><a href="#cb23-146"></a>x_test  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> test_lasso)[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb23-147"><a href="#cb23-147"></a>y_train <span class="ot">&lt;-</span> train_lasso<span class="sc">$</span>Credit_Score</span>
-<span id="cb23-148"><a href="#cb23-148"></a>y_test  <span class="ot">&lt;-</span> test_lasso<span class="sc">$</span>Credit_Score</span>
-<span id="cb23-149"><a href="#cb23-149"></a></span>
-<span id="cb23-150"><a href="#cb23-150"></a>lasso_cv <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(x_train, y_train, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">&quot;multinomial&quot;</span>)</span>
-<span id="cb23-151"><a href="#cb23-151"></a>bestlam <span class="ot">&lt;-</span> lasso_cv<span class="sc">$</span>lambda.min</span>
-<span id="cb23-152"><a href="#cb23-152"></a>lasso_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(lasso_cv, <span class="at">s =</span> bestlam, <span class="at">newx =</span> x_test, <span class="at">type =</span> <span class="st">&quot;class&quot;</span>)</span>
-<span id="cb23-153"><a href="#cb23-153"></a>lasso_acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(lasso_preds <span class="sc">==</span> y_test)</span>
-<span id="cb23-154"><a href="#cb23-154"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Lasso Accuracy:&quot;</span>, <span class="fu">round</span>(lasso_acc <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>))</span>
-<span id="cb23-155"><a href="#cb23-155"></a><span class="in">```</span></span>
-<span id="cb23-156"><a href="#cb23-156"></a></span>
-<span id="cb23-157"><a href="#cb23-157"></a>Forward Stepwise Selection</span>
-<span id="cb23-158"><a href="#cb23-158"></a></span>
-<span id="cb23-159"><a href="#cb23-159"></a><span class="in">```{r lasso regression}</span></span>
-<span id="cb23-160"><a href="#cb23-160"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb23-161"><a href="#cb23-161"></a>inTrain_fs <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb23-162"><a href="#cb23-162"></a>train_fs <span class="ot">&lt;-</span> score_dat_dp[inTrain_fs, ]</span>
-<span id="cb23-163"><a href="#cb23-163"></a>test_fs  <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_fs, ]</span>
-<span id="cb23-164"><a href="#cb23-164"></a>cls.train <span class="ot">&lt;-</span> train_fs<span class="sc">$</span>Credit_Score</span>
-<span id="cb23-165"><a href="#cb23-165"></a>cls.test  <span class="ot">&lt;-</span> test_fs<span class="sc">$</span>Credit_Score</span>
-<span id="cb23-166"><a href="#cb23-166"></a>train_fs <span class="ot">&lt;-</span> train_fs <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Credit_Score)</span>
-<span id="cb23-167"><a href="#cb23-167"></a>test_fs  <span class="ot">&lt;-</span> test_fs <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Credit_Score)</span>
-<span id="cb23-168"><a href="#cb23-168"></a></span>
-<span id="cb23-169"><a href="#cb23-169"></a>selectFeatureMultiClass <span class="ot">&lt;-</span> <span class="cf">function</span>(train, test, cls.train, cls.test, features) {</span>
-<span id="cb23-170"><a href="#cb23-170"></a>  current.highest.accuracy <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb23-171"><a href="#cb23-171"></a>  selected.i <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb23-172"><a href="#cb23-172"></a>  remaining <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">colnames</span>(train), features)</span>
-<span id="cb23-173"><a href="#cb23-173"></a>  <span class="cf">for</span> (f <span class="cf">in</span> remaining) {</span>
-<span id="cb23-174"><a href="#cb23-174"></a>    selected.features <span class="ot">&lt;-</span> <span class="fu">c</span>(features, f)</span>
-<span id="cb23-175"><a href="#cb23-175"></a>    train.sub <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(train[, selected.features, <span class="at">drop =</span> <span class="cn">FALSE</span>], <span class="at">Credit_Score =</span> cls.train)</span>
-<span id="cb23-176"><a href="#cb23-176"></a>    test.sub  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(test[, selected.features, <span class="at">drop =</span> <span class="cn">FALSE</span>], <span class="at">Credit_Score =</span> cls.test)</span>
-<span id="cb23-177"><a href="#cb23-177"></a>    acc <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb23-178"><a href="#cb23-178"></a>    <span class="fu">tryCatch</span>({</span>
-<span id="cb23-179"><a href="#cb23-179"></a>      model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> train.sub, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb23-180"><a href="#cb23-180"></a>      preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="at">newdata =</span> test.sub)</span>
-<span id="cb23-181"><a href="#cb23-181"></a>      acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(preds <span class="sc">==</span> cls.test)</span>
-<span id="cb23-182"><a href="#cb23-182"></a>    }, <span class="at">error =</span> <span class="cf">function</span>(e) {})</span>
-<span id="cb23-183"><a href="#cb23-183"></a>    <span class="cf">if</span> (acc <span class="sc">&gt;</span> current.highest.accuracy) {</span>
-<span id="cb23-184"><a href="#cb23-184"></a>      current.highest.accuracy <span class="ot">&lt;-</span> acc</span>
-<span id="cb23-185"><a href="#cb23-185"></a>      selected.i <span class="ot">&lt;-</span> f</span>
-<span id="cb23-186"><a href="#cb23-186"></a>    }</span>
-<span id="cb23-187"><a href="#cb23-187"></a>  }</span>
-<span id="cb23-188"><a href="#cb23-188"></a>  <span class="fu">return</span>(selected.i)</span>
-<span id="cb23-189"><a href="#cb23-189"></a>}</span>
-<span id="cb23-190"><a href="#cb23-190"></a></span>
-<span id="cb23-191"><a href="#cb23-191"></a>features.direct <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb23-192"><a href="#cb23-192"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb23-193"><a href="#cb23-193"></a>  selected.i <span class="ot">&lt;-</span> <span class="fu">selectFeatureMultiClass</span>(train_fs, test_fs, cls.train, cls.test, features.direct)</span>
-<span id="cb23-194"><a href="#cb23-194"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(selected.i)) <span class="cf">break</span></span>
-<span id="cb23-195"><a href="#cb23-195"></a>  features.direct <span class="ot">&lt;-</span> <span class="fu">c</span>(features.direct, selected.i)</span>
-<span id="cb23-196"><a href="#cb23-196"></a>}</span>
-<span id="cb23-197"><a href="#cb23-197"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Top 5 Forward Selected Features:&quot;</span>, <span class="fu">paste</span>(features.direct, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>)))</span>
-<span id="cb23-198"><a href="#cb23-198"></a></span>
-<span id="cb23-199"><a href="#cb23-199"></a>formula_forward <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;Credit_Score ~&quot;</span>, <span class="fu">paste</span>(features.direct, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>)))</span>
-<span id="cb23-200"><a href="#cb23-200"></a>logit_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(formula_forward, <span class="at">data =</span> <span class="fu">data.frame</span>(train_fs[, features.direct], <span class="at">Credit_Score =</span> cls.train))</span>
-<span id="cb23-201"><a href="#cb23-201"></a>logit_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_model, <span class="at">newdata =</span> test_fs)</span>
-<span id="cb23-202"><a href="#cb23-202"></a>conf_matrix_logit <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(logit_preds, cls.test)</span>
-<span id="cb23-203"><a href="#cb23-203"></a><span class="fu">print</span>(conf_matrix_logit)</span>
-<span id="cb23-204"><a href="#cb23-204"></a><span class="in">```</span></span>
-<span id="cb23-205"><a href="#cb23-205"></a></span>
-<span id="cb23-206"><a href="#cb23-206"></a>Random Forest</span>
-<span id="cb23-207"><a href="#cb23-207"></a></span>
-<span id="cb23-208"><a href="#cb23-208"></a><span class="in">```{r randomforest}</span></span>
-<span id="cb23-209"><a href="#cb23-209"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb23-210"><a href="#cb23-210"></a></span>
-<span id="cb23-211"><a href="#cb23-211"></a>inTrain_rf <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb23-212"><a href="#cb23-212"></a>train_rf <span class="ot">&lt;-</span> score_dat_dp[inTrain_rf, ]</span>
-<span id="cb23-213"><a href="#cb23-213"></a>test_rf  <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_rf, ]</span>
-<span id="cb23-214"><a href="#cb23-214"></a></span>
-<span id="cb23-215"><a href="#cb23-215"></a>rf_model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> train_rf, <span class="at">ntree =</span> <span class="dv">100</span>, <span class="at">importance =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-216"><a href="#cb23-216"></a>rf_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(rf_model, <span class="at">newdata =</span> test_rf)</span>
-<span id="cb23-217"><a href="#cb23-217"></a></span>
-<span id="cb23-218"><a href="#cb23-218"></a>rf_acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(rf_pred <span class="sc">==</span> test_rf<span class="sc">$</span>Credit_Score)</span>
-<span id="cb23-219"><a href="#cb23-219"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Random Forest Accuracy:&quot;</span>, <span class="fu">round</span>(rf_acc <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>))</span>
-<span id="cb23-220"><a href="#cb23-220"></a></span>
-<span id="cb23-221"><a href="#cb23-221"></a>conf_matrix_rf <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(rf_pred, test_rf<span class="sc">$</span>Credit_Score)</span>
-<span id="cb23-222"><a href="#cb23-222"></a><span class="fu">print</span>(conf_matrix_rf)</span>
-<span id="cb23-223"><a href="#cb23-223"></a><span class="in">```</span></span>
-<span id="cb23-224"><a href="#cb23-224"></a></span>
-<span id="cb23-225"><a href="#cb23-225"></a>HEATMAP</span>
-<span id="cb23-226"><a href="#cb23-226"></a></span>
-<span id="cb23-227"><a href="#cb23-227"></a><span class="in">```{r heatmap}</span></span>
-<span id="cb23-228"><a href="#cb23-228"></a>conf_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(conf_matrix_rf<span class="sc">$</span>table)</span>
-<span id="cb23-229"><a href="#cb23-229"></a></span>
-<span id="cb23-230"><a href="#cb23-230"></a><span class="fu">ggplot</span>(conf_df, <span class="fu">aes</span>(<span class="at">x =</span> Reference, <span class="at">y =</span> Prediction, <span class="at">fill =</span> Freq)) <span class="sc">+</span></span>
-<span id="cb23-231"><a href="#cb23-231"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb23-232"><a href="#cb23-232"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> Freq), <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb23-233"><a href="#cb23-233"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Confusion Matrix Heatmap for Random Forest&quot;</span>,</span>
-<span id="cb23-234"><a href="#cb23-234"></a>       <span class="at">x =</span> <span class="st">&quot;True Class&quot;</span>,</span>
-<span id="cb23-235"><a href="#cb23-235"></a>       <span class="at">y =</span> <span class="st">&quot;Predicted Class&quot;</span>) <span class="sc">+</span></span>
-<span id="cb23-236"><a href="#cb23-236"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb23-237"><a href="#cb23-237"></a><span class="in">```</span></span>
-<span id="cb23-238"><a href="#cb23-238"></a></span>
-<span id="cb23-239"><a href="#cb23-239"></a>XGBoost</span>
-<span id="cb23-240"><a href="#cb23-240"></a><span class="in">```{r xgboost}</span></span>
-<span id="cb23-241"><a href="#cb23-241"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb23-242"><a href="#cb23-242"></a></span>
-<span id="cb23-243"><a href="#cb23-243"></a>inTrain_xgb <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb23-244"><a href="#cb23-244"></a>train_xgb <span class="ot">&lt;-</span> score_dat_dp[inTrain_xgb, ]</span>
-<span id="cb23-245"><a href="#cb23-245"></a>test_xgb  <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_xgb, ]</span>
-<span id="cb23-246"><a href="#cb23-246"></a></span>
-<span id="cb23-247"><a href="#cb23-247"></a>x_train <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., train_xgb)[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb23-248"><a href="#cb23-248"></a>x_test  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., test_xgb)[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb23-249"><a href="#cb23-249"></a>y_train <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(train_xgb<span class="sc">$</span>Credit_Score) <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb23-250"><a href="#cb23-250"></a>y_test  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(test_xgb<span class="sc">$</span>Credit_Score) <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb23-251"><a href="#cb23-251"></a></span>
-<span id="cb23-252"><a href="#cb23-252"></a>dtrain <span class="ot">&lt;-</span> <span class="fu">xgb.DMatrix</span>(<span class="at">data =</span> x_train, <span class="at">label =</span> y_train)</span>
-<span id="cb23-253"><a href="#cb23-253"></a>dtest  <span class="ot">&lt;-</span> <span class="fu">xgb.DMatrix</span>(<span class="at">data =</span> x_test, <span class="at">label =</span> y_test)</span>
-<span id="cb23-254"><a href="#cb23-254"></a></span>
-<span id="cb23-255"><a href="#cb23-255"></a>params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">objective =</span> <span class="st">&quot;multi:softmax&quot;</span>, <span class="at">num_class =</span> <span class="dv">3</span>, <span class="at">eval_metric =</span> <span class="st">&quot;mlogloss&quot;</span>)</span>
-<span id="cb23-256"><a href="#cb23-256"></a>xgb_model <span class="ot">&lt;-</span> <span class="fu">xgb.train</span>(<span class="at">params =</span> params, <span class="at">data =</span> dtrain, <span class="at">nrounds =</span> <span class="dv">100</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
-<span id="cb23-257"><a href="#cb23-257"></a></span>
-<span id="cb23-258"><a href="#cb23-258"></a>xgb_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb_model, dtest)</span>
-<span id="cb23-259"><a href="#cb23-259"></a>xgb_acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(xgb_pred <span class="sc">==</span> y_test)</span>
-<span id="cb23-260"><a href="#cb23-260"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;XGBoost Accuracy:&quot;</span>, <span class="fu">round</span>(xgb_acc <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>))</span>
-<span id="cb23-261"><a href="#cb23-261"></a></span>
-<span id="cb23-262"><a href="#cb23-262"></a>conf_matrix_xgb <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(<span class="fu">factor</span>(xgb_pred), <span class="fu">factor</span>(y_test))</span>
-<span id="cb23-263"><a href="#cb23-263"></a><span class="fu">print</span>(conf_matrix_xgb)</span>
-<span id="cb23-264"><a href="#cb23-264"></a><span class="in">```</span></span>
-<span id="cb23-265"><a href="#cb23-265"></a>Conclusion</span>
-<span id="cb23-266"><a href="#cb23-266"></a></span>
-<span id="cb23-267"><a href="#cb23-267"></a><span class="in">    Random Forest performed the best (~78% accuracy), with robust class handling.</span></span>
-<span id="cb23-268"><a href="#cb23-268"></a></span>
-<span id="cb23-269"><a href="#cb23-269"></a><span class="in">    XGBoost came close with ~74% accuracy and faster execution.</span></span>
-<span id="cb23-270"><a href="#cb23-270"></a></span>
-<span id="cb23-271"><a href="#cb23-271"></a><span class="in">    Lasso and Forward Selection helped in dimensionality reduction and feature insight.</span></span>
-<span id="cb23-272"><a href="#cb23-272"></a></span>
-<span id="cb23-273"><a href="#cb23-273"></a><span class="in">    The analysis confirms that robust machine learning models can effectively automate credit scoring in financial services.</span></span>
+<div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">---</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="an">title:</span><span class="co"> &quot;FinalProjectReport&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="an">author:</span><span class="co"> &quot;Group 2&quot;</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="an">format:</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="co">    html:</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="co">      code-fold: true</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="co">      code-line-numbers: true</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="co">      number-sections: true</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="co">      number-depth: 3</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="co">      code-tools: true</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a><span class="co">      embed-resources: true</span></span>
+<span id="cb22-12"><a href="#cb22-12"></a><span class="co">---</span></span>
+<span id="cb22-13"><a href="#cb22-13"></a></span>
+<span id="cb22-14"><a href="#cb22-14"></a><span class="co">&lt;!-- </span></span>
+<span id="cb22-15"><a href="#cb22-15"></a><span class="co"> Overview of the Problem</span></span>
+<span id="cb22-16"><a href="#cb22-16"></a></span>
+<span id="cb22-17"><a href="#cb22-17"></a><span class="co">The objective of the project is to build a multi-class classification model that predicts an individual&#39;s credit score—categorized into Good, Standard, or Poor—based on various demographic and financial factors.</span></span>
+<span id="cb22-18"><a href="#cb22-18"></a><span class="co">This task has practical applications in the financial sector, especially for automated credit scoring and risk assessment. By replacing manual evaluations with predictive analytics, institutions can streamline loan approvals and minimize default risk. </span></span>
+<span id="cb22-19"><a href="#cb22-19"></a><span class="co">--&gt;</span></span>
+<span id="cb22-20"><a href="#cb22-20"></a></span>
+<span id="cb22-21"><a href="#cb22-21"></a>The goal of this project is to build a multi-class classification model to predict a customer’s Credit Score (Poor, Standard, Good) using demographic and financial behavior data. This can support automated risk assessment in financial institutions and reduce manual workload.</span>
+<span id="cb22-22"><a href="#cb22-22"></a></span>
+<span id="cb22-23"><a href="#cb22-23"></a></span>
+<span id="cb22-24"><a href="#cb22-24"></a><span class="fu"># About Dataset</span></span>
+<span id="cb22-25"><a href="#cb22-25"></a></span>
+<span id="cb22-26"><a href="#cb22-26"></a>  **Source   :** Kaggle (https://www.kaggle.com/code/sudhanshu2198/multi-class-credit-score-classification)  </span>
+<span id="cb22-27"><a href="#cb22-27"></a>  **Data set :** score.csv  </span>
+<span id="cb22-28"><a href="#cb22-28"></a>  **Samples  :** approximate 100,000  </span>
+<span id="cb22-29"><a href="#cb22-29"></a>  **Features :** Mix of numeric and categorical  </span>
+<span id="cb22-30"><a href="#cb22-30"></a>  **Target   :** Credit_Score (Poor, Standard, Good)  </span>
+<span id="cb22-31"><a href="#cb22-31"></a>  **Key Issues :** Outliers, noisy strings, class imbalance  </span>
+<span id="cb22-32"><a href="#cb22-32"></a>                   Missing Values ~1% overall; highest in Credit_History_Age, Monthly_Inhand_Salary</span>
+<span id="cb22-33"><a href="#cb22-33"></a></span>
+<span id="cb22-34"><a href="#cb22-34"></a><span class="fu">## Key Features and Description</span></span>
+<span id="cb22-35"><a href="#cb22-35"></a></span>
+<span id="cb22-36"><a href="#cb22-36"></a><span class="ss">- </span>**Age**: Age of the person  </span>
+<span id="cb22-37"><a href="#cb22-37"></a><span class="ss">- </span>**Annual_Income**: Annual income of the person  </span>
+<span id="cb22-38"><a href="#cb22-38"></a><span class="ss">- </span>**Monthly_Inhand_Salary**: Monthly base salary  </span>
+<span id="cb22-39"><a href="#cb22-39"></a><span class="ss">- </span>**Num_Bank_Accounts**: Number of bank accounts  </span>
+<span id="cb22-40"><a href="#cb22-40"></a><span class="ss">- </span>**Num_Credit_Card**: Number of credit cards  </span>
+<span id="cb22-41"><a href="#cb22-41"></a><span class="ss">- </span>**Interest_Rate**: Credit card interest rate  </span>
+<span id="cb22-42"><a href="#cb22-42"></a><span class="ss">- </span>**Num_of_Loan**: Number of bank loans  </span>
+<span id="cb22-43"><a href="#cb22-43"></a><span class="ss">- </span>**Delay_from_due_date**: Avg. days delayed  </span>
+<span id="cb22-44"><a href="#cb22-44"></a><span class="ss">- </span>**Num_of_Delayed_Payment**: Avg. payments delayed  </span>
+<span id="cb22-45"><a href="#cb22-45"></a><span class="ss">- </span>**Changed_Credit_Limit**: % change in credit limit  </span>
+<span id="cb22-46"><a href="#cb22-46"></a><span class="ss">- </span>**Num_Credit_Inquiries**: Credit card inquiries  </span>
+<span id="cb22-47"><a href="#cb22-47"></a><span class="ss">- </span>**Credit_Mix**: Credit type classification  </span>
+<span id="cb22-48"><a href="#cb22-48"></a><span class="ss">- </span>**Outstanding_Debt**: Remaining debt  </span>
+<span id="cb22-49"><a href="#cb22-49"></a><span class="ss">- </span>**Credit_Utilization_Ratio**: Utilization ratio  </span>
+<span id="cb22-50"><a href="#cb22-50"></a><span class="ss">- </span>**Credit_History_Age**: Age of credit history  </span>
+<span id="cb22-51"><a href="#cb22-51"></a><span class="ss">- </span>**Payment_of_Min_Amount**: Whether minimum amount was paid  </span>
+<span id="cb22-52"><a href="#cb22-52"></a><span class="ss">- </span>**Total_EMI_per_month**: Monthly EMI payments  </span>
+<span id="cb22-53"><a href="#cb22-53"></a><span class="ss">- </span>**Amount_invested_monthly**: Monthly investments  </span>
+<span id="cb22-54"><a href="#cb22-54"></a><span class="ss">- </span>**Monthly_Balance**: Monthly balance  </span>
+<span id="cb22-55"><a href="#cb22-55"></a><span class="ss">- </span>**Credit_Score** : Target Variable — Poor, Standard, Good  </span>
+<span id="cb22-56"><a href="#cb22-56"></a></span>
+<span id="cb22-57"><a href="#cb22-57"></a><span class="fu"># Challenges of the project</span></span>
+<span id="cb22-58"><a href="#cb22-58"></a></span>
+<span id="cb22-59"><a href="#cb22-59"></a>**a)** Huge dataset (~100K obs, 20+ features), demanding computational resources for ML models &amp; tuning.  </span>
+<span id="cb22-60"><a href="#cb22-60"></a>**b)** Multi-class classification (Poor, Standard, Good), whereas most algorithms natively support binary.  </span>
+<span id="cb22-61"><a href="#cb22-61"></a></span>
+<span id="cb22-62"><a href="#cb22-62"></a><span class="in">```{r libs}</span></span>
+<span id="cb22-63"><a href="#cb22-63"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
+<span id="cb22-64"><a href="#cb22-64"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(caret))</span>
+<span id="cb22-65"><a href="#cb22-65"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(dplyr))</span>
+<span id="cb22-66"><a href="#cb22-66"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(reshape2))</span>
+<span id="cb22-67"><a href="#cb22-67"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(corrplot))</span>
+<span id="cb22-68"><a href="#cb22-68"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(recipes))</span>
+<span id="cb22-69"><a href="#cb22-69"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(fastDummies))</span>
+<span id="cb22-70"><a href="#cb22-70"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(randomForest))</span>
+<span id="cb22-71"><a href="#cb22-71"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(nnet))</span>
+<span id="cb22-72"><a href="#cb22-72"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(glmnet))</span>
+<span id="cb22-73"><a href="#cb22-73"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(xgboost))</span>
+<span id="cb22-74"><a href="#cb22-74"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggplot2))</span>
+<span id="cb22-75"><a href="#cb22-75"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(ggcorrplot))</span>
+<span id="cb22-76"><a href="#cb22-76"></a><span class="fu">options</span>(<span class="at">warn =</span> <span class="sc">-</span><span class="dv">1</span>)  <span class="co"># to suppress warnings during rendering</span></span>
+<span id="cb22-77"><a href="#cb22-77"></a><span class="in">```</span></span>
+<span id="cb22-78"><a href="#cb22-78"></a></span>
+<span id="cb22-79"><a href="#cb22-79"></a><span class="fu"># Data Preparation &amp; EDA</span></span>
+<span id="cb22-80"><a href="#cb22-80"></a><span class="fu">## Cleaning &amp; Transformation</span></span>
+<span id="cb22-81"><a href="#cb22-81"></a><span class="ss">- </span>Categorical variables are converted into dummy variables using one-hot encoding to make them usable in machine learning models.</span>
+<span id="cb22-82"><a href="#cb22-82"></a><span class="ss">- </span>Categorical fields like Credit_Mix and Payment_of_Min_Amount are transformed accordingly.</span>
+<span id="cb22-83"><a href="#cb22-83"></a></span>
+<span id="cb22-84"><a href="#cb22-84"></a><span class="fu">## Exploratory Data Analysis (EDA)</span></span>
+<span id="cb22-85"><a href="#cb22-85"></a><span class="ss">- </span>We compute and visualize the correlation matrix to observe relationships between numeric features.</span>
+<span id="cb22-86"><a href="#cb22-86"></a><span class="ss">- </span>A bar chart shows the class distribution for Credit_Score, confirming class imbalance (an issue relevant for model training).</span>
+<span id="cb22-87"><a href="#cb22-87"></a><span class="ss">- </span>These visualizations guide which features might be important and which require scaling or imputation.</span>
+<span id="cb22-88"><a href="#cb22-88"></a></span>
+<span id="cb22-91"><a href="#cb22-91"></a><span class="in">```{r}</span></span>
+<span id="cb22-92"><a href="#cb22-92"></a>score_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Score.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-93"><a href="#cb22-93"></a>score_dat <span class="ot">&lt;-</span> score_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Credit_Score, Credit_Score)</span>
+<span id="cb22-94"><a href="#cb22-94"></a><span class="in">```</span></span>
+<span id="cb22-95"><a href="#cb22-95"></a></span>
+<span id="cb22-96"><a href="#cb22-96"></a></span>
+<span id="cb22-97"><a href="#cb22-97"></a><span class="in">```{r }</span></span>
+<span id="cb22-98"><a href="#cb22-98"></a><span class="fu">library</span>(ggcorrplot)</span>
+<span id="cb22-99"><a href="#cb22-99"></a></span>
+<span id="cb22-100"><a href="#cb22-100"></a><span class="co"># Prepare numeric data</span></span>
+<span id="cb22-101"><a href="#cb22-101"></a>numeric_data <span class="ot">&lt;-</span> score_dat <span class="sc">%&gt;%</span></span>
+<span id="cb22-102"><a href="#cb22-102"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), as.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-103"><a href="#cb22-103"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.factor), as.numeric))</span>
+<span id="cb22-104"><a href="#cb22-104"></a>numeric_data<span class="sc">$</span>Credit_Score <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(score_dat<span class="sc">$</span>Credit_Score)</span>
+<span id="cb22-105"><a href="#cb22-105"></a></span>
+<span id="cb22-106"><a href="#cb22-106"></a><span class="co"># Compute correlation matrix</span></span>
+<span id="cb22-107"><a href="#cb22-107"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(numeric_data, <span class="at">use =</span> <span class="st">&quot;pairwise.complete.obs&quot;</span>)</span>
+<span id="cb22-108"><a href="#cb22-108"></a></span>
+<span id="cb22-109"><a href="#cb22-109"></a><span class="co"># Save high-res heatmap</span></span>
+<span id="cb22-110"><a href="#cb22-110"></a>p <span class="ot">&lt;-</span> <span class="fu">ggcorrplot</span>(</span>
+<span id="cb22-111"><a href="#cb22-111"></a>  cor_matrix,</span>
+<span id="cb22-112"><a href="#cb22-112"></a>  <span class="at">type =</span> <span class="st">&quot;lower&quot;</span>,</span>
+<span id="cb22-113"><a href="#cb22-113"></a>  <span class="at">lab =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-114"><a href="#cb22-114"></a>  <span class="at">lab_size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb22-115"><a href="#cb22-115"></a>  <span class="at">hc.order =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-116"><a href="#cb22-116"></a>  <span class="at">method =</span> <span class="st">&quot;square&quot;</span>,</span>
+<span id="cb22-117"><a href="#cb22-117"></a>  <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb22-118"><a href="#cb22-118"></a>  <span class="at">outline.color =</span> <span class="st">&quot;gray90&quot;</span></span>
+<span id="cb22-119"><a href="#cb22-119"></a>) <span class="sc">+</span></span>
+<span id="cb22-120"><a href="#cb22-120"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Correlation Heatmap of Dataset Features (Including Credit Score)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb22-121"><a href="#cb22-121"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb22-122"><a href="#cb22-122"></a>  <span class="fu">theme</span>(</span>
+<span id="cb22-123"><a href="#cb22-123"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb22-124"><a href="#cb22-124"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
+<span id="cb22-125"><a href="#cb22-125"></a>  )</span>
+<span id="cb22-126"><a href="#cb22-126"></a></span>
+<span id="cb22-127"><a href="#cb22-127"></a><span class="co"># Save as PNG (higher resolution)</span></span>
+<span id="cb22-128"><a href="#cb22-128"></a><span class="fu">ggsave</span>(<span class="st">&quot;correlation_heatmap.png&quot;</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">10</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb22-129"><a href="#cb22-129"></a></span>
+<span id="cb22-130"><a href="#cb22-130"></a><span class="in">```</span></span>
+<span id="cb22-131"><a href="#cb22-131"></a></span>
+<span id="cb22-132"><a href="#cb22-132"></a><span class="in">```{r include_correlation_heatmap, echo=FALSE, fig.align=&#39;center&#39;, out.width=&#39;100%&#39;}</span></span>
+<span id="cb22-133"><a href="#cb22-133"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;correlation_heatmap.png&quot;</span>)</span>
+<span id="cb22-134"><a href="#cb22-134"></a><span class="in">```</span></span>
+<span id="cb22-135"><a href="#cb22-135"></a></span>
+<span id="cb22-136"><a href="#cb22-136"></a></span>
+<span id="cb22-137"><a href="#cb22-137"></a></span>
+<span id="cb22-140"><a href="#cb22-140"></a><span class="in">```{r}</span></span>
+<span id="cb22-141"><a href="#cb22-141"></a>score_dat<span class="sc">$</span>Credit_Score <span class="ot">&lt;-</span> <span class="fu">factor</span>(score_dat<span class="sc">$</span>Credit_Score, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Good&quot;</span>, <span class="st">&quot;Poor&quot;</span>, <span class="st">&quot;Standard&quot;</span>))</span>
+<span id="cb22-142"><a href="#cb22-142"></a>cat_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Payment_of_Min_Amount&quot;</span>, <span class="st">&quot;Credit_Mix&quot;</span>)</span>
+<span id="cb22-143"><a href="#cb22-143"></a>one_hot <span class="ot">&lt;-</span> <span class="fu">dummy_cols</span>(score_dat[cat_vars], <span class="at">select_columns =</span> cat_vars, <span class="at">remove_selected_columns =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-144"><a href="#cb22-144"></a>score_dat <span class="ot">&lt;-</span> score_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">one_of</span>(cat_vars))</span>
+<span id="cb22-145"><a href="#cb22-145"></a>score_dat_dp <span class="ot">&lt;-</span> <span class="fu">cbind</span>(score_dat, one_hot)</span>
+<span id="cb22-146"><a href="#cb22-146"></a><span class="in">```</span></span>
+<span id="cb22-147"><a href="#cb22-147"></a></span>
+<span id="cb22-148"><a href="#cb22-148"></a><span class="fu"># Lasso Regression</span></span>
+<span id="cb22-149"><a href="#cb22-149"></a>Lasso regression is to perform feature slection by penalising less relevant variables and shrinking their coefficients to zero.</span>
+<span id="cb22-150"><a href="#cb22-150"></a>Process: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-151"><a href="#cb22-151"></a><span class="ss">- </span>Split the data into training and test sets.</span>
+<span id="cb22-152"><a href="#cb22-152"></a><span class="ss">- </span>Use cv.glmnet() for cross validation to find the optimal lambda.</span>
+<span id="cb22-153"><a href="#cb22-153"></a><span class="ss">- </span>Predict and compute accuracy on the test set.</span>
+<span id="cb22-154"><a href="#cb22-154"></a>Objective: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-155"><a href="#cb22-155"></a>To reduce dimensionality and focus on the most predictive features, setting the stage for cleaner mopdeling downstream.</span>
+<span id="cb22-156"><a href="#cb22-156"></a></span>
+<span id="cb22-157"><a href="#cb22-157"></a><span class="in">```{r libraries}</span></span>
+<span id="cb22-158"><a href="#cb22-158"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb22-159"><a href="#cb22-159"></a>inTrain_lasso <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-160"><a href="#cb22-160"></a>train_lasso <span class="ot">&lt;-</span> score_dat_dp[inTrain_lasso, ]</span>
+<span id="cb22-161"><a href="#cb22-161"></a>test_lasso <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_lasso, ]</span>
+<span id="cb22-162"><a href="#cb22-162"></a>x_train <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> train_lasso)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb22-163"><a href="#cb22-163"></a>x_test  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> test_lasso)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb22-164"><a href="#cb22-164"></a>y_train <span class="ot">&lt;-</span> train_lasso<span class="sc">$</span>Credit_Score</span>
+<span id="cb22-165"><a href="#cb22-165"></a>y_test  <span class="ot">&lt;-</span> test_lasso<span class="sc">$</span>Credit_Score</span>
+<span id="cb22-166"><a href="#cb22-166"></a></span>
+<span id="cb22-167"><a href="#cb22-167"></a>lasso_cv <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(x_train, y_train, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="st">&quot;multinomial&quot;</span>)</span>
+<span id="cb22-168"><a href="#cb22-168"></a>bestlam <span class="ot">&lt;-</span> lasso_cv<span class="sc">$</span>lambda.min</span>
+<span id="cb22-169"><a href="#cb22-169"></a>lasso_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(lasso_cv, <span class="at">s =</span> bestlam, <span class="at">newx =</span> x_test, <span class="at">type =</span> <span class="st">&quot;class&quot;</span>)</span>
+<span id="cb22-170"><a href="#cb22-170"></a>lasso_acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(lasso_preds <span class="sc">==</span> y_test)</span>
+<span id="cb22-171"><a href="#cb22-171"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Lasso Accuracy:&quot;</span>, <span class="fu">round</span>(lasso_acc <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>))</span>
+<span id="cb22-172"><a href="#cb22-172"></a><span class="in">```</span></span>
+<span id="cb22-173"><a href="#cb22-173"></a></span>
+<span id="cb22-174"><a href="#cb22-174"></a><span class="fu"># Forward Stepwise Selection (Multinomial Logistic Regression)</span></span>
+<span id="cb22-175"><a href="#cb22-175"></a>This method iteratively selects the best performing features based on accuracy improvements.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-176"><a href="#cb22-176"></a>Process: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-177"><a href="#cb22-177"></a><span class="ss">- </span>Starts with no features and adds one at a time based on which feature gives the highest accuracy gain on a test set. <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-178"><a href="#cb22-178"></a><span class="ss">- </span>multinom() is used to train a model on the selected features.</span>
+<span id="cb22-179"><a href="#cb22-179"></a>Objective: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-180"><a href="#cb22-180"></a>This technique provides a human-interpretable subset of features, complementing Lasso&#39;s more automated selection, it ensures model simplicity and explains why certain variables are preditive.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-181"><a href="#cb22-181"></a></span>
+<span id="cb22-182"><a href="#cb22-182"></a><span class="in">```{r lasso regression}</span></span>
+<span id="cb22-183"><a href="#cb22-183"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb22-184"><a href="#cb22-184"></a>inTrain_fs <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-185"><a href="#cb22-185"></a>train_fs <span class="ot">&lt;-</span> score_dat_dp[inTrain_fs, ]</span>
+<span id="cb22-186"><a href="#cb22-186"></a>test_fs  <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_fs, ]</span>
+<span id="cb22-187"><a href="#cb22-187"></a>cls.train <span class="ot">&lt;-</span> train_fs<span class="sc">$</span>Credit_Score</span>
+<span id="cb22-188"><a href="#cb22-188"></a>cls.test  <span class="ot">&lt;-</span> test_fs<span class="sc">$</span>Credit_Score</span>
+<span id="cb22-189"><a href="#cb22-189"></a>train_fs <span class="ot">&lt;-</span> train_fs <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Credit_Score)</span>
+<span id="cb22-190"><a href="#cb22-190"></a>test_fs  <span class="ot">&lt;-</span> test_fs <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Credit_Score)</span>
+<span id="cb22-191"><a href="#cb22-191"></a></span>
+<span id="cb22-192"><a href="#cb22-192"></a>selectFeatureMultiClass <span class="ot">&lt;-</span> <span class="cf">function</span>(train, test, cls.train, cls.test, features) {</span>
+<span id="cb22-193"><a href="#cb22-193"></a>  current.highest.accuracy <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb22-194"><a href="#cb22-194"></a>  selected.i <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb22-195"><a href="#cb22-195"></a>  remaining <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">colnames</span>(train), features)</span>
+<span id="cb22-196"><a href="#cb22-196"></a>  <span class="cf">for</span> (f <span class="cf">in</span> remaining) {</span>
+<span id="cb22-197"><a href="#cb22-197"></a>    selected.features <span class="ot">&lt;-</span> <span class="fu">c</span>(features, f)</span>
+<span id="cb22-198"><a href="#cb22-198"></a>    train.sub <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(train[, selected.features, <span class="at">drop =</span> <span class="cn">FALSE</span>], <span class="at">Credit_Score =</span> cls.train)</span>
+<span id="cb22-199"><a href="#cb22-199"></a>    test.sub  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(test[, selected.features, <span class="at">drop =</span> <span class="cn">FALSE</span>], <span class="at">Credit_Score =</span> cls.test)</span>
+<span id="cb22-200"><a href="#cb22-200"></a>    acc <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb22-201"><a href="#cb22-201"></a>    <span class="fu">tryCatch</span>({</span>
+<span id="cb22-202"><a href="#cb22-202"></a>      model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> train.sub, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-203"><a href="#cb22-203"></a>      preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="at">newdata =</span> test.sub)</span>
+<span id="cb22-204"><a href="#cb22-204"></a>      acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(preds <span class="sc">==</span> cls.test)</span>
+<span id="cb22-205"><a href="#cb22-205"></a>    }, <span class="at">error =</span> <span class="cf">function</span>(e) {})</span>
+<span id="cb22-206"><a href="#cb22-206"></a>    <span class="cf">if</span> (acc <span class="sc">&gt;</span> current.highest.accuracy) {</span>
+<span id="cb22-207"><a href="#cb22-207"></a>      current.highest.accuracy <span class="ot">&lt;-</span> acc</span>
+<span id="cb22-208"><a href="#cb22-208"></a>      selected.i <span class="ot">&lt;-</span> f</span>
+<span id="cb22-209"><a href="#cb22-209"></a>    }</span>
+<span id="cb22-210"><a href="#cb22-210"></a>  }</span>
+<span id="cb22-211"><a href="#cb22-211"></a>  <span class="fu">return</span>(selected.i)</span>
+<span id="cb22-212"><a href="#cb22-212"></a>}</span>
+<span id="cb22-213"><a href="#cb22-213"></a></span>
+<span id="cb22-214"><a href="#cb22-214"></a>features.direct <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb22-215"><a href="#cb22-215"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb22-216"><a href="#cb22-216"></a>  selected.i <span class="ot">&lt;-</span> <span class="fu">selectFeatureMultiClass</span>(train_fs, test_fs, cls.train, cls.test, features.direct)</span>
+<span id="cb22-217"><a href="#cb22-217"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(selected.i)) <span class="cf">break</span></span>
+<span id="cb22-218"><a href="#cb22-218"></a>  features.direct <span class="ot">&lt;-</span> <span class="fu">c</span>(features.direct, selected.i)</span>
+<span id="cb22-219"><a href="#cb22-219"></a>}</span>
+<span id="cb22-220"><a href="#cb22-220"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Top 5 Forward Selected Features:&quot;</span>, <span class="fu">paste</span>(features.direct, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>)))</span>
+<span id="cb22-221"><a href="#cb22-221"></a></span>
+<span id="cb22-222"><a href="#cb22-222"></a>formula_forward <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&quot;Credit_Score ~&quot;</span>, <span class="fu">paste</span>(features.direct, <span class="at">collapse =</span> <span class="st">&quot;+&quot;</span>)))</span>
+<span id="cb22-223"><a href="#cb22-223"></a>logit_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(formula_forward, <span class="at">data =</span> <span class="fu">data.frame</span>(train_fs[, features.direct], <span class="at">Credit_Score =</span> cls.train))</span>
+<span id="cb22-224"><a href="#cb22-224"></a>logit_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_model, <span class="at">newdata =</span> test_fs)</span>
+<span id="cb22-225"><a href="#cb22-225"></a>conf_matrix_logit <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(logit_preds, cls.test)</span>
+<span id="cb22-226"><a href="#cb22-226"></a><span class="fu">print</span>(conf_matrix_logit)</span>
+<span id="cb22-227"><a href="#cb22-227"></a><span class="in">```</span></span>
+<span id="cb22-228"><a href="#cb22-228"></a></span>
+<span id="cb22-229"><a href="#cb22-229"></a><span class="fu"># Random Forest (with Feature importance)</span></span>
+<span id="cb22-230"><a href="#cb22-230"></a>Random forest builds multiple decision trees and aggregate their predictions, a full model is trained, and feature importance is extracted, top five features are used to train a leaner model, then accuracy and confusion matrix are reported.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-231"><a href="#cb22-231"></a>Objective: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-232"><a href="#cb22-232"></a><span class="ss">- </span>More accurate and robust than linear models.</span>
+<span id="cb22-233"><a href="#cb22-233"></a><span class="ss">- </span>The feature importance results also validate earlier selections from Lasso and Forward Selection.</span>
+<span id="cb22-234"><a href="#cb22-234"></a></span>
+<span id="cb22-235"><a href="#cb22-235"></a><span class="in">```{r randomforest}</span></span>
+<span id="cb22-236"><a href="#cb22-236"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb22-237"><a href="#cb22-237"></a></span>
+<span id="cb22-238"><a href="#cb22-238"></a>inTrain_rf <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-239"><a href="#cb22-239"></a>train_rf <span class="ot">&lt;-</span> score_dat_dp[inTrain_rf, ]</span>
+<span id="cb22-240"><a href="#cb22-240"></a>test_rf  <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_rf, ]</span>
+<span id="cb22-241"><a href="#cb22-241"></a></span>
+<span id="cb22-242"><a href="#cb22-242"></a>rf_model <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(Credit_Score <span class="sc">~</span> ., <span class="at">data =</span> train_rf, <span class="at">ntree =</span> <span class="dv">100</span>, <span class="at">importance =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-243"><a href="#cb22-243"></a>rf_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(rf_model, <span class="at">newdata =</span> test_rf)</span>
+<span id="cb22-244"><a href="#cb22-244"></a></span>
+<span id="cb22-245"><a href="#cb22-245"></a>rf_acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(rf_pred <span class="sc">==</span> test_rf<span class="sc">$</span>Credit_Score)</span>
+<span id="cb22-246"><a href="#cb22-246"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Random Forest Accuracy:&quot;</span>, <span class="fu">round</span>(rf_acc <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>))</span>
+<span id="cb22-247"><a href="#cb22-247"></a></span>
+<span id="cb22-248"><a href="#cb22-248"></a>conf_matrix_rf <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(rf_pred, test_rf<span class="sc">$</span>Credit_Score)</span>
+<span id="cb22-249"><a href="#cb22-249"></a><span class="fu">print</span>(conf_matrix_rf)</span>
+<span id="cb22-250"><a href="#cb22-250"></a><span class="in">```</span></span>
+<span id="cb22-251"><a href="#cb22-251"></a></span>
+<span id="cb22-252"><a href="#cb22-252"></a><span class="fu">## HEATMAP</span></span>
+<span id="cb22-253"><a href="#cb22-253"></a></span>
+<span id="cb22-254"><a href="#cb22-254"></a><span class="in">```{r heatmap}</span></span>
+<span id="cb22-255"><a href="#cb22-255"></a>conf_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(conf_matrix_rf<span class="sc">$</span>table)</span>
+<span id="cb22-256"><a href="#cb22-256"></a></span>
+<span id="cb22-257"><a href="#cb22-257"></a><span class="fu">ggplot</span>(conf_df, <span class="fu">aes</span>(<span class="at">x =</span> Reference, <span class="at">y =</span> Prediction, <span class="at">fill =</span> Freq)) <span class="sc">+</span></span>
+<span id="cb22-258"><a href="#cb22-258"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb22-259"><a href="#cb22-259"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> Freq), <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb22-260"><a href="#cb22-260"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Confusion Matrix Heatmap for Random Forest&quot;</span>,</span>
+<span id="cb22-261"><a href="#cb22-261"></a>       <span class="at">x =</span> <span class="st">&quot;True Class&quot;</span>,</span>
+<span id="cb22-262"><a href="#cb22-262"></a>       <span class="at">y =</span> <span class="st">&quot;Predicted Class&quot;</span>) <span class="sc">+</span></span>
+<span id="cb22-263"><a href="#cb22-263"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb22-264"><a href="#cb22-264"></a><span class="in">```</span></span>
+<span id="cb22-265"><a href="#cb22-265"></a></span>
+<span id="cb22-266"><a href="#cb22-266"></a><span class="fu"># XGBoost</span></span>
+<span id="cb22-267"><a href="#cb22-267"></a>XGBoost is a high-performance boosting algorithm. It builds trees sequentially, improving errors from previous trees.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-268"><a href="#cb22-268"></a>Process: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-269"><a href="#cb22-269"></a><span class="ss">- </span>Convert dataset to numeric matrix format.</span>
+<span id="cb22-270"><a href="#cb22-270"></a><span class="ss">- </span>Use xgb.train() to fit the model.</span>
+<span id="cb22-271"><a href="#cb22-271"></a><span class="ss">- </span>Extract top five features and retrain a reduced model.</span>
+<span id="cb22-272"><a href="#cb22-272"></a><span class="ss">- </span>Evaluate accuracy and display confusion matrix.</span>
+<span id="cb22-273"><a href="#cb22-273"></a>XGBoost tends to be more efficient and often outperforms Random Forest in structured data. Its feature importance offers another validation path for feature selection.<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span></span>
+<span id="cb22-274"><a href="#cb22-274"></a></span>
+<span id="cb22-275"><a href="#cb22-275"></a><span class="in">```{r xgboost}</span></span>
+<span id="cb22-276"><a href="#cb22-276"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb22-277"><a href="#cb22-277"></a></span>
+<span id="cb22-278"><a href="#cb22-278"></a>inTrain_xgb <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(score_dat_dp<span class="sc">$</span>Credit_Score, <span class="at">p =</span> <span class="fl">0.6</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-279"><a href="#cb22-279"></a>train_xgb <span class="ot">&lt;-</span> score_dat_dp[inTrain_xgb, ]</span>
+<span id="cb22-280"><a href="#cb22-280"></a>test_xgb  <span class="ot">&lt;-</span> score_dat_dp[<span class="sc">-</span>inTrain_xgb, ]</span>
+<span id="cb22-281"><a href="#cb22-281"></a></span>
+<span id="cb22-282"><a href="#cb22-282"></a>x_train <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., train_xgb)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb22-283"><a href="#cb22-283"></a>x_test  <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Credit_Score <span class="sc">~</span> ., test_xgb)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb22-284"><a href="#cb22-284"></a>y_train <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(train_xgb<span class="sc">$</span>Credit_Score) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb22-285"><a href="#cb22-285"></a>y_test  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(test_xgb<span class="sc">$</span>Credit_Score) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb22-286"><a href="#cb22-286"></a></span>
+<span id="cb22-287"><a href="#cb22-287"></a>dtrain <span class="ot">&lt;-</span> <span class="fu">xgb.DMatrix</span>(<span class="at">data =</span> x_train, <span class="at">label =</span> y_train)</span>
+<span id="cb22-288"><a href="#cb22-288"></a>dtest  <span class="ot">&lt;-</span> <span class="fu">xgb.DMatrix</span>(<span class="at">data =</span> x_test, <span class="at">label =</span> y_test)</span>
+<span id="cb22-289"><a href="#cb22-289"></a></span>
+<span id="cb22-290"><a href="#cb22-290"></a>params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">objective =</span> <span class="st">&quot;multi:softmax&quot;</span>, <span class="at">num_class =</span> <span class="dv">3</span>, <span class="at">eval_metric =</span> <span class="st">&quot;mlogloss&quot;</span>)</span>
+<span id="cb22-291"><a href="#cb22-291"></a>xgb_model <span class="ot">&lt;-</span> <span class="fu">xgb.train</span>(<span class="at">params =</span> params, <span class="at">data =</span> dtrain, <span class="at">nrounds =</span> <span class="dv">100</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb22-292"><a href="#cb22-292"></a></span>
+<span id="cb22-293"><a href="#cb22-293"></a>xgb_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(xgb_model, dtest)</span>
+<span id="cb22-294"><a href="#cb22-294"></a>xgb_acc <span class="ot">&lt;-</span> <span class="fu">mean</span>(xgb_pred <span class="sc">==</span> y_test)</span>
+<span id="cb22-295"><a href="#cb22-295"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;XGBoost Accuracy:&quot;</span>, <span class="fu">round</span>(xgb_acc <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%&quot;</span>))</span>
+<span id="cb22-296"><a href="#cb22-296"></a></span>
+<span id="cb22-297"><a href="#cb22-297"></a>conf_matrix_xgb <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(<span class="fu">factor</span>(xgb_pred), <span class="fu">factor</span>(y_test))</span>
+<span id="cb22-298"><a href="#cb22-298"></a><span class="fu">print</span>(conf_matrix_xgb)</span>
+<span id="cb22-299"><a href="#cb22-299"></a><span class="in">```</span></span>
+<span id="cb22-300"><a href="#cb22-300"></a><span class="fu"># Conclusion</span></span>
+<span id="cb22-301"><a href="#cb22-301"></a>Random Forest performed best (~78% accuracy), showing strong class-handling capability.</span>
+<span id="cb22-302"><a href="#cb22-302"></a>XGBoost (~74%) showed efficiency and potential with hyperparameter tuning.</span>
+<span id="cb22-303"><a href="#cb22-303"></a>Lasso and Forward Selection improved model simplicity and interpretability.</span>
+<span id="cb22-304"><a href="#cb22-304"></a>Together, the full pipeline reflects a professional-grade data science workflow from EDA to evaluation.</span>
+<span id="cb22-305"><a href="#cb22-305"></a>  </span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
