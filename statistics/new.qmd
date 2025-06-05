@@ -325,7 +325,7 @@ print(paste("Lasso Accuracy:", round(lasso_acc * 100, 2), "%"))
 The Lasso Regression model gave us a test accuracy of about 64.3%, which, while not the highest, still showed that the model was able to pick up on some meaningful patterns in the data. One of the biggest advantages of Lasso is that it simplifies the model by automatically selecting only the most important variables — and that’s exactly what it did here.
 
 The variables that Lasso kept — Num_of_Loan, Num_of_Delayed_Payment, Interest_Rate, Credit_Utilization_Ratio, and Amount_invested_monthly — all make intuitive sense and line up with what we saw in the earlier correlation heatmap. These features relate more directly to credit behavior and financial responsibility, which seem to play a stronger role in determining credit scores.
-Interestingly, income-related features like Annual_Income and Monthly_Balance were not selected by Lasso. Even though those variables were strongly correlated with each other, they didn’t have much of a direct relationship with the target variable. This reinforces the idea that how someone manages debt and repayment is more predictive of their credit score than how much they earn.
+Interestingly, income-related features like Annual_Income and Monthly_Balance were not selected by Lasso. Even though those variables were strongly correlated with each other, they didn’t have much of a direct relationship with the target variable. This is in agreement with the idea that how someone manages debt and repayment is more predictive of their credit score than how much they earn.
 Overall, Lasso helped confirm which variables were most relevant for prediction, and gave us a cleaner, more interpretable model as a result.
 
 # Forward Stepwise Selection (Multinomial Logistic Regression)
@@ -400,7 +400,7 @@ These numbers reflect the model’s uneven performance, especially for underrepr
 # Random Forest (with Feature importance)
 Random forest builds multiple decision trees and aggregate their predictions, a full model is trained, and feature importance is extracted, top five features are used to train a leaner model, then accuracy and confusion matrix are reported.<br>
 Objective: <br>
-- More accurate and robust than linear models.
+- More accurate than linear models.
 - The feature importance results also validate earlier selections from Lasso and Forward Selection.
 
 ```{r randomforest}
@@ -420,7 +420,7 @@ conf_matrix_rf <- confusionMatrix(rf_pred, test_rf$Credit_Score)
 print(conf_matrix_rf)
 ```
 
-The Random Forest model delivered the best performance out of all the models we tested, achieving an accuracy of 79.9%. The confidence interval was tight, and the very low p-value (p < 2.2e-16) confirms that the model's predictions weren’t just due to chance. The statistic came in at 0.6661, which shows strong agreement between the predicted and actual credit scores — a good sign for a multi-class classification problem like this one.
+The Random Forest model delivered the best performance out of all the models we tested, achieving an accuracy of 79.9%. The confidence interval was tight, and the very low p-value (p < 2.2e-16) confirms that the model's predictions weren’t just due to chance. The statistic came in at 0.6661, The model's predictions are closely matching the real (true) credit score labels in the dataset — a good sign for a multi-class classification problem like this one.
 
 When we broke down the model’s performance by class, the results were impressive across the board. The recall (or sensitivity) was:
 
@@ -445,7 +445,7 @@ To account for the class imbalance in the dataset, we also looked at balanced ac
 
 These balanced accuracy values are significantly higher than what we saw in Lasso and Forward Stepwise models (which both hovered around 64%), especially for the Good class. This suggests that Random Forest handles all classes more consistently, regardless of how many examples there are for each.
 
-Overall, Random Forest proved to be the most robust and reliable model in this project. It performed well across all classes and handled the class imbalance effectively. Plus, the features it identified as important — like Interest_Rate, Num_of_Loan, and Num_of_Delayed_Payment — were consistent with what we found in earlier models, reinforcing confidence in our overall approach to feature selection.
+Overall, Random Forest proved to be the most reliable model in this project. It performed well across all classes and handled the class imbalance effectively. Plus, the features it identified as important — like Interest_Rate, Num_of_Loan, and Num_of_Delayed_Payment — were consistent with what we found in earlier models, which is in agreement with our overall approach to feature selection.
 
 ## HEATMAP
 
@@ -466,7 +466,7 @@ The model also did a decent job with the "Good" class, correctly identifying 5,2
 
 Looking at the misclassifications (the off-diagonal values), the most common mistake was predicting "Standard" when the actual class was "Good" — a sign that the model still leans slightly toward the dominant class. There were also 1,994 Standard cases incorrectly predicted as Poor, which reflects some overlap in feature patterns between those groups.
 
-Despite these misclassifications, the overall pattern is strong. Most of the values are concentrated along the diagonal, showing that the Random Forest model does a solid job distinguishing between the classes. This visual reinforces what we saw in the metrics — consistent performance across categories, with room for improvement in recognizing the less common "Good" credit scores.
+Despite these misclassifications, the overall pattern is strong. Most of the values are concentrated along the diagonal, showing that the Random Forest model does a solid job distinguishing between the classes. This visual agrees with what we saw in the metrics — consistent performance across categories, with room for improvement in recognizing the less common "Good" credit scores.
 
 # XGBoost
 XGBoost is a high-performance boosting algorithm. It builds trees sequentially, improving errors from previous trees.<br>
@@ -506,21 +506,17 @@ The XGBoost model performed strongly, reaching an accuracy of 75.45%. Although i
 
 Sensitivity scores were fairly balanced:
 
-Good: 0.6520
-
-Poor: 0.7327
-
-Standard: 0.8007
+- Good: 0.6520
+- Poor: 0.7327
+- Standard: 0.8007
 
 These results show that XGBoost was especially effective at identifying the Standard and Poor classes and made meaningful improvements over earlier models in handling the Poor category in particular.
 
 Balanced accuracy was also encouraging:
 
-Good: 0.7952
-
-Poor: 0.8211
-
-Standard: 0.7608
+- Good: 0.7952
+- Poor: 0.8211
+- Standard: 0.7608
 
 This suggests that even with class imbalance in the data, XGBoost managed to maintain strong predictive performance across all classes.
 
@@ -531,7 +527,7 @@ Feature importance results from XGBoost were also reassuring. Key variables like
 In short, XGBoost struck a good balance between interpretability and performance. While Random Forest led in overall accuracy, XGBoost offered a more efficient and well-rounded alternative — making it a strong candidate for deployment or for combining with other models in an ensemble approach.
 
 # Class imbalance considerations
-While we didn’t apply any specific data-level techniques like resampling, the use of ensemble models such as Random Forest and XGBoost helped to manage the class imbalance to some extent. These models are known for being more robust to uneven class distributions, which is likely why we still saw solid performance—especially in the Standard and Poor categories.
+While we didn’t apply any specific data-level techniques like resampling, the use of ensemble models such as Random Forest and XGBoost helped to manage the class imbalance to some extent. These models are known for being more resilient to uneven class distributions, which is likely why we still saw solid performance—especially in the Standard and Poor categories.
 
 To ensure a fair evaluation despite the imbalance, we focused on class-wise metrics like sensitivity (recall) and balanced accuracy. These gave us a clearer picture of how well each model performed across the different credit score classes, not just the majority group.
 
@@ -546,10 +542,10 @@ These techniques could help the models do an even better job of capturing signal
 # Conclusion
 Throughout the project, certain variables consistently stood out as strong predictors of credit score — especially Interest_Rate, Num_Credit_Inquiries, Num_Credit_Card, and Delay_from_due_date. These features were supported not only by the correlation heatmap but also by the feature selection techniques we used early on, like Lasso and Forward Stepwise Selection. This gave us a solid starting point and helped reduce the complexity of our models from the outset.
 
-Among all the models tested, Random Forest delivered the best results, with an accuracy of 79.9% and balanced performance across all credit score classes. Its ability to handle class imbalance and capture complex relationships makes it a strong candidate for real-world deployment.
+Among all the models tested, Random Forest delivered the best results, with an accuracy of 79.9% and unbiased performance across all credit score classes. Its ability to handle class imbalance and capture complex relationships makes it a strong candidate for real-world deployment.
 
 XGBoost came in slightly behind in terms of accuracy, but it offered other advantages — particularly its efficiency and ability to generalize well without overfitting. Meanwhile, Lasso Regression and Forward Stepwise Selection were valuable for identifying the most relevant features and simplifying the modeling process, even though their overall predictive power was lower.
 
-By moving from exploratory analysis to advanced ensemble methods, this project followed a clear and structured approach to solving a real-world classification problem. The end result is a machine learning pipeline that is both practical and well-grounded — one that could realistically support automated credit scoring in a business setting.
+By moving from exploratory analysis to advanced ensemble methods, this project followed a clear and structured approach to solving a real-world classification problem. The end result is a machine learning pipeline that is practical and reliable — one that could realistically support automated credit scoring in a business setting.
   
 
