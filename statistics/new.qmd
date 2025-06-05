@@ -81,10 +81,34 @@ score_dat <- score_dat %>% select(-Credit_Score, Credit_Score)
 - EDA
 
 ```{r }
-numeric_data <- score_dat %>% mutate(across(where(is.character), as.numeric)) %>% mutate(across(where(is.factor), as.numeric))
+# Prepare numeric data for correlation matrix
+numeric_data <- score_dat %>%
+  mutate(across(where(is.character), as.numeric)) %>%
+  mutate(across(where(is.factor), as.numeric))
+
 numeric_data$Credit_Score <- as.numeric(score_dat$Credit_Score)
+
+# Compute correlation matrix
 cor_matrix <- cor(numeric_data, use = "pairwise.complete.obs")
-ggcorrplot(cor_matrix, hc.order = TRUE, type = "lower", lab = TRUE) + labs(title = "Correlation Heatmap")
+
+# Plot the correlation heatmap
+ggcorrplot(
+  cor_matrix,
+  hc.order = TRUE,
+  type = "lower",
+  lab = TRUE,
+  lab_size = 3,
+  method = "square",
+  colors = c("blue", "white", "red"),
+  outline.color = "gray90",
+  title = "Correlation Heatmap of Features (Including Credit_Score)"
+) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+  )
+
 ```
 ```{r }
 score_dat %>%
@@ -108,7 +132,7 @@ score_dat_dp <- cbind(score_dat, one_hot)
 
 Lasso Regression
 
-```{r}
+```{r libraries}
 set.seed(123)
 inTrain_lasso <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
 train_lasso <- score_dat_dp[inTrain_lasso, ]
@@ -176,7 +200,7 @@ print(conf_matrix_logit)
 
 Random Forest
 
-```{r}
+```{r randomforest}
 set.seed(42)
 
 inTrain_rf <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
@@ -195,7 +219,7 @@ print(conf_matrix_rf)
 
 HEATMAP
 
-```{r}
+```{r heatmap}
 conf_df <- as.data.frame(conf_matrix_rf$table)
 
 ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +
@@ -208,7 +232,7 @@ ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +
 ```
 
 XGBoost
-```{r}
+```{r xgboost}
 set.seed(100)
 
 inTrain_xgb <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
