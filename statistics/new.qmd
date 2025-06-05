@@ -62,11 +62,16 @@ suppressPackageStartupMessages(library(corrplot))
 suppressPackageStartupMessages(library(recipes))
 suppressPackageStartupMessages(library(fastDummies))
 suppressPackageStartupMessages(library(randomForest))
-suppressPackageStartupMessages(library(glmnet))
 suppressPackageStartupMessages(library(nnet))
-suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(glmnet))
 suppressPackageStartupMessages(library(xgboost))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(ggcorrplot))
+options(warn = -1)  # to suppress warnings during rendering
 ```
+
+Data Preparation & EDA
+
 
 ```{r}
 score_dat <- read.csv("Score.csv", stringsAsFactors = TRUE)
@@ -76,145 +81,76 @@ score_dat <- score_dat %>% select(-Credit_Score, Credit_Score)
 - EDA
 
 ```{r }
-library(ggcorrplot)
-train_numeric <- score_dat %>%
-  mutate(across(where(is.character), as.numeric)) %>%
-  mutate(across(where(is.factor), as.numeric))
-
-train_numeric$Credit_Score <- as.numeric(as.factor(score_dat$Credit_Score))
-cor_matrix <- cor(train_numeric[, -which(names(train_numeric) == "Credit_Score")], train_numeric$Credit_Score)
-cor_data_cc <- melt(cor_matrix)
-
-ggplot(cor_data_cc, aes(x = Var1, y = Var2, fill = value)) +
-  geom_tile() +
-  geom_text(aes(label = round(value, 2)), color = "black", size = 2) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-  theme_minimal() +
-  labs(title = "Correlation Heatmap Matrix", fill = "Correlation") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+numeric_data <- score_dat %>% mutate(across(where(is.character), as.numeric)) %>% mutate(across(where(is.factor), as.numeric))
+numeric_data$Credit_Score <- as.numeric(score_dat$Credit_Score)
+cor_matrix <- cor(numeric_data, use = "pairwise.complete.obs")
+ggcorrplot(cor_matrix, hc.order = TRUE, type = "lower", lab = TRUE) + labs(title = "Correlation Heatmap")
 ```
 ```{r }
-score_dat_summary <- score_dat %>%
+score_dat %>%
   count(Credit_Score) %>%
-  mutate(Percentage = round(n / sum(n) * 100, 1))
-
-ggplot(score_dat_summary, aes(x = Credit_Score, y = n, fill = Credit_Score)) +
-  geom_bar(stat = "identity", width = 0.6) +
-  geom_text(aes(label = paste(n, " (", Percentage, "%)")), vjust = -0.5, size = 5, fontface = "bold") +
-  scale_fill_manual(values = c("#FF5733", "#33C3FF", "#75FF33")) +
-  labs(
-    title = "Credit Score Distribution",
-    x = "Credit Score",
-    y = "Count",
-    fill = "Class"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top"
-  )
+  mutate(Percent = round(n / sum(n) * 100, 1)) %>%
+  ggplot(aes(x = Credit_Score, y = n, fill = Credit_Score)) +
+  geom_col() + geom_text(aes(label = paste0(n, " (", Percent, "%)")), vjust = -0.5) +
+  theme_minimal()
 ```
 
 
 ```{r}
-numeric_df <- score_dat
-low_cardinality <- names(numeric_df)[sapply(numeric_df, function(col) length(unique(col)) <= 30)]
-high_cardinality <- names(numeric_df)[sapply(numeric_df, function(col) length(unique(col)) > 30)]
-
+score_dat$Credit_Score <- factor(score_dat$Credit_Score, levels = c("Good", "Poor", "Standard"))
+cat_vars <- c("Payment_of_Min_Amount", "Credit_Mix")
+one_hot <- dummy_cols(score_dat[cat_vars], select_columns = cat_vars, remove_selected_columns = TRUE)
+score_dat <- score_dat %>% select(-one_of(cat_vars))
+score_dat_dp <- cbind(score_dat, one_hot)
 ```
+
+- Feature Engineering
+
+Lasso Regression
 
 ```{r}
-recipe_obj <- recipe(~ ., data = score_dat[high_cardinality]) %>%
-  step_BoxCox(all_of(high_cardinality)) %>%
-  step_center(all_numeric(), -all_outcomes()) %>%
-  step_scale(all_numeric(), -all_outcomes())
+set.seed(123)
+inTrain_lasso <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_lasso <- score_dat_dp[inTrain_lasso, ]
+test_lasso <- score_dat_dp[-inTrain_lasso, ]
+x_train <- model.matrix(Credit_Score ~ ., data = train_lasso)[, -1]
+x_test  <- model.matrix(Credit_Score ~ ., data = test_lasso)[, -1]
+y_train <- train_lasso$Credit_Score
+y_test  <- test_lasso$Credit_Score
 
-prep_recipe <- prep(recipe_obj, training = score_dat[high_cardinality])
-numeric <- bake(prep_recipe, score_dat[high_cardinality])
-
-categorical <- c("Payment_of_Min_Amount", "Credit_Mix")
-one_hot <- dummy_cols(score_dat[categorical], select_columns = categorical, remove_selected_columns = TRUE)
-ordinal <- score_dat[low_cardinality]
-score_dat_dp <- cbind(numeric, one_hot, ordinal)
-score_dat_dp <- score_dat_dp %>% select(-c(Payment_Behaviour, Payment_of_Min_Amount, Credit_Mix))
-
+lasso_cv <- cv.glmnet(x_train, y_train, alpha = 1, family = "multinomial")
+bestlam <- lasso_cv$lambda.min
+lasso_preds <- predict(lasso_cv, s = bestlam, newx = x_test, type = "class")
+lasso_acc <- mean(lasso_preds == y_test)
+print(paste("Lasso Accuracy:", round(lasso_acc * 100, 2), "%"))
 ```
 
-
-part 2
-
-# Feature Engineering
-
-## Lasso Regression
+Forward Stepwise Selection
 
 ```{r lasso regression}
-set.seed(20250603)
+set.seed(123)
+inTrain_fs <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_fs <- score_dat_dp[inTrain_fs, ]
+test_fs  <- score_dat_dp[-inTrain_fs, ]
+cls.train <- train_fs$Credit_Score
+cls.test  <- test_fs$Credit_Score
+train_fs <- train_fs %>% select(-Credit_Score)
+test_fs  <- test_fs %>% select(-Credit_Score)
 
-inTrain_lasso <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
-train_lasso <- score_dat_dp[inTrain_lasso,]
-test_lasso  <- score_dat_dp[-inTrain_lasso,]
-
-y_train_lasso <- train_lasso$Credit_Score
-y_test_lasso  <- test_lasso$Credit_Score
-
-x_train_lasso <- model.matrix(Credit_Score ~ ., train_lasso)[,-1]
-x_test_lasso  <- model.matrix(Credit_Score ~ ., test_lasso)[,-1]
-
-grid <- 10^seq(8, -2, length = 100)
-lasso.mod <- glmnet(x_train_lasso, y_train_lasso, alpha = 1, lambda = grid, family = "multinomial", standardize = TRUE)
-plot(lasso.mod, xvar = "lambda", label = TRUE)
-
-set.seed(20250603)
-cv.out <- cv.glmnet(x_train_lasso, y_train_lasso, alpha = 1, family = "multinomial")
-plot(cv.out)
-
-bestlam <- cv.out$lambda.min
-best.betas <- coef(cv.out, s = bestlam)
-
-test.pred <- predict(cv.out, x_test_lasso, s = bestlam, type = "class")
-probs <- predict(cv.out, x_test_lasso, s = bestlam, type = "response")
-
-accuracy <- mean(test.pred == y_test_lasso)
-print(paste("Lasso Model Accuracy:", round(accuracy * 100, 2), "%"))
-```
-
-Forward Stepwise Feature Selection (Multinomial)
-
-
-```{r}
-set.seed(20250603)
-
-score_dat_dp$Credit_Score <- factor(score_dat_dp$Credit_Score, levels = c("Good", "Poor", "Standard"))
-
-inTrain <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
-train <- score_dat_dp[inTrain, ]
-test  <- score_dat_dp[-inTrain, ]
-
-train$Credit_Score <- factor(train$Credit_Score, levels = levels(score_dat_dp$Credit_Score))
-test$Credit_Score  <- factor(test$Credit_Score,  levels = levels(score_dat_dp$Credit_Score))
-
-credit_score.train <- train$Credit_Score
-credit_score.test  <- test$Credit_Score
-
-```
-
-```{r}
 selectFeatureMultiClass <- function(train, test, cls.train, cls.test, features) {
   current.highest.accuracy <- 0
   selected.i <- NULL
-  remaining <- setdiff(colnames(train), c(features, "Credit_Score"))
-  
+  remaining <- setdiff(colnames(train), features)
   for (f in remaining) {
     selected.features <- c(features, f)
-    
-    train.sub <- train[, c(selected.features, "Credit_Score")]
-    test.sub  <- test[,  c(selected.features, "Credit_Score")]
-    
-    model <- suppressWarnings(multinom(Credit_Score ~ ., data = train.sub, trace = FALSE))
-    preds <- predict(model, newdata = test.sub)
-    acc   <- mean(preds == cls.test)
-    
+    train.sub <- data.frame(train[, selected.features, drop = FALSE], Credit_Score = cls.train)
+    test.sub  <- data.frame(test[, selected.features, drop = FALSE], Credit_Score = cls.test)
+    acc <- 0
+    tryCatch({
+      model <- multinom(Credit_Score ~ ., data = train.sub, trace = FALSE)
+      preds <- predict(model, newdata = test.sub)
+      acc <- mean(preds == cls.test)
+    }, error = function(e) {})
     if (acc > current.highest.accuracy) {
       current.highest.accuracy <- acc
       selected.i <- f
@@ -223,80 +159,42 @@ selectFeatureMultiClass <- function(train, test, cls.train, cls.test, features) 
   return(selected.i)
 }
 
-
-```
-
-```{r}
 features.direct <- NULL
-
 for (i in 1:5) {
-  selected.i <- selectFeatureMultiClass(train, test, credit_score.train, credit_score.test, features.direct)
-  
-  if (is.null(selected.i)) {
-    cat("No further improvement at step", i, "- stopping selection.\n")
-    break
-  } else {
-    cat("Step", i, "- selected feature:", selected.i, "\n")
-    features.direct <- c(features.direct, selected.i)
-  }
+  selected.i <- selectFeatureMultiClass(train_fs, test_fs, cls.train, cls.test, features.direct)
+  if (is.null(selected.i)) break
+  features.direct <- c(features.direct, selected.i)
 }
+print(paste("Top 5 Forward Selected Features:", paste(features.direct, collapse = ", ")))
 
-```
-
-```{r}
-print(paste("Top 5 Features of Forward Selection Step wise are:", paste(features.direct, collapse = ", ")))
-
-```
-
-- Logistic Regression with Forward-Selected Features
-
-```{r}
-# Logistic Regression Model based on Forward-Selected Features
 formula_forward <- as.formula(paste("Credit_Score ~", paste(features.direct, collapse = "+")))
-
-logit_model <- multinom(formula_forward, data = train)
-logit_preds <- predict(logit_model, newdata = test)
-
-conf_matrix_logit <- confusionMatrix(logit_preds, test$Credit_Score)
+logit_model <- multinom(formula_forward, data = data.frame(train_fs[, features.direct], Credit_Score = cls.train))
+logit_preds <- predict(logit_model, newdata = test_fs)
+conf_matrix_logit <- confusionMatrix(logit_preds, cls.test)
 print(conf_matrix_logit)
-
 ```
 
-- Random Forest Feature Selection & Evaluation
+Random Forest
 
-- XGBoost Feature Selection & Evaluation
-
-- Classification Performance Summary
-
-- Conclusion
-
-## Random Forest Feature Selection and Evaluation
-
-```{r random-forest}
-set.seed(20250603)
+```{r}
+set.seed(42)
 
 inTrain_rf <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
-train_rf <- score_dat_dp[inTrain_rf,]
-test_rf  <- score_dat_dp[-inTrain_rf,]
+train_rf <- score_dat_dp[inTrain_rf, ]
+test_rf  <- score_dat_dp[-inTrain_rf, ]
 
-rf_feature_model <- randomForest(Credit_Score ~ ., data = train_rf, ntree = 500, importance = TRUE)
+rf_model <- randomForest(Credit_Score ~ ., data = train_rf, ntree = 100, importance = TRUE)
+rf_pred <- predict(rf_model, newdata = test_rf)
 
-feature_importance <- importance(rf_feature_model)
-selected_features_rf <- names(sort(feature_importance[, 1], decreasing = TRUE))[1:5]
-print(selected_features_rf)
-
-formula_rf <- as.formula(paste("Credit_Score ~", paste(selected_features_rf, collapse = " + ")))
-rf_model <- randomForest(formula_rf, data = train_rf, ntree = 500)
-
-rf_pred <- predict(rf_model, test_rf)
-accuracy_rf <- mean(rf_pred == test_rf$Credit_Score)
-print(paste("Random Forest Accuracy:", round(accuracy_rf * 100, 2), "%"))
+rf_acc <- mean(rf_pred == test_rf$Credit_Score)
+print(paste("Random Forest Accuracy:", round(rf_acc * 100, 2), "%"))
 
 conf_matrix_rf <- confusionMatrix(rf_pred, test_rf$Credit_Score)
 print(conf_matrix_rf)
 ```
 
-RANDOM FOREST CONFUSION MATRIX
+HEATMAP
+
 ```{r}
 conf_df <- as.data.frame(conf_matrix_rf$table)
 
@@ -307,85 +205,41 @@ ggplot(conf_df, aes(x = Reference, y = Prediction, fill = Freq)) +
        x = "True Class",
        y = "Predicted Class") +
   theme_minimal()
-
 ```
-
-XGBoost Feature Selection
-```{r}
-set.seed(20250604)
-
-inTrain_xgb <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
-train_xgb <- score_dat_dp[inTrain_xgb,]
-test_xgb  <- score_dat_dp[-inTrain_xgb,]
-
-x_train_xgb <- model.matrix(Credit_Score ~ ., train_xgb)[,-1]
-x_test_xgb  <- model.matrix(Credit_Score ~ ., test_xgb)[,-1]
-y_train_xgb <- as.numeric(train_xgb$Credit_Score) - 1
-y_test_xgb  <- as.numeric(test_xgb$Credit_Score) - 1
-
-dtrain <- xgb.DMatrix(data = x_train_xgb, label = y_train_xgb)
-dtest  <- xgb.DMatrix(data = x_test_xgb, label = y_test_xgb)
-
-params <- list(
-  objective = "multi:softmax",
-  num_class = length(unique(y_train_xgb)),
-  eval_metric = "mlogloss"
-)
-
-xgb_model <- xgb.train(params, data = dtrain, nrounds = 100, verbose = FALSE)
-feature_importance_xgb <- xgb.importance(model = xgb_model)
-selected_features_xgb <- feature_importance_xgb$Feature[1:5]
-print(selected_features_xgb)
-
-```
-
-XGBoost Train/Test with Feature Selection
-
-```{r}
-x_train_selected <- train_xgb[, selected_features_xgb]
-x_test_selected  <- test_xgb[, selected_features_xgb]
-
-dtrain_selected <- xgb.DMatrix(data = as.matrix(x_train_selected), label = y_train_xgb)
-dtest_selected  <- xgb.DMatrix(data = as.matrix(x_test_selected), label = y_test_xgb)
-
-xgb_selected_model <- xgb.train(params, data = dtrain_selected, nrounds = 100, verbose = FALSE)
-xgb_pred <- predict(xgb_selected_model, dtest_selected)
-
-accuracy_xgb <- mean(xgb_pred == y_test_xgb)
-print(paste("XGBoost Model Accuracy (After Feature Selection):", round(accuracy_xgb * 100, 2), "%"))
-
-conf_matrix_xgb <- confusionMatrix(factor(xgb_pred), factor(y_test_xgb))
-print(conf_matrix_xgb)
-
-```
-
-Classification Performance Summary
-
-Logistic Regression
-
-    Accuracy: ~65%
-
-    Good for interpretability, less optimal performance
-
-Random Forest
-
-    Accuracy: ~78%
-
-    Best overall performance
-
-    Strong specificity and sensitivity
 
 XGBoost
+```{r}
+set.seed(100)
 
-    Accuracy: ~74%
+inTrain_xgb <- createDataPartition(score_dat_dp$Credit_Score, p = 0.6, list = FALSE)
+train_xgb <- score_dat_dp[inTrain_xgb, ]
+test_xgb  <- score_dat_dp[-inTrain_xgb, ]
 
-    Competitive with Random Forest, efficient
+x_train <- model.matrix(Credit_Score ~ ., train_xgb)[, -1]
+x_test  <- model.matrix(Credit_Score ~ ., test_xgb)[, -1]
+y_train <- as.numeric(train_xgb$Credit_Score) - 1
+y_test  <- as.numeric(test_xgb$Credit_Score) - 1
 
+dtrain <- xgb.DMatrix(data = x_train, label = y_train)
+dtest  <- xgb.DMatrix(data = x_test, label = y_test)
+
+params <- list(objective = "multi:softmax", num_class = 3, eval_metric = "mlogloss")
+xgb_model <- xgb.train(params = params, data = dtrain, nrounds = 100, verbose = 0)
+
+xgb_pred <- predict(xgb_model, dtest)
+xgb_acc <- mean(xgb_pred == y_test)
+print(paste("XGBoost Accuracy:", round(xgb_acc * 100, 2), "%"))
+
+conf_matrix_xgb <- confusionMatrix(factor(xgb_pred), factor(y_test))
+print(conf_matrix_xgb)
+```
 Conclusion
 
-    Among all models tested, Random Forest achieved the highest accuracy and best balance of sensitivity and specificity.
+    Random Forest performed the best (~78% accuracy), with robust class handling.
 
-    Lasso regression and forward selection helped identify important features.
+    XGBoost came close with ~74% accuracy and faster execution.
 
-    This analysis supports automating credit scoring in financial contexts using robust models.
+    Lasso and Forward Selection helped in dimensionality reduction and feature insight.
+
+    The analysis confirms that robust machine learning models can effectively automate credit scoring in financial services.
 
